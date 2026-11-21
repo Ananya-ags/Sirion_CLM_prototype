@@ -1,0 +1,159 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+/*
+ * Docket design tokens.
+ * Tailwind v4 is CSS-first: these @theme values ARE the Tailwind config
+ * (bg-navy, bg-surface, text-lane-red, shadow-soft, bg-hero-gradient, ...).
+ */
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-geist-mono);
+  --font-heading: var(--font-sans);
+
+  /* Brand */
+  --color-navy: #0f1e3d;
+  --color-navy-soft: #1a2c52;
+  --color-brand: #2563eb;
+  --color-brand-strong: #1d4ed8;
+  --color-indigo: #4f46e5;
+  --color-surface: #f5f9ff;
+  --color-surface-2: #eaf2ff;
+
+  /* Lane + status colours: ONLY for lanes and statuses */
+  --color-lane-green: #16a34a;
+  --color-lane-green-bg: #ecfdf3;
+  --color-lane-amber: #d97706;
+  --color-lane-amber-bg: #fff7e6;
+  --color-lane-red: #dc2626;
+  --color-lane-red-bg: #fef1f1;
+  --color-lane-review: #475569;
+  --color-lane-review-bg: #f1f5f9;
+
+  /* Source tints */
+  --color-src-email: #0284c7;
+  --color-src-email-bg: #e7f5fd;
+  --color-src-sharepoint: #0e7490;
+  --color-src-sharepoint-bg: #e5f6f9;
+  --color-src-docusign: #4f46e5;
+  --color-src-docusign-bg: #eef0ff;
+  --color-src-tracker: #7c3aed;
+  --color-src-tracker-bg: #f3edff;
+  --color-src-ledger: #334155;
+  --color-src-ledger-bg: #eef1f5;
+
+  /* Actor tints */
+  --color-actor-ai: #7c3aed;
+  --color-actor-ai-bg: #f3edff;
+  --color-actor-rules: #2563eb;
+  --color-actor-rules-bg: #eaf2ff;
+  --color-actor-human: #0f1e3d;
+  --color-actor-human-bg: #e8ebf2;
+
+  --shadow-soft: 0 1px 2px rgb(15 30 61 / 0.04), 0 4px 16px rgb(15 30 61 / 0.06);
+  --shadow-lift: 0 2px 4px rgb(15 30 61 / 0.05), 0 12px 32px rgb(15 30 61 / 0.1);
+
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+:root {
+  --background: #ffffff;
+  --foreground: #1e293b;
+  --card: #ffffff;
+  --card-foreground: #1e293b;
+  --popover: #ffffff;
+  --popover-foreground: #1e293b;
+  --primary: #2563eb;
+  --primary-foreground: #ffffff;
+  --secondary: #eaf2ff;
+  --secondary-foreground: #1d4ed8;
+  --muted: #f5f9ff;
+  --muted-foreground: #64748b;
+  --accent: #eaf2ff;
+  --accent-foreground: #0f1e3d;
+  --destructive: #dc2626;
+  --border: #e3eaf5;
+  --input: #dbe4f2;
+  --ring: #2563eb;
+  --chart-1: #2563eb;
+  --chart-2: #4f46e5;
+  --chart-3: #0ea5e9;
+  --chart-4: #7c3aed;
+  --chart-5: #94a3b8;
+  --radius: 0.625rem;
+  --sidebar: #0f1e3d;
+  --sidebar-foreground: #c3cde0;
+  --sidebar-primary: #2563eb;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: rgb(255 255 255 / 0.08);
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: rgb(255 255 255 / 0.1);
+  --sidebar-ring: #2563eb;
+}
+
+@utility bg-hero-gradient {
+  background-image:
+    radial-gradient(120% 120% at 100% 0%, rgb(255 255 255 / 0.18) 0%, transparent 55%),
+    linear-gradient(135deg, #2563eb 0%, #3b4fe0 55%, #4f46e5 100%);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply text-navy;
+  }
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+  html {
+    @apply font-sans;
+  }
+}
