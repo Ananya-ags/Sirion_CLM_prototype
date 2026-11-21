@@ -1,4 +1,4 @@
-import { Activity, BookOpen, Compass, Cpu, DoorOpen, Gauge, Lightbulb, Puzzle, ScrollText, ShieldAlert, ShieldCheck, Users } from "lucide-react";
+import { Activity, BookOpen, Compass, Cpu, DoorOpen, Gauge, Info, Lightbulb, Puzzle, ScrollText, ShieldAlert, ShieldCheck, Users } from "lucide-react";
 import type { ReactNode } from "react";
 import { ActorBadge, Hint, SourceChip } from "@/components/docket";
 import { ProblemSection, type EvidenceRow } from "@/components/brief/ProblemSection";
@@ -94,15 +94,27 @@ function Flow() {
   return <ValueChain />;
 }
 
-function Num({ n, label, sub }: { n: string; label: string; sub?: string }) {
+function Num({ n, label, sub, tip }: { n: string; label: string; sub?: string; tip?: string }) {
   return (
     <div className="rounded-xl border bg-surface p-4">
-      <div className="text-2xl font-semibold text-navy tabular-nums">{n}</div>
+      <div className="flex items-start justify-between gap-2">
+        <div className="text-2xl font-semibold text-navy tabular-nums">{n}</div>
+        {tip && <Hint content={tip}><Info className="size-4 text-slate-400" /></Hint>}
+      </div>
       <div className="text-sm font-medium text-slate-700">{label}</div>
       {sub && <div className="text-xs text-slate-500">{sub}</div>}
     </div>
   );
 }
+
+const PIPELINE: [string, string][] = [
+  ["Group by legal IDs", "CIN / GSTIN / envelope IDs / parent references; never filenames"],
+  ["Read PDF / OCR scans", "Text layer, or OCR for image-only scans"],
+  ["Extract with quotes", "Every value carries a verbatim quote"],
+  ["Verify quotes in code", "Quote not in the document → value becomes unclear"],
+  ["Human review if needed", "OCR, unverified, unclear or missing key fields"],
+  ["Draft around locked values", "Rules fix dates and ₹; AI writes wording only"],
+];
 
 export default async function Page() {
   const { evals, fullRun, calls, evidence, suppliers } = await getData();
@@ -203,30 +215,39 @@ export default async function Page() {
         </Block>
 
         <Block id="evals" icon={Cpu} title="AI design & evals">
+          <p className="-mt-2 text-sm text-slate-500">Tested on two sets: a dev set (the 10 demo suppliers, used to tune prompts) and a held-out test set (18 unseen clauses and contracts, kept untouched).</p>
           <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-            <Num n={score(evals?.previous?.headline.heldout ?? evals?.headline.heldout)} label="Held-out, v1 blind" sub="the honest estimate" />
-            <Num n={evals?.previous ? score(evals.headline.heldout) : "—"} label="Held-out, v2" sub="after design fixes; no longer blind" />
-            <Num n={suite("grouping") ? `${suite("grouping")!.passed}/${suite("grouping")!.total}` : "—"} label="Grouping (dev)" sub="0 wrong; decoy → review" />
-            <Num n={cit ? String(cit.total - cit.passed) : "—"} label="Unverified citations" sub={cit ? `${cit.passed} quotes checked in code` : undefined} />
-            <Num n={suite("injection") ? `${suite("injection")!.passed}/${suite("injection")!.total}` : "—"} label="Injection checks" />
-            <Num n={metric("drafts", "Live drafts")} label="Draft safety" sub="boundary + numbers, live Haiku" />
-            <Num n={`$${fullRun.toFixed(2)}`} label="Per full pipeline run" sub={`${calls} calls: OCR, grouping, 10 extractions`} />
-            <Num n={score(evals?.headline.dev)} label="Dev set" sub="tuned on this" />
+            <Num n={score(evals?.previous?.headline.heldout ?? evals?.headline.heldout)} label="Held-out, v1 blind" sub="First run on unseen data; the honest score" tip="Run once before any changes. 13 of 14 misses came from one draft contract the pipeline skipped by design." />
+            <Num n={evals?.previous ? score(evals.headline.heldout) : "—"} label="Held-out, v2" sub="Re-run after 2 design fixes" tip="Fixes: read drafts as non-binding context; route reviews on evidence, not confidence. No longer blind, so shown separately." />
+            <Num n={suite("grouping") ? `${suite("grouping")!.passed}/${suite("grouping")!.total}` : "—"} label="Grouping (dev)" sub="Docs matched to the right supplier; look-alike decoy sent to review" />
+            <Num n={cit ? String(cit.total - cit.passed) : "—"} label="Unverified citations" sub="Every quoted clause checked against the PDF text in code" tip={cit ? `${cit.passed} quotes checked` : undefined} />
+            <Num n={suite("injection") ? `${suite("injection")!.passed}/${suite("injection")!.total}` : "—"} label="Injection checks" sub="Hidden instructions in contracts were ignored" />
+            <Num n={metric("drafts", "Live drafts")} label="Draft safety" sub="Live notices: no negotiation language, numbers match" />
+            <Num n={`$${fullRun.toFixed(2)}`} label="Per full pipeline run" sub="Cost to read all 29 contracts once" tip={`${calls} calls: OCR, grouping, 10 extractions`} />
+            <Num n={score(evals?.headline.dev)} label="Dev set" sub="Prompts tuned on this, so optimistic" />
           </div>
-          <p className="text-sm">Pipeline: group by legal identifiers → PDF text + OCR → cited extraction → quote check in code → evidence-based human review → drafting around locked values.</p>
+          <div className="flex flex-wrap items-center gap-1.5">
+            {PIPELINE.map(([c, t], i) => (
+              <span key={c} className="inline-flex items-center gap-1.5">
+                <Hint content={t}><span className="rounded-full bg-surface-2 px-2.5 py-1 text-xs font-medium text-brand-strong">{c}</span></Hint>
+                {i < PIPELINE.length - 1 && <span className="text-slate-400">→</span>}
+              </span>
+            ))}
+          </div>
         </Block>
 
         <Block id="learned" icon={Lightbulb} title="What I learned">
           <div className="grid gap-3 md:grid-cols-3">
             {[
-              ["Confidence didn't predict errors", "Self-reported confidence missed the real mistakes, so review routing is evidence-based."],
-              ["Drafts are context, not terms", "A redline is useful to compare against, but it never overrides executed terms."],
-              ["Scans need two steps", "OCR gets the text; a human confirms the key fields before any lane is set."],
-            ].map(([t, d], i) => (
+              ["Confidence scores weren't reliable", "The AI was as accurate on low-confidence answers as on high ones, and its confident mistakes weren't flagged.", "Reviews are triggered by evidence (scans, unverified quotes, unclear clauses), not by the AI's own confidence."],
+              ["Drafts are context, not contract", "Draft and redline copies contain different terms from the signed version.", "Drafts are shown side-by-side as non-binding and never change the terms Docket acts on."],
+              ["Scanned contracts need a human check", "Scans have no text layer, so the AI must read the page images (OCR).", "OCR'd fields always go to a person to confirm before the contract's lane is set."],
+            ].map(([t, d, so], i) => (
               <div key={t} className="rounded-xl border p-4">
                 <div className="text-sm font-semibold text-brand">({String.fromCharCode(97 + i)})</div>
                 <div className="text-base font-semibold text-navy">{t}</div>
                 <p className="mt-1 text-sm">{d}</p>
+                <p className="mt-1 text-sm"><b className="text-navy">So:</b> {so}</p>
               </div>
             ))}
           </div>
