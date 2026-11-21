@@ -74,6 +74,7 @@ Optional:
 
 ```bash
 npm run precompute     # re-run the AI pipeline (OCR, grouping, extraction) into docket_data/data/cache
+                       # (the committed cache was precomputed with claude-sonnet-5-5, the extraction default)
 npm run evals          # re-run the evals (budget-guarded) → Evals tab
 npm test               # rules engine + pipeline unit tests
 ```

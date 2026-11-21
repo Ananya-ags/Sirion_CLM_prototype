@@ -4,5 +4,5 @@
  */
 export const MODELS = {
   draft: process.env.ANTHROPIC_MODEL_DRAFT ?? "claude-haiku-5-5",
-  extract: process.env.ANTHROPIC_MODEL_EXTRACT ?? "claude-haiku-5-5",
+  extract: process.env.ANTHROPIC_MODEL_EXTRACT ?? "claude-sonnet-5-5",
 } as const;

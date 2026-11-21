@@ -3,7 +3,10 @@ import { z } from "zod";
 import { generateDraft } from "@/lib/drafting";
 import { clientIp, LIMITS, rateLimit } from "@/lib/rateLimit";
 
-const Body = z.object({ requestId: z.string().regex(/^REQ-SUP-\d{2}$/), kind: z.enum(["exit_notice", "cap_letter"]) });
+/** Live drafts take ~6–7s (occasionally longer); keep them clear of Vercel's default function limit. */
+export const maxDuration = 30;
+
+const Body =z.object({ requestId: z.string().regex(/^REQ-SUP-\d{2}$/), kind: z.enum(["exit_notice", "cap_letter"]) });
 
 export async function POST(req: Request) {
   const parsed = Body.safeParse(await req.json().catch(() => null));
