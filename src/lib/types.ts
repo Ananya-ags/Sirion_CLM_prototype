@@ -129,36 +129,41 @@ export const PolicySchema = z.preprocess(
 );
 export type Policy = z.infer<typeof PolicySchema>;
 
-// The shapes below are not specified yet; loose schemas keep any extra fields.
-// Tighten them when the real files land in /data.
 export const BenchmarkSchema = z.looseObject({
-  category: z.string(),
+  role: z.string(),
+  rate_inr_per_hr: z.number(),
+  source_supplier: z.string(),
 });
 export const BenchmarksSchema = z.array(BenchmarkSchema);
 export type Benchmark = z.infer<typeof BenchmarkSchema>;
 
-/** Accepts ["2026-12-25", ...] or [{ date, name }, ...]. */
-export const HolidaysSchema = z.array(
-  z.union([
-    z.string().transform((date) => ({ date, name: "" })),
-    z.looseObject({ date: z.string(), name: z.string().optional() }),
-  ]),
-);
-export type Holiday = { date: string; name?: string };
+export const HolidaySchema = z.object({ date: z.string(), name: z.string() });
+export type Holiday = z.infer<typeof HolidaySchema>;
+export const HolidaysFileSchema = z.looseObject({
+  calendar: z.string().optional(),
+  business_day_rule: z.string().optional(),
+  holidays: z.array(HolidaySchema),
+});
+export type HolidaysFile = z.infer<typeof HolidaysFileSchema>;
 
 export const FxSchema = z.looseObject({ USD_INR: z.number() });
 export type Fx = z.infer<typeof FxSchema>;
 
-export const CpiSchema = z.looseObject({});
+export const CpiSchema = z.looseObject({ india_cpi_yoy_pct: z.number() });
 export type Cpi = z.infer<typeof CpiSchema>;
 
 export const PersonasFileSchema = z.array(
-  z.looseObject({ id: PersonaIdSchema, name: z.string(), role: z.string() }),
+  z.looseObject({
+    id: PersonaIdSchema,
+    name: z.string(),
+    full_name: z.string().optional(),
+    role: z.string(),
+    default: z.boolean().optional(),
+    sees: z.array(z.string()).optional(),
+    hands_off: z.array(z.string()).optional(),
+  }),
 );
 export type PersonaRecord = z.infer<typeof PersonasFileSchema>[number];
-
-export const GoldFileSchema = z.array(z.looseObject({}));
-export type GoldRecord = z.infer<typeof GoldFileSchema>[number];
 
 /* ------------------------------------------------------------------ */
 /* Extraction output (AI, cited)                                       */
@@ -237,6 +242,47 @@ export const ExtractionOutputSchema = z.object({
   effective_terms: EffectiveTermsSchema,
 });
 export type ExtractionOutput = z.infer<typeof ExtractionOutputSchema>;
+
+/* ------------------------------------------------------------------ */
+/* Gold sets                                                           */
+/* ------------------------------------------------------------------ */
+
+/** Dev gold: per supplier, the extraction shape plus expected Rules outputs. */
+export const DevGoldSupplierSchema = z.looseObject({
+  supplier_id: z.string(),
+  contract_name: z.string(),
+  erp_vendor_name: z.string().nullable().optional(),
+  vendor_id: z.string().nullable().optional(),
+  category: z.string(),
+  tracker_id: z.string().nullable().optional(),
+  family: z.array(FamilyMemberSchema),
+  effective_terms: z.record(z.string(), z.unknown()),
+  computed: z.record(z.string(), z.unknown()).optional(),
+  expected_flags: z.array(z.unknown()).optional(),
+  expected_lane: z.string().optional(),
+  lane_reason: z.string().optional(),
+});
+export type DevGoldSupplier = z.infer<typeof DevGoldSupplierSchema>;
+export const DevGoldFileSchema = z.looseObject({
+  meta: z.record(z.string(), z.unknown()),
+  suppliers: z.array(DevGoldSupplierSchema),
+});
+export type DevGoldFile = z.infer<typeof DevGoldFileSchema>;
+
+/** Held-out gold: flat expected values per HO doc; never used for prompt tuning. */
+export const HeldoutGoldItemSchema = z.looseObject({
+  ho_id: z.string(),
+  file: z.string(),
+  kind: z.string(),
+  fields: z.record(z.string(), z.unknown()),
+  abstain_fields: z.array(z.string()),
+});
+export type HeldoutGoldItem = z.infer<typeof HeldoutGoldItemSchema>;
+export const HeldoutGoldFileSchema = z.looseObject({
+  meta: z.record(z.string(), z.unknown()),
+  items: z.array(HeldoutGoldItemSchema),
+});
+export type HeldoutGoldFile = z.infer<typeof HeldoutGoldFileSchema>;
 
 /* ------------------------------------------------------------------ */
 /* Flags, requests, audit                                              */

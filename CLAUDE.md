@@ -44,7 +44,8 @@ Human: low-confidence fields, family conflicts, tracker fixes, owner decision, P
 5. Validate all LLM output with zod, retry once, then fall back to the cached JSON with a "cached" badge.
 6. Never send anything external automatically. Only reversible actions are automated. Everything goes in the audit log.
 
-## Data (arrives later in /data; never rename anything)
+## Data (lives in docket_data/data; never rename anything)
+All data/... paths below are relative to docket_data/ (e.g. docket_data/data/tracker.csv). The app reads them via DATA_DIR in src/lib/data.ts.
 data/docs/DOC-xx.md, data/documents.json, data/tracker.csv, data/ledger.csv, data/vendor_master.csv, data/policy.json, data/benchmarks.json, data/holidays.json, data/fx.json, data/cpi.json, data/personas.json, data/gold/dev_gold.json, data/gold/heldout/HO-xx.md, data/gold/heldout_gold.json. Cached AI outputs go in data/cache/*.json.
 documents.json item: {doc_id, supplier_id, filename, source: "sharepoint"|"email"|"docusign", source_path, received_date, file}
 tracker.csv: tracker_id,supplier_name,contract_ref,category,owner,start_date,end_date,auto_renew,notice_days,annual_value_inr,status,last_updated
@@ -56,7 +57,7 @@ Extraction output per supplier (every leaf = {value, confidence, citation:{doc_i
   effective_terms: {renewal_type: auto|evergreen|manual|none|unclear, initial_term_end, renewal_term_months, notice_days, notice_day_type: calendar|business, notice_method, notice_address, uplift:{type: fixed|cpi|greater_of|discretionary|none, value_pct, cap_pct}, tfc, tfc_notice_days, payment_terms_days, sla_credits, currency, governing_law, annual_value}
 
 ## Live vs cached
-Pre-computed (scripts/precompute.ts writes data/cache): classification, families, extraction, eval results.
+Pre-computed (scripts/precompute.ts writes docket_data/data/cache): classification, families, extraction, eval results.
 Live: (A) "Add a contract" upload with live extraction; (B) live drafting of briefs, notices and cap letters. Both fall back to the cache.
 Models: a Pro-class Gemini model for precompute, a Flash-class model for live calls. Make the model names configurable in lib/config.ts. Use the @google/genai SDK. GEMINI_API_KEY comes from env, server routes only.
 

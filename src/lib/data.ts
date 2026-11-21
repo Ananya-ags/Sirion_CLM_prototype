@@ -1,5 +1,5 @@
 /**
- * Server-side loaders for /data. Never import from client components.
+ * Server-side loaders for docket_data/data. Never import from client components.
  * Missing or invalid files never crash: they log one warning and return a fallback,
  * because the data arrives in a later phase.
  */
@@ -7,15 +7,16 @@ import { promises as fs } from "node:fs";
 import path from "node:path";
 import Papa from "papaparse";
 import type { z } from "zod";
-import { FX } from "./config";
+import { CPI_INDIA_YOY_PCT, FX } from "./config";
 import {
   BenchmarksSchema,
   CpiSchema,
+  DevGoldFileSchema,
   DocumentSchema,
   ExtractionOutputSchema,
   FxSchema,
-  GoldFileSchema,
-  HolidaysSchema,
+  HeldoutGoldFileSchema,
+  HolidaysFileSchema,
   LedgerRowSchema,
   PersonasFileSchema,
   PolicySchema,
@@ -24,7 +25,8 @@ import {
   type ExtractionOutput,
 } from "./types";
 
-export const DATA_DIR = path.join(process.cwd(), "data");
+/** Case data lives in docket_data/data (see CLAUDE.md). */
+export const DATA_DIR = path.join(process.cwd(), "docket_data", "data");
 
 const warned = new Set<string>();
 function warnOnce(key: string, msg: string) {
@@ -87,12 +89,13 @@ export const loadLedger = () => loadCsv("ledger.csv", LedgerRowSchema);
 export const loadVendorMaster = () => loadCsv("vendor_master.csv", VendorMasterRowSchema);
 export const loadPolicy = () => loadJson("policy.json", PolicySchema, {});
 export const loadBenchmarks = () => loadJson("benchmarks.json", BenchmarksSchema, []);
-export const loadHolidays = () => loadJson("holidays.json", HolidaysSchema, []);
+export const loadHolidaysFile = () => loadJson("holidays.json", HolidaysFileSchema, { holidays: [] });
+export const loadHolidays = async () => (await loadHolidaysFile()).holidays;
 export const loadFx = () => loadJson("fx.json", FxSchema, { USD_INR: FX.USD_INR });
-export const loadCpi = () => loadJson("cpi.json", CpiSchema, {});
+export const loadCpi = () => loadJson("cpi.json", CpiSchema, { india_cpi_yoy_pct: CPI_INDIA_YOY_PCT });
 export const loadPersonas = () => loadJson("personas.json", PersonasFileSchema, []);
-export const loadDevGold = () => loadJson("gold/dev_gold.json", GoldFileSchema, []);
-export const loadHeldoutGold = () => loadJson("gold/heldout_gold.json", GoldFileSchema, []);
+export const loadDevGold = () => loadJson("gold/dev_gold.json", DevGoldFileSchema, { meta: {}, suppliers: [] });
+export const loadHeldoutGold = () => loadJson("gold/heldout_gold.json", HeldoutGoldFileSchema, { meta: {}, items: [] });
 export const loadHeldoutDoc = (file: string) => readDoc("gold/heldout", file);
 
 /** Cached AI output, e.g. loadCache("extraction", ExtractionOutputSchema.array(), []). */
