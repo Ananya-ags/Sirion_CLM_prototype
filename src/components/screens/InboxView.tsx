@@ -1,6 +1,6 @@
 "use client";
 
-import { AlertTriangle, BellRing, CalendarClock, CheckCircle2, FileQuestion, Hand, IndianRupee, ScanSearch, TableProperties } from "lucide-react";
+import { AlertTriangle, BellRing, CalendarClock, CheckCircle2, Hand, IndianRupee, TableProperties } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
@@ -13,6 +13,7 @@ import { CATEGORY_LABEL } from "@/lib/labels";
 import type { Portfolio } from "@/lib/portfolio";
 import type { Lane } from "@/lib/types";
 import { cn } from "@/lib/utils";
+import { ReviewQueue } from "./ReviewQueue";
 import { useRequestMap } from "./useRequest";
 
 type Filter = "all" | Lane;
@@ -31,7 +32,6 @@ export function InboxView({ views, unmatched, sources }: Pick<Portfolio, "views"
   const withOwner = views.filter((v) => req[v.supplierId].state === "owner_pending").length;
   const conflicts = views.reduce((a, v) => a + v.trackerConflicts.length, 0);
   const silent = views.filter((v) => v.flags.some((f) => f.code === "L4"));
-  const review = views.filter((v) => v.lane === "needs_review");
 
   const rows = useMemo(
     () =>
@@ -123,32 +123,7 @@ export function InboxView({ views, unmatched, sources }: Pick<Portfolio, "views"
         </Card>
 
         <div className="space-y-4">
-          <Card className="rounded-xl shadow-soft">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-sm text-navy">
-                <ScanSearch className="size-4 text-brand" /> Human review <ActorBadge actor="Human" />
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-2">
-              {review.map((v) => (
-                <Link key={v.supplierId} href={`/contracts/${v.supplierId}`} className="block rounded-lg border p-2.5 transition-colors hover:bg-surface">
-                  <div className="text-sm font-medium text-navy">{v.name}</div>
-                  <div className="mt-1 flex items-center gap-1.5"><FlagChip code="X1" detail={v.flags.find((f) => f.code === "X1")?.detail} /></div>
-                </Link>
-              ))}
-              {unmatched.map((u) => (
-                <Hint key={u.doc.doc_id} content={u.evidence.join(" · ")}>
-                  <div className="w-full rounded-lg border border-dashed p-2.5">
-                    <div className="flex items-center gap-1.5 text-sm font-medium text-navy">
-                      <FileQuestion className="size-4 text-lane-review" /> {u.doc.doc_id} · unmatched
-                    </div>
-                    <div className="mt-0.5 truncate text-xs text-muted-foreground">{u.doc.filename}</div>
-                    <div className="mt-1.5 flex gap-1.5"><SourceChip source={u.doc.source} detail={u.doc.source_path} /><ActorBadge actor="AI" /></div>
-                  </div>
-                </Hint>
-              ))}
-            </CardContent>
-          </Card>
+          <ReviewQueue views={views} unmatched={unmatched} />
           <Card className="rounded-xl shadow-soft">
             <CardHeader>
               <CardTitle className="text-sm text-navy">Sources scanned</CardTitle>

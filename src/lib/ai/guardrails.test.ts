@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { applyQuoteCheck, boundaryCheck, extractNumericTokens, numericFidelity, verifyQuote } from "./guardrails";
-import { groupDocuments, mimeTypeFor } from "./documents";
+import { mimeTypeFor } from "./documents";
 
 const DOC = `3.2 Renewal. Each Subscription Term shall automatically renew for successive periods of
 twelve (12) months unless either Party gives written notice of non-renewal at least ninety (90) days before the end.`;
@@ -73,7 +73,8 @@ describe("documents", () => {
     expect(mimeTypeFor("DOC-01.md")).toBe("text/markdown");
     expect(mimeTypeFor("scan.PDF")).toBe("application/pdf");
   });
-  it("groupDocuments stub: one group per doc", async () => {
-    expect(await groupDocuments([{ doc_id: "DOC-01", filename: "a" }, { doc_id: "DOC-02", filename: "b" }])).toHaveLength(2);
+  it("quote check ignores Markdown punctuation (table pipes, bold) that a PDF never contains", () => {
+    expect(verifyQuote("Jr. React.js Developer 1 1,200", "| Jr. React.js Developer | 1 | 1,200 |")).toBe(true);
+    expect(verifyQuote("annual fee of USD 45,000 payable", "**USD 45,000**")).toBe(true);
   });
 });

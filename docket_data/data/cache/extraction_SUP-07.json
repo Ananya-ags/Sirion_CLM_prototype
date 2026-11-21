@@ -1,0 +1,723 @@
+{
+  "supplier_id": "SUP-07",
+  "family": [
+    {
+      "doc_id": "DOC-19",
+      "doc_role": "msa",
+      "executed": true,
+      "execution_evidence": [
+        "DocuSigned by Lim Wei Jie 24-Apr-2025, Arjun Menon and Kavita Deshpande 25-Apr-2025",
+        "Certificate of Completion: Status: Completed, Envelope Completed 25-Apr-2025 16:12 IST"
+      ],
+      "references": [
+        "DOC-20",
+        "DOC-21"
+      ]
+    },
+    {
+      "doc_id": "DOC-20",
+      "doc_role": "order_form",
+      "executed": true,
+      "execution_evidence": [
+        "Signed for Stratus: Lim Wei Jie (DocuSigned) · Signed for Customer: Arjun Menon (DocuSigned)",
+        "Certificate of Completion: Status: Completed, 25-Apr-2025"
+      ],
+      "references": [
+        "DOC-19"
+      ]
+    },
+    {
+      "doc_id": "DOC-21",
+      "doc_role": "other",
+      "executed": true,
+      "execution_evidence": [
+        "Signed for Processor: Lim Wei Jie (DocuSigned) · Signed for Controller: Arjun Menon (DocuSigned)",
+        "Certificate of Completion: Status: Completed, 25-Apr-2025"
+      ],
+      "references": [
+        "DOC-19"
+      ]
+    }
+  ],
+  "effective_terms": {
+    "renewal_type": {
+      "value": "auto",
+      "confidence": 0.95,
+      "citation": {
+        "doc_id": "DOC-19",
+        "section": "11.2",
+        "quote": "the subscription shall automatically renew for successive renewal terms of twelve (12) months each"
+      },
+      "verified": true
+    },
+    "initial_term_end": {
+      "value": "2027-04-30",
+      "confidence": 0.93,
+      "citation": {
+        "doc_id": "DOC-20",
+        "section": "2",
+        "quote": "co-terminous with the Initial Subscription Term (1 May 2025 to 30 April 2027)"
+      },
+      "verified": true
+    },
+    "renewal_term_months": {
+      "value": 12,
+      "confidence": 0.97,
+      "citation": {
+        "doc_id": "DOC-19",
+        "section": "11.2",
+        "quote": "successive renewal terms of twelve (12) months each"
+      },
+      "verified": true
+    },
+    "notice_days": {
+      "value": 30,
+      "confidence": 0.95,
+      "citation": {
+        "doc_id": "DOC-19",
+        "section": "11.2",
+        "quote": "written notice of non-renewal at least thirty (30) days prior to the end of the then-current term"
+      },
+      "verified": true
+    },
+    "notice_day_type": {
+      "value": "calendar",
+      "confidence": 0.9,
+      "citation": {
+        "doc_id": "DOC-19",
+        "section": "1.33",
+        "quote": "References to a number of days are to calendar days unless Business Days are expressly specified."
+      },
+      "verified": true
+    },
+    "notice_method": {
+      "value": "email",
+      "confidence": 0.9,
+      "citation": {
+        "doc_id": "DOC-19",
+        "section": "17.1",
+        "quote": "Notices shall be in writing and sent by email to legal@stratuscloud.sg (for Stratus)"
+      },
+      "verified": true
+    },
+    "notice_address": {
+      "value": "legal@stratuscloud.sg",
+      "confidence": 0.96,
+      "citation": {
+        "doc_id": "DOC-19",
+        "section": "17.1",
+        "quote": "sent by email to legal@stratuscloud.sg (for Stratus)"
+      },
+      "verified": true
+    },
+    "uplift": {
+      "type": {
+        "value": "cpi",
+        "confidence": 0.92,
+        "citation": {
+          "doc_id": "DOC-19",
+          "section": "12.2",
+          "quote": "increase the Fees by the percentage change in the Consumer Price Index (All Items) published by the Singapore Department of Statistics"
+        },
+        "verified": true
+      },
+      "value_pct": {
+        "value": null,
+        "confidence": 0.85,
+        "citation": null
+      },
+      "cap_pct": {
+        "value": 3,
+        "confidence": 0.95,
+        "citation": {
+          "doc_id": "DOC-19",
+          "section": "1.24",
+          "quote": "\"Price Increase Cap\" means three per cent (3%)."
+        },
+        "verified": true
+      }
+    },
+    "tfc": {
+      "value": true,
+      "confidence": 0.96,
+      "citation": {
+        "doc_id": "DOC-19",
+        "section": "15.1",
+        "quote": "Customer may terminate this Agreement for convenience on thirty (30) days' written notice."
+      },
+      "verified": true
+    },
+    "tfc_notice_days": {
+      "value": 30,
+      "confidence": 0.96,
+      "citation": {
+        "doc_id": "DOC-19",
+        "section": "15.1",
+        "quote": "Customer may terminate this Agreement for convenience on thirty (30) days' written notice."
+      },
+      "verified": true
+    },
+    "payment_terms_days": {
+      "value": 45,
+      "confidence": 0.96,
+      "citation": {
+        "doc_id": "DOC-19",
+        "section": "13.1",
+        "quote": "Customer shall pay each invoice by wire transfer within forty-five (45) days of the invoice date."
+      },
+      "verified": true
+    },
+    "sla_credits": {
+      "value": true,
+      "confidence": 0.97,
+      "citation": {
+        "doc_id": "DOC-19",
+        "section": "14.2",
+        "quote": "Customer shall be entitled to service credits as set out in Schedule A (Service Level Agreement)."
+      },
+      "verified": true
+    },
+    "currency": {
+      "value": "USD",
+      "confidence": 0.95,
+      "citation": {
+        "doc_id": "DOC-20",
+        "section": "Fee table",
+        "quote": "Total annual committed Fee USD 45,000"
+      },
+      "verified": true
+    },
+    "governing_law": {
+      "value": "Singapore",
+      "confidence": 0.97,
+      "citation": {
+        "doc_id": "DOC-19",
+        "section": "18.1",
+        "quote": "governed by and construed in accordance with the laws of Singapore"
+      },
+      "verified": true
+    },
+    "annual_value": {
+      "value": 45000,
+      "confidence": 0.95,
+      "citation": {
+        "doc_id": "DOC-20",
+        "section": "Fee table",
+        "quote": "Total annual committed Fee USD 45,000"
+      },
+      "verified": true
+    }
+  },
+  "sla_terms": {
+    "metric": "control_plane_availability_pct",
+    "target": 99.95,
+    "currency": "USD",
+    "credit_rule": [
+      {
+        "from_incl": 99.5,
+        "to_excl": 99.95,
+        "credit_pct": 10
+      },
+      {
+        "from_incl": 99,
+        "to_excl": 99.5,
+        "credit_pct": 25
+      },
+      {
+        "from_incl": 0,
+        "to_excl": 99,
+        "credit_pct": 50
+      }
+    ],
+    "credit_basis": "monthly_fees",
+    "citation": {
+      "doc_id": "DOC-19",
+      "section": "14.1",
+      "quote": "Stratus shall provide the Cloud Services with a monthly availability of 99.95% for the managed Kubernetes control plane."
+    },
+    "fee_basis_monthly": null
+  },
+  "licensed_units": [],
+  "pipeline": {
+    "source": "ai",
+    "model": "claude-sonnet-5-5",
+    "prompt_version": "extraction-1",
+    "generated_at": "2026-11-24T06:34:24.728Z",
+    "input_key": "d69a9d024656ac7db11d5e76b5d7d84535f49331f841080f4d0a39ea4b4ee72f",
+    "docs": [
+      {
+        "doc_id": "DOC-19",
+        "sha256": "17eaa8b8f8e13538656a0f163e7a3a1305837ed3b55efb1f80200ff630216b37",
+        "text_source": "pdf"
+      },
+      {
+        "doc_id": "DOC-20",
+        "sha256": "9f2dcd71f82756f1f4eb154286de68abfd2c098af4b64fe6016aed37fa77254b",
+        "text_source": "pdf"
+      },
+      {
+        "doc_id": "DOC-21",
+        "sha256": "f3523313c9a96cb776d9d8375a5b31b7be78bf402367120426c839b8d4a7d906",
+        "text_source": "pdf"
+      }
+    ],
+    "ocr_fields": [],
+    "verification": [
+      {
+        "key": "renewal_type",
+        "doc_id": "DOC-19",
+        "section": "11.2",
+        "quote": "the subscription shall automatically renew for successive renewal terms of twelve (12) months each",
+        "ok": true
+      },
+      {
+        "key": "initial_term_end",
+        "doc_id": "DOC-19",
+        "section": "11.1",
+        "quote": "commences on 1 May 2025 and ends on 30 April 2027",
+        "ok": true
+      },
+      {
+        "key": "renewal_term_months",
+        "doc_id": "DOC-19",
+        "section": "11.2",
+        "quote": "successive renewal terms of twelve (12) months each",
+        "ok": true
+      },
+      {
+        "key": "notice_days",
+        "doc_id": "DOC-19",
+        "section": "11.2",
+        "quote": "written notice of non-renewal at least thirty (30) days prior to the end of the then-current term",
+        "ok": true
+      },
+      {
+        "key": "notice_day_type",
+        "doc_id": "DOC-19",
+        "section": "1.33",
+        "quote": "References to a number of days are to calendar days unless Business Days are expressly specified.",
+        "ok": true
+      },
+      {
+        "key": "notice_method",
+        "doc_id": "DOC-19",
+        "section": "17.1",
+        "quote": "Notices shall be in writing and sent by email to legal@stratuscloud.sg (for Stratus)",
+        "ok": true
+      },
+      {
+        "key": "notice_address",
+        "doc_id": "DOC-19",
+        "section": "17.1",
+        "quote": "sent by email to legal@stratuscloud.sg (for Stratus)",
+        "ok": true
+      },
+      {
+        "key": "uplift.type",
+        "doc_id": "DOC-19",
+        "section": "12.2",
+        "quote": "increase the Fees by the percentage change in the Consumer Price Index (All Items) published by the Singapore Department of Statistics",
+        "ok": true
+      },
+      {
+        "key": "uplift.cap_pct",
+        "doc_id": "DOC-19",
+        "section": "1.24",
+        "quote": "\"Price Increase Cap\" means three per cent (3%).",
+        "ok": true
+      },
+      {
+        "key": "tfc",
+        "doc_id": "DOC-19",
+        "section": "15.1",
+        "quote": "Customer may terminate this Agreement for convenience on thirty (30) days' written notice.",
+        "ok": true
+      },
+      {
+        "key": "tfc_notice_days",
+        "doc_id": "DOC-19",
+        "section": "15.1",
+        "quote": "Customer may terminate this Agreement for convenience on thirty (30) days' written notice.",
+        "ok": true
+      },
+      {
+        "key": "payment_terms_days",
+        "doc_id": "DOC-19",
+        "section": "13.1",
+        "quote": "Customer shall pay each invoice by wire transfer within forty-five (45) days of the invoice date.",
+        "ok": true
+      },
+      {
+        "key": "sla_credits",
+        "doc_id": "DOC-19",
+        "section": "14.2",
+        "quote": "Customer shall be entitled to service credits as set out in Schedule A (Service Level Agreement).",
+        "ok": true
+      },
+      {
+        "key": "currency",
+        "doc_id": "DOC-19",
+        "section": "12.1",
+        "quote": "Fees are stated and payable in United States Dollars (USD)",
+        "ok": true
+      },
+      {
+        "key": "governing_law",
+        "doc_id": "DOC-19",
+        "section": "18.1",
+        "quote": "governed by and construed in accordance with the laws of Singapore",
+        "ok": true
+      },
+      {
+        "key": "initial_term_end",
+        "doc_id": "DOC-20",
+        "section": "2",
+        "quote": "co-terminous with the Initial Subscription Term (1 May 2025 to 30 April 2027)",
+        "ok": true
+      },
+      {
+        "key": "currency",
+        "doc_id": "DOC-20",
+        "section": "Fee table",
+        "quote": "Total annual committed Fee USD 45,000",
+        "ok": true
+      },
+      {
+        "key": "annual_value",
+        "doc_id": "DOC-20",
+        "section": "Fee table",
+        "quote": "Total annual committed Fee USD 45,000",
+        "ok": true
+      },
+      {
+        "key": "sla_terms",
+        "doc_id": "DOC-19",
+        "section": "14.1",
+        "quote": "Stratus shall provide the Cloud Services with a monthly availability of 99.95% for the managed Kubernetes control plane.",
+        "ok": true
+      }
+    ],
+    "verification_failures": 0,
+    "grouping": [
+      {
+        "doc_id": "DOC-19",
+        "confidence": 0.9,
+        "evidence": [
+          "Exact legal name Stratus Cloud Pte. Ltd. as contracting party; UEN 201912345K, no conflict"
+        ]
+      },
+      {
+        "doc_id": "DOC-20",
+        "confidence": 0.97,
+        "evidence": [
+          "DocuSign envelope ID 9E0C47A2-61B5-4F88-AD3E-2C7B19F05D64 shared with DOC-19"
+        ]
+      },
+      {
+        "doc_id": "DOC-21",
+        "confidence": 0.97,
+        "evidence": [
+          "DocuSign envelope ID 9E0C47A2-61B5-4F88-AD3E-2C7B19F05D64 shared with DOC-19"
+        ]
+      }
+    ],
+    "raw": {
+      "family": [
+        {
+          "doc_id": "DOC-19",
+          "doc_role": "msa",
+          "executed": true,
+          "execution_evidence": [
+            "DocuSigned by Lim Wei Jie 24-Apr-2025, Arjun Menon and Kavita Deshpande 25-Apr-2025",
+            "Certificate of Completion: Status: Completed, Envelope Completed 25-Apr-2025 16:12 IST"
+          ],
+          "references": [
+            "DOC-20",
+            "DOC-21"
+          ],
+          "signed_date": "2025-04-25"
+        },
+        {
+          "doc_id": "DOC-20",
+          "doc_role": "order_form",
+          "executed": true,
+          "execution_evidence": [
+            "Signed for Stratus: Lim Wei Jie (DocuSigned) · Signed for Customer: Arjun Menon (DocuSigned)",
+            "Certificate of Completion: Status: Completed, 25-Apr-2025"
+          ],
+          "references": [
+            "DOC-19"
+          ],
+          "signed_date": "2025-04-25"
+        },
+        {
+          "doc_id": "DOC-21",
+          "doc_role": "other",
+          "executed": true,
+          "execution_evidence": [
+            "Signed for Processor: Lim Wei Jie (DocuSigned) · Signed for Controller: Arjun Menon (DocuSigned)",
+            "Certificate of Completion: Status: Completed, 25-Apr-2025"
+          ],
+          "references": [
+            "DOC-19"
+          ],
+          "signed_date": "2025-04-25"
+        }
+      ],
+      "documents": [
+        {
+          "doc_id": "DOC-19",
+          "fields": [
+            {
+              "key": "renewal_type",
+              "value": "auto",
+              "confidence": 0.95,
+              "citation": {
+                "doc_id": "DOC-19",
+                "section": "11.2",
+                "quote": "the subscription shall automatically renew for successive renewal terms of twelve (12) months each"
+              },
+              "note": null
+            },
+            {
+              "key": "initial_term_end",
+              "value": "2027-04-30",
+              "confidence": 0.97,
+              "citation": {
+                "doc_id": "DOC-19",
+                "section": "11.1",
+                "quote": "commences on 1 May 2025 and ends on 30 April 2027"
+              },
+              "note": null
+            },
+            {
+              "key": "renewal_term_months",
+              "value": 12,
+              "confidence": 0.97,
+              "citation": {
+                "doc_id": "DOC-19",
+                "section": "11.2",
+                "quote": "successive renewal terms of twelve (12) months each"
+              },
+              "note": null
+            },
+            {
+              "key": "notice_days",
+              "value": 30,
+              "confidence": 0.95,
+              "citation": {
+                "doc_id": "DOC-19",
+                "section": "11.2",
+                "quote": "written notice of non-renewal at least thirty (30) days prior to the end of the then-current term"
+              },
+              "note": null
+            },
+            {
+              "key": "notice_day_type",
+              "value": "calendar",
+              "confidence": 0.9,
+              "citation": {
+                "doc_id": "DOC-19",
+                "section": "1.33",
+                "quote": "References to a number of days are to calendar days unless Business Days are expressly specified."
+              },
+              "note": null
+            },
+            {
+              "key": "notice_method",
+              "value": "email",
+              "confidence": 0.9,
+              "citation": {
+                "doc_id": "DOC-19",
+                "section": "17.1",
+                "quote": "Notices shall be in writing and sent by email to legal@stratuscloud.sg (for Stratus)"
+              },
+              "note": null
+            },
+            {
+              "key": "notice_address",
+              "value": "legal@stratuscloud.sg",
+              "confidence": 0.96,
+              "citation": {
+                "doc_id": "DOC-19",
+                "section": "17.1",
+                "quote": "sent by email to legal@stratuscloud.sg (for Stratus)"
+              },
+              "note": null
+            },
+            {
+              "key": "uplift.type",
+              "value": "cpi",
+              "confidence": 0.92,
+              "citation": {
+                "doc_id": "DOC-19",
+                "section": "12.2",
+                "quote": "increase the Fees by the percentage change in the Consumer Price Index (All Items) published by the Singapore Department of Statistics"
+              },
+              "note": null
+            },
+            {
+              "key": "uplift.cap_pct",
+              "value": 3,
+              "confidence": 0.95,
+              "citation": {
+                "doc_id": "DOC-19",
+                "section": "1.24",
+                "quote": "\"Price Increase Cap\" means three per cent (3%)."
+              },
+              "note": null
+            },
+            {
+              "key": "tfc",
+              "value": true,
+              "confidence": 0.96,
+              "citation": {
+                "doc_id": "DOC-19",
+                "section": "15.1",
+                "quote": "Customer may terminate this Agreement for convenience on thirty (30) days' written notice."
+              },
+              "note": null
+            },
+            {
+              "key": "tfc_notice_days",
+              "value": 30,
+              "confidence": 0.96,
+              "citation": {
+                "doc_id": "DOC-19",
+                "section": "15.1",
+                "quote": "Customer may terminate this Agreement for convenience on thirty (30) days' written notice."
+              },
+              "note": null
+            },
+            {
+              "key": "payment_terms_days",
+              "value": 45,
+              "confidence": 0.96,
+              "citation": {
+                "doc_id": "DOC-19",
+                "section": "13.1",
+                "quote": "Customer shall pay each invoice by wire transfer within forty-five (45) days of the invoice date."
+              },
+              "note": null
+            },
+            {
+              "key": "sla_credits",
+              "value": true,
+              "confidence": 0.97,
+              "citation": {
+                "doc_id": "DOC-19",
+                "section": "14.2",
+                "quote": "Customer shall be entitled to service credits as set out in Schedule A (Service Level Agreement)."
+              },
+              "note": null
+            },
+            {
+              "key": "currency",
+              "value": "USD",
+              "confidence": 0.97,
+              "citation": {
+                "doc_id": "DOC-19",
+                "section": "12.1",
+                "quote": "Fees are stated and payable in United States Dollars (USD)"
+              },
+              "note": null
+            },
+            {
+              "key": "governing_law",
+              "value": "Singapore",
+              "confidence": 0.97,
+              "citation": {
+                "doc_id": "DOC-19",
+                "section": "18.1",
+                "quote": "governed by and construed in accordance with the laws of Singapore"
+              },
+              "note": null
+            }
+          ],
+          "rate_lines": []
+        },
+        {
+          "doc_id": "DOC-20",
+          "fields": [
+            {
+              "key": "initial_term_end",
+              "value": "2027-04-30",
+              "confidence": 0.93,
+              "citation": {
+                "doc_id": "DOC-20",
+                "section": "2",
+                "quote": "co-terminous with the Initial Subscription Term (1 May 2025 to 30 April 2027)"
+              },
+              "note": null
+            },
+            {
+              "key": "currency",
+              "value": "USD",
+              "confidence": 0.95,
+              "citation": {
+                "doc_id": "DOC-20",
+                "section": "Fee table",
+                "quote": "Total annual committed Fee USD 45,000"
+              },
+              "note": null
+            },
+            {
+              "key": "annual_value",
+              "value": 45000,
+              "confidence": 0.95,
+              "citation": {
+                "doc_id": "DOC-20",
+                "section": "Fee table",
+                "quote": "Total annual committed Fee USD 45,000"
+              },
+              "note": null
+            }
+          ],
+          "rate_lines": []
+        },
+        {
+          "doc_id": "DOC-21",
+          "fields": [],
+          "rate_lines": []
+        }
+      ],
+      "not_stated": [
+        {
+          "key": "uplift.value_pct",
+          "confidence": 0.85,
+          "reason": "CPI-linked with cap only; no fixed uplift percentage stated"
+        }
+      ],
+      "quote": null,
+      "sla_terms": {
+        "metric": "control_plane_availability_pct",
+        "target": 99.95,
+        "currency": "USD",
+        "credit_rule": [
+          {
+            "from_incl": 99.5,
+            "to_excl": 99.95,
+            "credit_pct": 10
+          },
+          {
+            "from_incl": 99,
+            "to_excl": 99.5,
+            "credit_pct": 25
+          },
+          {
+            "from_incl": 0,
+            "to_excl": 99,
+            "credit_pct": 50
+          }
+        ],
+        "credit_basis": "monthly_fees",
+        "citation": {
+          "doc_id": "DOC-19",
+          "section": "14.1",
+          "quote": "Stratus shall provide the Cloud Services with a monthly availability of 99.95% for the managed Kubernetes control plane."
+        }
+      },
+      "licensed_units": []
+    }
+  }
+}

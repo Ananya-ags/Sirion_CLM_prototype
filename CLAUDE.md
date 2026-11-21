@@ -65,12 +65,21 @@ Extraction output per supplier (every leaf = {value, confidence, citation:{doc_i
   effective_terms: {renewal_type: auto|evergreen|manual|none|unclear, initial_term_end, renewal_term_months, notice_days, notice_day_type: calendar|business, notice_method, notice_address, uplift:{type: fixed|cpi|greater_of|discretionary|none, value_pct, cap_pct}, tfc, tfc_notice_days, payment_terms_days, sla_credits, currency, governing_law, annual_value}
 
 ## Live vs cached
-Pre-computed (scripts/precompute.ts writes docket_data/data/cache): classification, families, extraction, eval results.
+Pre-computed (scripts/precompute.ts writes docket_data/data/cache): OCR, grouping/families, classification (roles, executed), extraction with quote verification; eval results (scripts/evals.ts).
 Live: (A) "Add a contract" upload with live extraction; (B) live drafting of briefs, notices and cap letters. Both fall back to the cache.
-Models: Claude via @anthropic-ai/sdk (src/lib/ai/claude.ts). Live drafting (/api/draft) uses claude-haiku-5-5, overridable with ANTHROPIC_MODEL_DRAFT; names live in lib/config.ts. ANTHROPIC_API_KEY comes from env, server routes only. Missing key or failed call → template draft with a "cached" badge; never block the UI.
+Models: Claude via @anthropic-ai/sdk (src/lib/ai/claude.ts). Live drafting (/api/draft) uses claude-haiku-5-5, overridable with ANTHROPIC_MODEL_DRAFT; the pipeline (OCR, grouping, extraction) uses ANTHROPIC_MODEL_EXTRACT; names live in lib/config.ts. ANTHROPIC_API_KEY comes from env, server routes only. Missing key or failed call → template draft with a "cached" badge; never block the UI.
 
 ## Current build status (Phase 3)
-Live: /api/draft (Claude, guardrails, template fallback "cached"), /api/docs/[docId] (PDFs). Pre-computed: extraction (gold seed, badge "Pre-computed · human-verified"), families from dev_gold doc_supplier_map. Step 1 (branch v2): data pack v3 (sla_performance.csv, usage.csv, CN- credit notes), Rules S1/U1, owner-first request flow. Not built yet: AI grouping, OCR, PDF text parsing, held-out live evals, /add-contract (placeholder).
+Live: /api/draft (Claude, guardrails, template fallback "cached"), /api/docs/[docId] (PDFs). Step 1 (branch v2): data pack v3 (sla_performance.csv, usage.csv, CN- credit notes), Rules S1/U1, owner-first request flow.
+Step 2 (branch v2): AI pipeline, `npm run precompute [-- --only SUP-01,SUP-03] [--force]` (model ANTHROPIC_MODEL_EXTRACT, e.g. claude-sonnet-5-5):
+  1. src/lib/ai/pdfText.ts: unpdf text per page; strips the running footer (DocuSign Envelope ID, title + CONFIDENTIAL / DRAFT — NOT FOR SIGNATURE, Page x of y) and DRAFT watermarks, keeps envelope IDs as metadata, joins pages; < 40 chars on a page = no text layer.
+  2. src/lib/ai/ocr.ts: scans (DOC-12) → Claude verbatim transcription → cache/ocr_DOC-xx.txt; fields from OCR capped at confidence 0.8 (→ human review); OCR failure → review.
+  3. src/lib/ai/grouping.ts: one call over first/last pages + footer IDs vs vendor_master.csv (no filenames/paths); code requires known vendor, confidence ≥ 0.85 and a verbatim evidence quote, else supplier null → review. vendor_id → SUP id via src/lib/suppliers.ts (supplier register, not gold).
+  4. src/lib/ai/extraction.ts: per family, PDFs as document blocks + cleaned text; per-document fields, family roles/executed, quote, rate lines, SLA terms, licensed units.
+  5. src/lib/ai/precedence.ts (code): every quote verified (fail → "unclear", confidence 0); only executed docs; latest SOW/order form supersedes earlier ones; amendments win (overridden_by); annual = monthly × 12 by Rules when only a monthly charge is stated. SLA fee basis = annual ÷ 12 by Rules when credits are a % of monthly fees.
+  Outputs: cache/grouping.json, cache/extraction_SUP-xx.json, cache/ocr_*.txt, cache/pipeline_log.json, cache/pipeline_manifest.json (input hashes; unchanged inputs are skipped). `npm run sanity` = dev-only diff vs dev_gold (never used by the pipeline).
+  App: getSupplierView reads cache/extraction_* first (badge "AI-extracted · quote-verified"), seed fallback ("Seed · fallback"); fields < 0.85 / unclear / OCR and grouping nulls appear in Priya's Human review queue (Confirm / Correct, audited).
+Not built yet: held-out live evals (Step 3), /add-contract (placeholder).
 
 ## Design system
 White base. Light-blue surfaces #F5F9FF and #EAF2FF. Primary #2563EB. Navy #0F1E3D for headings and the sidebar. A subtle blue-to-indigo gradient on hero metric cards. Rounded-xl cards, soft shadows, pill chips, lucide icons. Green, amber and red are used ONLY for lane and status. Minimal text: details go in tooltips and drawers. A polished B2B SaaS feel, catchy but tidy.

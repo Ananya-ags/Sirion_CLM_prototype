@@ -1,0 +1,610 @@
+{
+  "supplier_id": "SUP-08",
+  "family": [
+    {
+      "doc_id": "DOC-22",
+      "doc_role": "msa",
+      "executed": true,
+      "execution_evidence": [
+        "Signature blocks for both parties with names and date 10.01.2025",
+        "Agency company seal noted"
+      ],
+      "references": [
+        "DOC-23"
+      ]
+    },
+    {
+      "doc_id": "DOC-23",
+      "doc_role": "other",
+      "executed": true,
+      "execution_evidence": [
+        "Initialled by M.N. (Agency) and S.H. (Company) 10.01.2025"
+      ],
+      "references": [
+        "DOC-22"
+      ]
+    }
+  ],
+  "effective_terms": {
+    "renewal_type": {
+      "value": "unclear",
+      "confidence": 0.4,
+      "citation": {
+        "doc_id": "DOC-22",
+        "section": "13.3",
+        "quote": "Unless either party notifies the other in writing, not less than forty-five (45) days prior to the expiry of the Term, of its intention not to continue, the Services shall continue to be provided on the terms of this Agreement."
+      },
+      "verified": true,
+      "note": "Clause 13.2 says extension only by mutual written agreement; Clause 13.3 continues services automatically unless notice is given. Conflict."
+    },
+    "initial_term_end": {
+      "value": "2027-01-15",
+      "confidence": 0.95,
+      "citation": {
+        "doc_id": "DOC-22",
+        "section": "13.1",
+        "quote": "This Agreement shall commence on 16 January 2025 and remain in force until 15 January 2027"
+      },
+      "verified": true
+    },
+    "renewal_term_months": {
+      "value": "unclear",
+      "confidence": 0.4,
+      "citation": {
+        "doc_id": "DOC-22",
+        "section": "13.2",
+        "quote": "this Agreement may be extended for a further period of twelve (12) months on such terms as the parties may mutually agree in writing."
+      },
+      "verified": true,
+      "note": "Renewal type unclear due to conflict between 13.2 and 13.3."
+    },
+    "notice_days": {
+      "value": 45,
+      "confidence": 0.85,
+      "citation": {
+        "doc_id": "DOC-22",
+        "section": "13.3",
+        "quote": "not less than forty-five (45) days prior to the expiry of the Term, of its intention not to continue"
+      },
+      "verified": true
+    },
+    "notice_day_type": {
+      "value": "calendar",
+      "confidence": 0.9,
+      "citation": {
+        "doc_id": "DOC-22",
+        "section": "1.33",
+        "quote": "References to a number of days are to calendar days unless expressly stated otherwise."
+      },
+      "verified": true
+    },
+    "notice_method": {
+      "value": "email_or_physical",
+      "confidence": 0.85,
+      "citation": {
+        "doc_id": "DOC-22",
+        "section": "17.1",
+        "quote": "Any notice under this Agreement shall be in writing and delivered by email or by courier to the addresses of the parties stated above"
+      },
+      "verified": true
+    },
+    "notice_address": {
+      "value": "No. 17, 1st Floor, Old Airport Road, Murugeshpalya, Bengaluru 560017",
+      "confidence": 0.92,
+      "citation": {
+        "doc_id": "DOC-22",
+        "section": "1.3",
+        "quote": "\"Agency Notice Address\" means No. 17, 1st Floor, Old Airport Road, Murugeshpalya, Bengaluru 560017"
+      },
+      "verified": true
+    },
+    "uplift": {
+      "type": {
+        "value": "fixed",
+        "confidence": 0.9,
+        "citation": {
+          "doc_id": "DOC-22",
+          "section": "5.3",
+          "quote": "Charges for any extended or continued period shall be increased by four per cent (4%)."
+        },
+        "verified": true
+      },
+      "value_pct": {
+        "value": 4,
+        "confidence": 0.93,
+        "citation": {
+          "doc_id": "DOC-22",
+          "section": "5.3",
+          "quote": "Charges for any extended or continued period shall be increased by four per cent (4%)."
+        },
+        "verified": true
+      },
+      "cap_pct": {
+        "value": null,
+        "confidence": 0.9,
+        "citation": null
+      }
+    },
+    "tfc": {
+      "value": true,
+      "confidence": 0.95,
+      "citation": {
+        "doc_id": "DOC-22",
+        "section": "15.1",
+        "quote": "The Company may terminate this Agreement for convenience by giving thirty (30) days' written notice to the Agency."
+      },
+      "verified": true
+    },
+    "tfc_notice_days": {
+      "value": 30,
+      "confidence": 0.95,
+      "citation": {
+        "doc_id": "DOC-22",
+        "section": "15.1",
+        "quote": "The Company may terminate this Agreement for convenience by giving thirty (30) days' written notice to the Agency."
+      },
+      "verified": true
+    },
+    "payment_terms_days": {
+      "value": 45,
+      "confidence": 0.93,
+      "citation": {
+        "doc_id": "DOC-22",
+        "section": "5.2",
+        "quote": "Invoices shall be raised monthly and paid within forty-five (45) days of receipt"
+      },
+      "verified": true
+    },
+    "sla_credits": {
+      "value": true,
+      "confidence": 0.85,
+      "citation": {
+        "doc_id": "DOC-22",
+        "section": "14.1",
+        "quote": "For each guard-shift not covered as per Schedule 2, the Company shall deduct the pro-rata charge for that shift plus a penalty of ₹1,000."
+      },
+      "verified": true
+    },
+    "currency": {
+      "value": "INR",
+      "confidence": 0.93,
+      "citation": {
+        "doc_id": "DOC-22",
+        "section": "5.1",
+        "quote": "The Company shall pay a monthly charge of ₹1,50,000 (Rupees One Lakh Fifty Thousand only)"
+      },
+      "verified": true
+    },
+    "governing_law": {
+      "value": "India",
+      "confidence": 0.97,
+      "citation": {
+        "doc_id": "DOC-22",
+        "section": "18.1",
+        "quote": "This Agreement shall be governed by the laws of India"
+      },
+      "verified": true
+    },
+    "annual_value": {
+      "value": 1800000,
+      "confidence": 0.93,
+      "citation": {
+        "doc_id": "DOC-22",
+        "section": "5.1",
+        "quote": "(₹18,00,000 per annum)"
+      },
+      "verified": true
+    }
+  },
+  "sla_terms": {
+    "metric": "guard_shift_coverage_pct",
+    "target": 100,
+    "currency": "INR",
+    "credit_rule": "For each guard-shift not covered as per Schedule 2, the Company shall deduct the pro-rata charge for that shift plus a penalty of ₹1,000.",
+    "credit_basis": "other",
+    "citation": {
+      "doc_id": "DOC-22",
+      "section": "14.1",
+      "quote": "For each guard-shift not covered as per Schedule 2, the Company shall deduct the pro-rata charge for that shift plus a penalty of ₹1,000."
+    },
+    "fee_basis_monthly": null
+  },
+  "licensed_units": [],
+  "pipeline": {
+    "source": "ai",
+    "model": "claude-sonnet-5-5",
+    "prompt_version": "extraction-3",
+    "generated_at": "2026-11-24T06:37:26.053Z",
+    "input_key": "1cfd3802b7a7f018a489ccdc06bc43daafcfe17ff17a930e1b88687977af9695",
+    "docs": [
+      {
+        "doc_id": "DOC-22",
+        "sha256": "0e12ff28451d3e008238535ec256ab49312a51b018f3a0adbb962dcf885a24cf",
+        "text_source": "pdf"
+      },
+      {
+        "doc_id": "DOC-23",
+        "sha256": "7da6ebe41737c91e13f35c9d22a777b77fc6beea129004fbd0d108d45dcdaf52",
+        "text_source": "pdf"
+      }
+    ],
+    "ocr_fields": [],
+    "verification": [
+      {
+        "key": "renewal_type",
+        "doc_id": "DOC-22",
+        "section": "13.3",
+        "quote": "Unless either party notifies the other in writing, not less than forty-five (45) days prior to the expiry of the Term, of its intention not to continue, the Services shall continue to be provided on the terms of this Agreement.",
+        "ok": true
+      },
+      {
+        "key": "initial_term_end",
+        "doc_id": "DOC-22",
+        "section": "13.1",
+        "quote": "This Agreement shall commence on 16 January 2025 and remain in force until 15 January 2027",
+        "ok": true
+      },
+      {
+        "key": "renewal_term_months",
+        "doc_id": "DOC-22",
+        "section": "13.2",
+        "quote": "this Agreement may be extended for a further period of twelve (12) months on such terms as the parties may mutually agree in writing.",
+        "ok": true
+      },
+      {
+        "key": "notice_days",
+        "doc_id": "DOC-22",
+        "section": "13.3",
+        "quote": "not less than forty-five (45) days prior to the expiry of the Term, of its intention not to continue",
+        "ok": true
+      },
+      {
+        "key": "notice_day_type",
+        "doc_id": "DOC-22",
+        "section": "1.33",
+        "quote": "References to a number of days are to calendar days unless expressly stated otherwise.",
+        "ok": true
+      },
+      {
+        "key": "notice_method",
+        "doc_id": "DOC-22",
+        "section": "17.1",
+        "quote": "Any notice under this Agreement shall be in writing and delivered by email or by courier to the addresses of the parties stated above",
+        "ok": true
+      },
+      {
+        "key": "notice_address",
+        "doc_id": "DOC-22",
+        "section": "1.3",
+        "quote": "\"Agency Notice Address\" means No. 17, 1st Floor, Old Airport Road, Murugeshpalya, Bengaluru 560017",
+        "ok": true
+      },
+      {
+        "key": "uplift.type",
+        "doc_id": "DOC-22",
+        "section": "5.3",
+        "quote": "Charges for any extended or continued period shall be increased by four per cent (4%).",
+        "ok": true
+      },
+      {
+        "key": "uplift.value_pct",
+        "doc_id": "DOC-22",
+        "section": "5.3",
+        "quote": "Charges for any extended or continued period shall be increased by four per cent (4%).",
+        "ok": true
+      },
+      {
+        "key": "tfc",
+        "doc_id": "DOC-22",
+        "section": "15.1",
+        "quote": "The Company may terminate this Agreement for convenience by giving thirty (30) days' written notice to the Agency.",
+        "ok": true
+      },
+      {
+        "key": "tfc_notice_days",
+        "doc_id": "DOC-22",
+        "section": "15.1",
+        "quote": "The Company may terminate this Agreement for convenience by giving thirty (30) days' written notice to the Agency.",
+        "ok": true
+      },
+      {
+        "key": "payment_terms_days",
+        "doc_id": "DOC-22",
+        "section": "5.2",
+        "quote": "Invoices shall be raised monthly and paid within forty-five (45) days of receipt",
+        "ok": true
+      },
+      {
+        "key": "sla_credits",
+        "doc_id": "DOC-22",
+        "section": "14.1",
+        "quote": "For each guard-shift not covered as per Schedule 2, the Company shall deduct the pro-rata charge for that shift plus a penalty of ₹1,000.",
+        "ok": true
+      },
+      {
+        "key": "currency",
+        "doc_id": "DOC-22",
+        "section": "5.1",
+        "quote": "The Company shall pay a monthly charge of ₹1,50,000 (Rupees One Lakh Fifty Thousand only)",
+        "ok": true
+      },
+      {
+        "key": "governing_law",
+        "doc_id": "DOC-22",
+        "section": "18.1",
+        "quote": "This Agreement shall be governed by the laws of India",
+        "ok": true
+      },
+      {
+        "key": "annual_value",
+        "doc_id": "DOC-22",
+        "section": "5.1",
+        "quote": "(₹18,00,000 per annum)",
+        "ok": true
+      },
+      {
+        "key": "sla_terms",
+        "doc_id": "DOC-22",
+        "section": "14.1",
+        "quote": "For each guard-shift not covered as per Schedule 2, the Company shall deduct the pro-rata charge for that shift plus a penalty of ₹1,000.",
+        "ok": true
+      }
+    ],
+    "verification_failures": 0,
+    "grouping": [
+      {
+        "doc_id": "DOC-22",
+        "confidence": 0.9,
+        "evidence": [
+          "Exact legal name SENTINEL GUARDING SERVICES PRIVATE LIMITED as Agency (V-10049)"
+        ]
+      },
+      {
+        "doc_id": "DOC-23",
+        "confidence": 0.95,
+        "evidence": [
+          "References Security Services Agreement dated 10 January 2025 (DOC-22) with Sentinel Guarding Services Private Limited"
+        ]
+      }
+    ],
+    "raw": {
+      "family": [
+        {
+          "doc_id": "DOC-22",
+          "doc_role": "msa",
+          "executed": true,
+          "execution_evidence": [
+            "Signature blocks for both parties with names and date 10.01.2025",
+            "Agency company seal noted"
+          ],
+          "references": [
+            "DOC-23"
+          ],
+          "signed_date": "2025-01-10"
+        },
+        {
+          "doc_id": "DOC-23",
+          "doc_role": "other",
+          "executed": true,
+          "execution_evidence": [
+            "Initialled by M.N. (Agency) and S.H. (Company) 10.01.2025"
+          ],
+          "references": [
+            "DOC-22"
+          ],
+          "signed_date": "2025-01-10"
+        }
+      ],
+      "documents": [
+        {
+          "doc_id": "DOC-22",
+          "fields": [
+            {
+              "key": "renewal_type",
+              "value": "unclear",
+              "confidence": 0.4,
+              "citation": {
+                "doc_id": "DOC-22",
+                "section": "13.3",
+                "quote": "Unless either party notifies the other in writing, not less than forty-five (45) days prior to the expiry of the Term, of its intention not to continue, the Services shall continue to be provided on the terms of this Agreement."
+              },
+              "note": "Clause 13.2 says extension only by mutual written agreement; Clause 13.3 continues services automatically unless notice is given. Conflict."
+            },
+            {
+              "key": "initial_term_end",
+              "value": "2027-01-15",
+              "confidence": 0.95,
+              "citation": {
+                "doc_id": "DOC-22",
+                "section": "13.1",
+                "quote": "This Agreement shall commence on 16 January 2025 and remain in force until 15 January 2027"
+              },
+              "note": null
+            },
+            {
+              "key": "renewal_term_months",
+              "value": "unclear",
+              "confidence": 0.4,
+              "citation": {
+                "doc_id": "DOC-22",
+                "section": "13.2",
+                "quote": "this Agreement may be extended for a further period of twelve (12) months on such terms as the parties may mutually agree in writing."
+              },
+              "note": "Renewal type unclear due to conflict between 13.2 and 13.3."
+            },
+            {
+              "key": "notice_days",
+              "value": 45,
+              "confidence": 0.85,
+              "citation": {
+                "doc_id": "DOC-22",
+                "section": "13.3",
+                "quote": "not less than forty-five (45) days prior to the expiry of the Term, of its intention not to continue"
+              },
+              "note": null
+            },
+            {
+              "key": "notice_day_type",
+              "value": "calendar",
+              "confidence": 0.9,
+              "citation": {
+                "doc_id": "DOC-22",
+                "section": "1.33",
+                "quote": "References to a number of days are to calendar days unless expressly stated otherwise."
+              },
+              "note": null
+            },
+            {
+              "key": "notice_method",
+              "value": "email_or_physical",
+              "confidence": 0.85,
+              "citation": {
+                "doc_id": "DOC-22",
+                "section": "17.1",
+                "quote": "Any notice under this Agreement shall be in writing and delivered by email or by courier to the addresses of the parties stated above"
+              },
+              "note": null
+            },
+            {
+              "key": "notice_address",
+              "value": "No. 17, 1st Floor, Old Airport Road, Murugeshpalya, Bengaluru 560017",
+              "confidence": 0.92,
+              "citation": {
+                "doc_id": "DOC-22",
+                "section": "1.3",
+                "quote": "\"Agency Notice Address\" means No. 17, 1st Floor, Old Airport Road, Murugeshpalya, Bengaluru 560017"
+              },
+              "note": null
+            },
+            {
+              "key": "uplift.type",
+              "value": "fixed",
+              "confidence": 0.9,
+              "citation": {
+                "doc_id": "DOC-22",
+                "section": "5.3",
+                "quote": "Charges for any extended or continued period shall be increased by four per cent (4%)."
+              },
+              "note": null
+            },
+            {
+              "key": "uplift.value_pct",
+              "value": 4,
+              "confidence": 0.93,
+              "citation": {
+                "doc_id": "DOC-22",
+                "section": "5.3",
+                "quote": "Charges for any extended or continued period shall be increased by four per cent (4%)."
+              },
+              "note": null
+            },
+            {
+              "key": "tfc",
+              "value": true,
+              "confidence": 0.95,
+              "citation": {
+                "doc_id": "DOC-22",
+                "section": "15.1",
+                "quote": "The Company may terminate this Agreement for convenience by giving thirty (30) days' written notice to the Agency."
+              },
+              "note": null
+            },
+            {
+              "key": "tfc_notice_days",
+              "value": 30,
+              "confidence": 0.95,
+              "citation": {
+                "doc_id": "DOC-22",
+                "section": "15.1",
+                "quote": "The Company may terminate this Agreement for convenience by giving thirty (30) days' written notice to the Agency."
+              },
+              "note": null
+            },
+            {
+              "key": "payment_terms_days",
+              "value": 45,
+              "confidence": 0.93,
+              "citation": {
+                "doc_id": "DOC-22",
+                "section": "5.2",
+                "quote": "Invoices shall be raised monthly and paid within forty-five (45) days of receipt"
+              },
+              "note": null
+            },
+            {
+              "key": "sla_credits",
+              "value": true,
+              "confidence": 0.85,
+              "citation": {
+                "doc_id": "DOC-22",
+                "section": "14.1",
+                "quote": "For each guard-shift not covered as per Schedule 2, the Company shall deduct the pro-rata charge for that shift plus a penalty of ₹1,000."
+              },
+              "note": null
+            },
+            {
+              "key": "currency",
+              "value": "INR",
+              "confidence": 0.93,
+              "citation": {
+                "doc_id": "DOC-22",
+                "section": "5.1",
+                "quote": "The Company shall pay a monthly charge of ₹1,50,000 (Rupees One Lakh Fifty Thousand only)"
+              },
+              "note": null
+            },
+            {
+              "key": "governing_law",
+              "value": "India",
+              "confidence": 0.97,
+              "citation": {
+                "doc_id": "DOC-22",
+                "section": "18.1",
+                "quote": "This Agreement shall be governed by the laws of India"
+              },
+              "note": null
+            },
+            {
+              "key": "annual_value",
+              "value": 1800000,
+              "confidence": 0.93,
+              "citation": {
+                "doc_id": "DOC-22",
+                "section": "5.1",
+                "quote": "(₹18,00,000 per annum)"
+              },
+              "note": null
+            }
+          ],
+          "rate_lines": []
+        },
+        {
+          "doc_id": "DOC-23",
+          "fields": [],
+          "rate_lines": []
+        }
+      ],
+      "not_stated": [
+        {
+          "key": "uplift.cap_pct",
+          "confidence": 0.9,
+          "reason": "Fixed uplift; no cap stated."
+        }
+      ],
+      "quote": null,
+      "sla_terms": {
+        "metric": "guard_shift_coverage_pct",
+        "target": 100,
+        "currency": "INR",
+        "credit_rule": "For each guard-shift not covered as per Schedule 2, the Company shall deduct the pro-rata charge for that shift plus a penalty of ₹1,000.",
+        "credit_basis": "other",
+        "citation": {
+          "doc_id": "DOC-22",
+          "section": "14.1",
+          "quote": "For each guard-shift not covered as per Schedule 2, the Company shall deduct the pro-rata charge for that shift plus a penalty of ₹1,000."
+        }
+      },
+      "licensed_units": []
+    }
+  }
+}

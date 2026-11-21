@@ -1,0 +1,953 @@
+{
+  "supplier_id": "SUP-03",
+  "family": [
+    {
+      "doc_id": "DOC-07",
+      "doc_role": "msa",
+      "executed": false,
+      "execution_evidence": [
+        "Header and footer read 'DRAFT — NOT FOR SIGNATURE'",
+        "Signature blocks blank",
+        "Date placeholder '[●] January 2024'",
+        "Track changes ON, 3 open comments"
+      ],
+      "references": []
+    },
+    {
+      "doc_id": "DOC-08",
+      "doc_role": "msa",
+      "executed": true,
+      "execution_evidence": [
+        "DocuSign Certificate of Completion, status Completed",
+        "Signed by Rohan Kulkarni and Kavita Deshpande 29-Jan-2024"
+      ],
+      "references": []
+    },
+    {
+      "doc_id": "DOC-09",
+      "doc_role": "sow",
+      "executed": true,
+      "execution_evidence": [
+        "Signed by Rohan Kulkarni and Arjun Menon, both dated 30-01-2024"
+      ],
+      "references": [
+        "DOC-08"
+      ]
+    },
+    {
+      "doc_id": "DOC-10",
+      "doc_role": "sow",
+      "executed": true,
+      "execution_evidence": [
+        "Signed by Rohan Kulkarni 24-01-2025 and Arjun Menon 27-01-2025"
+      ],
+      "references": [
+        "DOC-08",
+        "DOC-09"
+      ]
+    },
+    {
+      "doc_id": "DOC-11",
+      "doc_role": "amendment",
+      "executed": true,
+      "execution_evidence": [
+        "Countersigned Amendment No. 1 attached to email; signed by Rohan Kulkarni 08-04-2026 and Kavita Deshpande 10-04-2026"
+      ],
+      "references": [
+        "DOC-08",
+        "DOC-10"
+      ]
+    }
+  ],
+  "effective_terms": {
+    "renewal_type": {
+      "value": "auto",
+      "confidence": 0.9,
+      "citation": {
+        "doc_id": "DOC-08",
+        "section": "19.3",
+        "quote": "each SOW shall automatically renew for successive periods of twelve (12) months"
+      },
+      "verified": true
+    },
+    "initial_term_end": {
+      "value": "2027-01-31",
+      "confidence": 0.95,
+      "citation": {
+        "doc_id": "DOC-10",
+        "section": "1.2",
+        "quote": "SOW Term: 1 February 2025 to 31 January 2027."
+      },
+      "verified": true
+    },
+    "renewal_term_months": {
+      "value": 12,
+      "confidence": 0.92,
+      "citation": {
+        "doc_id": "DOC-08",
+        "section": "19.3",
+        "quote": "each SOW shall automatically renew for successive periods of twelve (12) months"
+      },
+      "verified": true
+    },
+    "notice_days": {
+      "value": 60,
+      "confidence": 0.93,
+      "citation": {
+        "doc_id": "DOC-11",
+        "section": "1",
+        "quote": "the words \"thirty (30) calendar days\" are deleted and replaced with \"sixty (60) calendar days\""
+      },
+      "verified": true,
+      "note": "Amends MSA clause 19.3.",
+      "overridden_by": "DOC-11"
+    },
+    "notice_day_type": {
+      "value": "calendar",
+      "confidence": 0.92,
+      "citation": {
+        "doc_id": "DOC-11",
+        "section": "1",
+        "quote": "the words \"thirty (30) calendar days\" are deleted and replaced with \"sixty (60) calendar days\""
+      },
+      "verified": true,
+      "overridden_by": "DOC-11"
+    },
+    "notice_method": {
+      "value": "email",
+      "confidence": 0.9,
+      "citation": {
+        "doc_id": "DOC-08",
+        "section": "29.1",
+        "quote": "All notices shall be in writing and sent by email to the address of the other Party below"
+      },
+      "verified": true
+    },
+    "notice_address": {
+      "value": "contracts@codecraftstaffing.in",
+      "confidence": 0.93,
+      "citation": {
+        "doc_id": "DOC-08",
+        "section": "29.1",
+        "quote": "Supplier: contracts@codecraftstaffing.in; Client: legal@velora.in."
+      },
+      "verified": true
+    },
+    "uplift": {
+      "type": {
+        "value": "none",
+        "confidence": 0.8,
+        "citation": {
+          "doc_id": "DOC-08",
+          "section": "18.2",
+          "quote": "The rates in each SOW shall remain fixed for the SOW Term and for any Renewal Term"
+        },
+        "verified": true,
+        "note": "Rates fixed through renewal terms unless amended."
+      },
+      "value_pct": {
+        "value": null,
+        "confidence": 0.8,
+        "citation": null
+      },
+      "cap_pct": {
+        "value": null,
+        "confidence": 0.85,
+        "citation": null
+      }
+    },
+    "tfc": {
+      "value": true,
+      "confidence": 0.95,
+      "citation": {
+        "doc_id": "DOC-08",
+        "section": "20.2",
+        "quote": "The Client may terminate this Agreement or any SOW for convenience upon thirty (30) days' written notice to the Supplier"
+      },
+      "verified": true
+    },
+    "tfc_notice_days": {
+      "value": 30,
+      "confidence": 0.95,
+      "citation": {
+        "doc_id": "DOC-08",
+        "section": "20.2",
+        "quote": "The Client may terminate this Agreement or any SOW for convenience upon thirty (30) days' written notice to the Supplier"
+      },
+      "verified": true
+    },
+    "payment_terms_days": {
+      "value": 60,
+      "confidence": 0.95,
+      "citation": {
+        "doc_id": "DOC-08",
+        "section": "18.3",
+        "quote": "are payable within sixty (60) days of receipt of a valid tax invoice"
+      },
+      "verified": true
+    },
+    "sla_credits": {
+      "value": true,
+      "confidence": 0.7,
+      "citation": {
+        "doc_id": "DOC-08",
+        "section": "17.2",
+        "quote": "the Client shall be entitled to a service credit equal to five per cent (5%) of the monthly fees attributable to the affected Resource for each week of delay"
+      },
+      "verified": true,
+      "note": "Credit for late resource replacement; no percentage service level."
+    },
+    "currency": {
+      "value": "INR",
+      "confidence": 0.9,
+      "citation": {
+        "doc_id": "DOC-10",
+        "section": "2.2",
+        "quote": "₹1,80,00,000 (Rupees One Crore Eighty Lakh), exclusive of GST"
+      },
+      "verified": true
+    },
+    "governing_law": {
+      "value": "India",
+      "confidence": 0.95,
+      "citation": {
+        "doc_id": "DOC-08",
+        "section": "31.1",
+        "quote": "This Agreement is governed by the laws of India."
+      },
+      "verified": true
+    },
+    "annual_value": {
+      "value": 18000000,
+      "confidence": 0.85,
+      "citation": {
+        "doc_id": "DOC-10",
+        "section": "2.2",
+        "quote": "₹1,80,00,000 (Rupees One Crore Eighty Lakh), exclusive of GST"
+      },
+      "verified": true,
+      "note": "Estimated Annual Fees."
+    }
+  },
+  "rate_card": [
+    {
+      "role_in_contract": "Sr. React.js Developer",
+      "benchmark_role": "Senior React Developer",
+      "count": 3,
+      "rate_inr_per_hr": 2250,
+      "citation": {
+        "doc_id": "DOC-11",
+        "section": "2",
+        "quote": "the hourly rate for \"Sr. React.js Developer\" is revised from ₹2,400 to ₹2,250"
+      }
+    },
+    {
+      "role_in_contract": "Jr. React.js Developer",
+      "benchmark_role": "Junior React Developer",
+      "count": 1,
+      "rate_inr_per_hr": 1200,
+      "citation": {
+        "doc_id": "DOC-10",
+        "section": "Annexure A",
+        "quote": "Jr. React.js Developer 1 1,200"
+      }
+    },
+    {
+      "role_in_contract": "QA Automation Engineer",
+      "benchmark_role": "QA Automation Engineer",
+      "count": 1,
+      "rate_inr_per_hr": 1100,
+      "citation": {
+        "doc_id": "DOC-10",
+        "section": "Annexure A",
+        "quote": "QA Automation Engineer 1 1,100"
+      }
+    },
+    {
+      "role_in_contract": "DevOps Engineer (part-time)",
+      "benchmark_role": "DevOps Engineer",
+      "count": 1,
+      "rate_inr_per_hr": 2000,
+      "citation": {
+        "doc_id": "DOC-10",
+        "section": "Annexure A",
+        "quote": "DevOps Engineer (part-time) 1 2,000"
+      }
+    }
+  ],
+  "sla_terms": null,
+  "licensed_units": [],
+  "pipeline": {
+    "source": "ai",
+    "model": "claude-sonnet-5-5",
+    "prompt_version": "extraction-2",
+    "generated_at": "2026-11-24T06:36:20.949Z",
+    "input_key": "23e9f38769c5b717b0dadfa173780a495e790474f67e7ff231e67d3578b6fc98",
+    "docs": [
+      {
+        "doc_id": "DOC-07",
+        "sha256": "03b8070fab4c408a3cca5335cc918ac3479fad1416c0906029bdd8ea238143b8",
+        "text_source": "pdf"
+      },
+      {
+        "doc_id": "DOC-08",
+        "sha256": "66b356c4d55e28196462e6a9546296007c5ff36e8d1be178f332268c77ce7697",
+        "text_source": "pdf"
+      },
+      {
+        "doc_id": "DOC-09",
+        "sha256": "5e1ac9b3033fc1a35fac353ebb36c466a085ae911f96f8602abf82086439a2e4",
+        "text_source": "pdf"
+      },
+      {
+        "doc_id": "DOC-10",
+        "sha256": "84cbbe025472013b82e05366356adc7ed0ece5e6ba8b1317016ac656c1405548",
+        "text_source": "pdf"
+      },
+      {
+        "doc_id": "DOC-11",
+        "sha256": "977851ced1c22e2623850f36fb8955ef83ec3eca5755e54494eb7715163a233e",
+        "text_source": "pdf"
+      }
+    ],
+    "ocr_fields": [],
+    "verification": [
+      {
+        "key": "renewal_type",
+        "doc_id": "DOC-08",
+        "section": "19.3",
+        "quote": "each SOW shall automatically renew for successive periods of twelve (12) months",
+        "ok": true
+      },
+      {
+        "key": "renewal_term_months",
+        "doc_id": "DOC-08",
+        "section": "19.3",
+        "quote": "each SOW shall automatically renew for successive periods of twelve (12) months",
+        "ok": true
+      },
+      {
+        "key": "notice_days",
+        "doc_id": "DOC-08",
+        "section": "19.3",
+        "quote": "not less than thirty (30) calendar days before the expiry of the then-current SOW Term",
+        "ok": true
+      },
+      {
+        "key": "notice_day_type",
+        "doc_id": "DOC-08",
+        "section": "19.3",
+        "quote": "not less than thirty (30) calendar days before the expiry of the then-current SOW Term",
+        "ok": true
+      },
+      {
+        "key": "notice_method",
+        "doc_id": "DOC-08",
+        "section": "29.1",
+        "quote": "All notices shall be in writing and sent by email to the address of the other Party below",
+        "ok": true
+      },
+      {
+        "key": "notice_address",
+        "doc_id": "DOC-08",
+        "section": "29.1",
+        "quote": "Supplier: contracts@codecraftstaffing.in; Client: legal@velora.in.",
+        "ok": true
+      },
+      {
+        "key": "uplift.type",
+        "doc_id": "DOC-08",
+        "section": "18.2",
+        "quote": "The rates in each SOW shall remain fixed for the SOW Term and for any Renewal Term",
+        "ok": true
+      },
+      {
+        "key": "tfc",
+        "doc_id": "DOC-08",
+        "section": "20.2",
+        "quote": "The Client may terminate this Agreement or any SOW for convenience upon thirty (30) days' written notice to the Supplier",
+        "ok": true
+      },
+      {
+        "key": "tfc_notice_days",
+        "doc_id": "DOC-08",
+        "section": "20.2",
+        "quote": "The Client may terminate this Agreement or any SOW for convenience upon thirty (30) days' written notice to the Supplier",
+        "ok": true
+      },
+      {
+        "key": "payment_terms_days",
+        "doc_id": "DOC-08",
+        "section": "18.3",
+        "quote": "are payable within sixty (60) days of receipt of a valid tax invoice",
+        "ok": true
+      },
+      {
+        "key": "sla_credits",
+        "doc_id": "DOC-08",
+        "section": "17.2",
+        "quote": "the Client shall be entitled to a service credit equal to five per cent (5%) of the monthly fees attributable to the affected Resource for each week of delay",
+        "ok": true
+      },
+      {
+        "key": "governing_law",
+        "doc_id": "DOC-08",
+        "section": "31.1",
+        "quote": "This Agreement is governed by the laws of India.",
+        "ok": true
+      },
+      {
+        "key": "renewal_type",
+        "doc_id": "DOC-09",
+        "section": "1.3",
+        "quote": "Clause 19.3 of the MSA shall not apply to this SOW-1, which shall expire at the end of the SOW Term without renewal.",
+        "ok": true
+      },
+      {
+        "key": "initial_term_end",
+        "doc_id": "DOC-09",
+        "section": "1.2",
+        "quote": "SOW Term: 1 February 2024 to 31 January 2025.",
+        "ok": true
+      },
+      {
+        "key": "currency",
+        "doc_id": "DOC-09",
+        "section": "2",
+        "quote": "Rate (₹ per hour)",
+        "ok": true
+      },
+      {
+        "key": "initial_term_end",
+        "doc_id": "DOC-10",
+        "section": "1.2",
+        "quote": "SOW Term: 1 February 2025 to 31 January 2027.",
+        "ok": true
+      },
+      {
+        "key": "annual_value",
+        "doc_id": "DOC-10",
+        "section": "2.2",
+        "quote": "₹1,80,00,000 (Rupees One Crore Eighty Lakh), exclusive of GST",
+        "ok": true
+      },
+      {
+        "key": "currency",
+        "doc_id": "DOC-10",
+        "section": "2.2",
+        "quote": "₹1,80,00,000 (Rupees One Crore Eighty Lakh), exclusive of GST",
+        "ok": true
+      },
+      {
+        "key": "notice_days",
+        "doc_id": "DOC-11",
+        "section": "1",
+        "quote": "the words \"thirty (30) calendar days\" are deleted and replaced with \"sixty (60) calendar days\"",
+        "ok": true
+      },
+      {
+        "key": "notice_day_type",
+        "doc_id": "DOC-11",
+        "section": "1",
+        "quote": "the words \"thirty (30) calendar days\" are deleted and replaced with \"sixty (60) calendar days\"",
+        "ok": true
+      },
+      {
+        "key": "rate:Sr. React.js Developer",
+        "doc_id": "DOC-10",
+        "section": "Annexure A",
+        "quote": "Sr. React.js Developer 3 2,400",
+        "ok": true
+      },
+      {
+        "key": "rate:Jr. React.js Developer",
+        "doc_id": "DOC-10",
+        "section": "Annexure A",
+        "quote": "Jr. React.js Developer 1 1,200",
+        "ok": true
+      },
+      {
+        "key": "rate:QA Automation Engineer",
+        "doc_id": "DOC-10",
+        "section": "Annexure A",
+        "quote": "QA Automation Engineer 1 1,100",
+        "ok": true
+      },
+      {
+        "key": "rate:DevOps Engineer (part-time)",
+        "doc_id": "DOC-10",
+        "section": "Annexure A",
+        "quote": "DevOps Engineer (part-time) 1 2,000",
+        "ok": true
+      },
+      {
+        "key": "rate:Sr. React.js Developer",
+        "doc_id": "DOC-11",
+        "section": "2",
+        "quote": "the hourly rate for \"Sr. React.js Developer\" is revised from ₹2,400 to ₹2,250",
+        "ok": true
+      }
+    ],
+    "verification_failures": 0,
+    "grouping": [
+      {
+        "doc_id": "DOC-07",
+        "confidence": 0.9,
+        "evidence": [
+          "Exact legal name CodeCraft Staffing Solutions Private Limited as Supplier; CIN U74140KA2014PTC077310 matches DOC-08 (V-10012); unsigned draft"
+        ]
+      },
+      {
+        "doc_id": "DOC-08",
+        "confidence": 0.97,
+        "evidence": [
+          "GSTIN 29AAECC7310R1Z6 = vendor master V-10012"
+        ]
+      },
+      {
+        "doc_id": "DOC-09",
+        "confidence": 0.95,
+        "evidence": [
+          "Refers to Master Services Agreement dated 29 January 2024 between CodeCraft Staffing Solutions Private Limited and Velora, i.e. executed DOC-08"
+        ]
+      },
+      {
+        "doc_id": "DOC-10",
+        "confidence": 0.95,
+        "evidence": [
+          "References MSA dated 29 January 2024 (executed DOC-08) with CodeCraft"
+        ]
+      },
+      {
+        "doc_id": "DOC-11",
+        "confidence": 0.95,
+        "evidence": [
+          "Amendment refers to MSA dated 29 January 2024 (DOC-08); sender domain codecraftstaffing.in matches DOC-08 signer"
+        ]
+      }
+    ],
+    "raw": {
+      "family": [
+        {
+          "doc_id": "DOC-07",
+          "doc_role": "msa",
+          "executed": false,
+          "execution_evidence": [
+            "Header and footer read 'DRAFT — NOT FOR SIGNATURE'",
+            "Signature blocks blank",
+            "Date placeholder '[●] January 2024'",
+            "Track changes ON, 3 open comments"
+          ],
+          "references": [],
+          "signed_date": null
+        },
+        {
+          "doc_id": "DOC-08",
+          "doc_role": "msa",
+          "executed": true,
+          "execution_evidence": [
+            "DocuSign Certificate of Completion, status Completed",
+            "Signed by Rohan Kulkarni and Kavita Deshpande 29-Jan-2024"
+          ],
+          "references": [],
+          "signed_date": "2024-01-29"
+        },
+        {
+          "doc_id": "DOC-09",
+          "doc_role": "sow",
+          "executed": true,
+          "execution_evidence": [
+            "Signed by Rohan Kulkarni and Arjun Menon, both dated 30-01-2024"
+          ],
+          "references": [
+            "DOC-08"
+          ],
+          "signed_date": "2024-01-30"
+        },
+        {
+          "doc_id": "DOC-10",
+          "doc_role": "sow",
+          "executed": true,
+          "execution_evidence": [
+            "Signed by Rohan Kulkarni 24-01-2025 and Arjun Menon 27-01-2025"
+          ],
+          "references": [
+            "DOC-08",
+            "DOC-09"
+          ],
+          "signed_date": "2025-01-27"
+        },
+        {
+          "doc_id": "DOC-11",
+          "doc_role": "amendment",
+          "executed": true,
+          "execution_evidence": [
+            "Countersigned Amendment No. 1 attached to email; signed by Rohan Kulkarni 08-04-2026 and Kavita Deshpande 10-04-2026"
+          ],
+          "references": [
+            "DOC-08",
+            "DOC-10"
+          ],
+          "signed_date": "2026-04-10"
+        }
+      ],
+      "documents": [
+        {
+          "doc_id": "DOC-07",
+          "fields": [],
+          "rate_lines": []
+        },
+        {
+          "doc_id": "DOC-08",
+          "fields": [
+            {
+              "key": "renewal_type",
+              "value": "auto",
+              "confidence": 0.9,
+              "citation": {
+                "doc_id": "DOC-08",
+                "section": "19.3",
+                "quote": "each SOW shall automatically renew for successive periods of twelve (12) months"
+              },
+              "note": null
+            },
+            {
+              "key": "renewal_term_months",
+              "value": 12,
+              "confidence": 0.92,
+              "citation": {
+                "doc_id": "DOC-08",
+                "section": "19.3",
+                "quote": "each SOW shall automatically renew for successive periods of twelve (12) months"
+              },
+              "note": null
+            },
+            {
+              "key": "notice_days",
+              "value": 30,
+              "confidence": 0.9,
+              "citation": {
+                "doc_id": "DOC-08",
+                "section": "19.3",
+                "quote": "not less than thirty (30) calendar days before the expiry of the then-current SOW Term"
+              },
+              "note": null
+            },
+            {
+              "key": "notice_day_type",
+              "value": "calendar",
+              "confidence": 0.92,
+              "citation": {
+                "doc_id": "DOC-08",
+                "section": "19.3",
+                "quote": "not less than thirty (30) calendar days before the expiry of the then-current SOW Term"
+              },
+              "note": null
+            },
+            {
+              "key": "notice_method",
+              "value": "email",
+              "confidence": 0.9,
+              "citation": {
+                "doc_id": "DOC-08",
+                "section": "29.1",
+                "quote": "All notices shall be in writing and sent by email to the address of the other Party below"
+              },
+              "note": null
+            },
+            {
+              "key": "notice_address",
+              "value": "contracts@codecraftstaffing.in",
+              "confidence": 0.93,
+              "citation": {
+                "doc_id": "DOC-08",
+                "section": "29.1",
+                "quote": "Supplier: contracts@codecraftstaffing.in; Client: legal@velora.in."
+              },
+              "note": null
+            },
+            {
+              "key": "uplift.type",
+              "value": "none",
+              "confidence": 0.8,
+              "citation": {
+                "doc_id": "DOC-08",
+                "section": "18.2",
+                "quote": "The rates in each SOW shall remain fixed for the SOW Term and for any Renewal Term"
+              },
+              "note": "Rates fixed through renewal terms unless amended."
+            },
+            {
+              "key": "tfc",
+              "value": true,
+              "confidence": 0.95,
+              "citation": {
+                "doc_id": "DOC-08",
+                "section": "20.2",
+                "quote": "The Client may terminate this Agreement or any SOW for convenience upon thirty (30) days' written notice to the Supplier"
+              },
+              "note": null
+            },
+            {
+              "key": "tfc_notice_days",
+              "value": 30,
+              "confidence": 0.95,
+              "citation": {
+                "doc_id": "DOC-08",
+                "section": "20.2",
+                "quote": "The Client may terminate this Agreement or any SOW for convenience upon thirty (30) days' written notice to the Supplier"
+              },
+              "note": null
+            },
+            {
+              "key": "payment_terms_days",
+              "value": 60,
+              "confidence": 0.95,
+              "citation": {
+                "doc_id": "DOC-08",
+                "section": "18.3",
+                "quote": "are payable within sixty (60) days of receipt of a valid tax invoice"
+              },
+              "note": null
+            },
+            {
+              "key": "sla_credits",
+              "value": true,
+              "confidence": 0.7,
+              "citation": {
+                "doc_id": "DOC-08",
+                "section": "17.2",
+                "quote": "the Client shall be entitled to a service credit equal to five per cent (5%) of the monthly fees attributable to the affected Resource for each week of delay"
+              },
+              "note": "Credit for late resource replacement; no percentage service level."
+            },
+            {
+              "key": "governing_law",
+              "value": "India",
+              "confidence": 0.95,
+              "citation": {
+                "doc_id": "DOC-08",
+                "section": "31.1",
+                "quote": "This Agreement is governed by the laws of India."
+              },
+              "note": null
+            }
+          ],
+          "rate_lines": []
+        },
+        {
+          "doc_id": "DOC-09",
+          "fields": [
+            {
+              "key": "renewal_type",
+              "value": "none",
+              "confidence": 0.95,
+              "citation": {
+                "doc_id": "DOC-09",
+                "section": "1.3",
+                "quote": "Clause 19.3 of the MSA shall not apply to this SOW-1, which shall expire at the end of the SOW Term without renewal."
+              },
+              "note": null
+            },
+            {
+              "key": "initial_term_end",
+              "value": "2025-01-31",
+              "confidence": 0.95,
+              "citation": {
+                "doc_id": "DOC-09",
+                "section": "1.2",
+                "quote": "SOW Term: 1 February 2024 to 31 January 2025."
+              },
+              "note": null
+            },
+            {
+              "key": "currency",
+              "value": "INR",
+              "confidence": 0.8,
+              "citation": {
+                "doc_id": "DOC-09",
+                "section": "2",
+                "quote": "Rate (₹ per hour)"
+              },
+              "note": null
+            }
+          ],
+          "rate_lines": [
+            {
+              "role_in_contract": "Sr. React.js Developer",
+              "benchmark_role": "Senior React Developer",
+              "count": 2,
+              "rate_inr_per_hr": 2300,
+              "citation": {
+                "doc_id": "DOC-09",
+                "section": "2",
+                "quote": "Sr. React.js Developer 2 2,300"
+              }
+            },
+            {
+              "role_in_contract": "Jr. React.js Developer",
+              "benchmark_role": "Junior React Developer",
+              "count": 1,
+              "rate_inr_per_hr": 1150,
+              "citation": {
+                "doc_id": "DOC-09",
+                "section": "2",
+                "quote": "Jr. React.js Developer 1 1,150"
+              }
+            },
+            {
+              "role_in_contract": "QA Automation Engineer",
+              "benchmark_role": "QA Automation Engineer",
+              "count": 1,
+              "rate_inr_per_hr": 1050,
+              "citation": {
+                "doc_id": "DOC-09",
+                "section": "2",
+                "quote": "QA Automation Engineer 1 1,050"
+              }
+            }
+          ]
+        },
+        {
+          "doc_id": "DOC-10",
+          "fields": [
+            {
+              "key": "initial_term_end",
+              "value": "2027-01-31",
+              "confidence": 0.95,
+              "citation": {
+                "doc_id": "DOC-10",
+                "section": "1.2",
+                "quote": "SOW Term: 1 February 2025 to 31 January 2027."
+              },
+              "note": null
+            },
+            {
+              "key": "annual_value",
+              "value": 18000000,
+              "confidence": 0.85,
+              "citation": {
+                "doc_id": "DOC-10",
+                "section": "2.2",
+                "quote": "₹1,80,00,000 (Rupees One Crore Eighty Lakh), exclusive of GST"
+              },
+              "note": "Estimated Annual Fees."
+            },
+            {
+              "key": "currency",
+              "value": "INR",
+              "confidence": 0.9,
+              "citation": {
+                "doc_id": "DOC-10",
+                "section": "2.2",
+                "quote": "₹1,80,00,000 (Rupees One Crore Eighty Lakh), exclusive of GST"
+              },
+              "note": null
+            }
+          ],
+          "rate_lines": [
+            {
+              "role_in_contract": "Sr. React.js Developer",
+              "benchmark_role": "Senior React Developer",
+              "count": 3,
+              "rate_inr_per_hr": 2400,
+              "citation": {
+                "doc_id": "DOC-10",
+                "section": "Annexure A",
+                "quote": "Sr. React.js Developer 3 2,400"
+              }
+            },
+            {
+              "role_in_contract": "Jr. React.js Developer",
+              "benchmark_role": "Junior React Developer",
+              "count": 1,
+              "rate_inr_per_hr": 1200,
+              "citation": {
+                "doc_id": "DOC-10",
+                "section": "Annexure A",
+                "quote": "Jr. React.js Developer 1 1,200"
+              }
+            },
+            {
+              "role_in_contract": "QA Automation Engineer",
+              "benchmark_role": "QA Automation Engineer",
+              "count": 1,
+              "rate_inr_per_hr": 1100,
+              "citation": {
+                "doc_id": "DOC-10",
+                "section": "Annexure A",
+                "quote": "QA Automation Engineer 1 1,100"
+              }
+            },
+            {
+              "role_in_contract": "DevOps Engineer (part-time)",
+              "benchmark_role": "DevOps Engineer",
+              "count": 1,
+              "rate_inr_per_hr": 2000,
+              "citation": {
+                "doc_id": "DOC-10",
+                "section": "Annexure A",
+                "quote": "DevOps Engineer (part-time) 1 2,000"
+              }
+            }
+          ]
+        },
+        {
+          "doc_id": "DOC-11",
+          "fields": [
+            {
+              "key": "notice_days",
+              "value": 60,
+              "confidence": 0.93,
+              "citation": {
+                "doc_id": "DOC-11",
+                "section": "1",
+                "quote": "the words \"thirty (30) calendar days\" are deleted and replaced with \"sixty (60) calendar days\""
+              },
+              "note": "Amends MSA clause 19.3."
+            },
+            {
+              "key": "notice_day_type",
+              "value": "calendar",
+              "confidence": 0.92,
+              "citation": {
+                "doc_id": "DOC-11",
+                "section": "1",
+                "quote": "the words \"thirty (30) calendar days\" are deleted and replaced with \"sixty (60) calendar days\""
+              },
+              "note": null
+            }
+          ],
+          "rate_lines": [
+            {
+              "role_in_contract": "Sr. React.js Developer",
+              "benchmark_role": "Senior React Developer",
+              "count": null,
+              "rate_inr_per_hr": 2250,
+              "citation": {
+                "doc_id": "DOC-11",
+                "section": "2",
+                "quote": "the hourly rate for \"Sr. React.js Developer\" is revised from ₹2,400 to ₹2,250"
+              }
+            }
+          ]
+        }
+      ],
+      "not_stated": [
+        {
+          "key": "uplift.value_pct",
+          "confidence": 0.8,
+          "reason": "Rates fixed; no uplift percentage in executed documents."
+        },
+        {
+          "key": "uplift.cap_pct",
+          "confidence": 0.85,
+          "reason": "No cap stated."
+        }
+      ],
+      "quote": null,
+      "sla_terms": null,
+      "licensed_units": []
+    }
+  }
+}

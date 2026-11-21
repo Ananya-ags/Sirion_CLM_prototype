@@ -22,7 +22,11 @@ type Data = {
   financeConfirmations: Record<string, FinanceConfirmation>;
   financeDismissals: Record<string, FinanceDismissal>;
   drafts: Record<string, Draft>;
+  /** Human review of AI output: field confirmations/corrections and unmatched-document decisions. */
+  reviews: Record<string, ReviewDecision>;
 };
+
+export type ReviewDecision = { itemId: string; kind: "field" | "document"; action: "confirmed" | "corrected"; value?: string; by: PersonaId; ts: string };
 
 type Step = [toState: RequestState, actor: Actor, reason: string];
 
@@ -37,6 +41,8 @@ type Actions = {
   saveDraft: (d: Draft) => void;
   confirmFinance: (c: Omit<FinanceConfirmation, "ts">) => void;
   dismissFinance: (d: Omit<FinanceDismissal, "ts">) => void;
+  /** Records a human decision on an AI field or unmatched document (always audited). */
+  recordReview: (d: Omit<ReviewDecision, "ts">, requestId: string | null, label: string) => void;
   resetDemo: () => void;
 };
 
@@ -49,6 +55,7 @@ const initialData = (): Data => ({
   financeConfirmations: {},
   financeDismissals: {},
   drafts: {},
+  reviews: {},
 });
 
 let seq = 0;
@@ -141,12 +148,30 @@ export const useDocketStore = create<DocketStore>()(
         }));
       },
 
+      recordReview: (d, requestId, label) => {
+        const ts = demoNowISO();
+        set((s) => ({
+          reviews: { ...s.reviews, [d.itemId]: { ...d, ts } },
+          audit: [
+            ...s.audit,
+            {
+              id: auditId(),
+              ts,
+              requestId,
+              actor: d.by,
+              action: d.action === "confirmed" ? `Confirmed ${label}` : `Corrected ${label} → ${d.value}`,
+              reason: d.kind === "field" ? "Human review of AI-extracted field" : "Human review of document grouping",
+            },
+          ],
+        }));
+      },
+
       resetDemo: () => set(initialData()),
     }),
     {
       name: "docket-demo-v3",
       storage: createJSONStorage(() => localStorage),
-      partialize: ({ persona, requests, audit, financeConfirmations, financeDismissals, drafts }) => ({ persona, requests, audit, financeConfirmations, financeDismissals, drafts }),
+      partialize: ({ persona, requests, audit, financeConfirmations, financeDismissals, drafts, reviews }) => ({ persona, requests, audit, financeConfirmations, financeDismissals, drafts, reviews }),
       // Rehydrated on the client by <StoreHydrator /> to avoid SSR mismatches.
       skipHydration: true,
     },

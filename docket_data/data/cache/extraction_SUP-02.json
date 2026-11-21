@@ -1,0 +1,729 @@
+{
+  "supplier_id": "SUP-02",
+  "family": [
+    {
+      "doc_id": "DOC-04",
+      "doc_role": "msa",
+      "executed": true,
+      "execution_evidence": [
+        "Signature blocks with names and dates: Sneha Kulkarni 18/02/2025, Kavita Deshpande 19/02/2025",
+        "Two witnesses signed"
+      ],
+      "references": []
+    },
+    {
+      "doc_id": "DOC-05",
+      "doc_role": "order_form",
+      "executed": true,
+      "execution_evidence": [
+        "Signed by Sneha Kulkarni, CRO 18/02/2025 and Kavita Deshpande, CFO 19/02/2025"
+      ],
+      "references": [
+        "DOC-04"
+      ]
+    },
+    {
+      "doc_id": "DOC-06",
+      "doc_role": "quote",
+      "executed": false,
+      "execution_evidence": [
+        "Supplier email with renewal quote; not countersigned"
+      ],
+      "references": [
+        "DOC-05",
+        "DOC-04"
+      ]
+    }
+  ],
+  "effective_terms": {
+    "renewal_type": {
+      "value": "auto",
+      "confidence": 0.95,
+      "citation": {
+        "doc_id": "DOC-04",
+        "section": "11.2",
+        "quote": "Each Subscription Period shall automatically renew for further periods of twelve (12) months"
+      },
+      "verified": true
+    },
+    "initial_term_end": {
+      "value": "2027-02-28",
+      "confidence": 0.95,
+      "citation": {
+        "doc_id": "DOC-05",
+        "section": "Order Form table",
+        "quote": "1 March 2025 to 28 February 2027 (24 months)"
+      },
+      "verified": true
+    },
+    "renewal_term_months": {
+      "value": 12,
+      "confidence": 0.95,
+      "citation": {
+        "doc_id": "DOC-04",
+        "section": "11.2",
+        "quote": "Each Subscription Period shall automatically renew for further periods of twelve (12) months"
+      },
+      "verified": true
+    },
+    "notice_days": {
+      "value": 60,
+      "confidence": 0.95,
+      "citation": {
+        "doc_id": "DOC-04",
+        "section": "1.20",
+        "quote": "\"Non-Renewal Notice Period\" means sixty (60) days."
+      },
+      "verified": true
+    },
+    "notice_day_type": {
+      "value": "calendar",
+      "confidence": 0.9,
+      "citation": {
+        "doc_id": "DOC-04",
+        "section": "1.34",
+        "quote": "References to a number of days are to calendar days unless Business Days are expressly specified."
+      },
+      "verified": true
+    },
+    "notice_method": {
+      "value": "email",
+      "confidence": 0.9,
+      "citation": {
+        "doc_id": "DOC-04",
+        "section": "18.1",
+        "quote": "Any notice under this Agreement shall be in writing and shall be sent by email to the addresses below."
+      },
+      "verified": true
+    },
+    "notice_address": {
+      "value": "contracts@peoplegrid.in",
+      "confidence": 0.95,
+      "citation": {
+        "doc_id": "DOC-04",
+        "section": "18.2",
+        "quote": "PeopleGrid: contracts@peoplegrid.in"
+      },
+      "verified": true
+    },
+    "uplift": {
+      "type": {
+        "value": "discretionary",
+        "confidence": 0.8,
+        "citation": {
+          "doc_id": "DOC-04",
+          "section": "12.2",
+          "quote": "PeopleGrid may revise the Subscription Fees with effect from the start of any renewed Subscription Period"
+        },
+        "verified": true,
+        "note": "Supplier may revise at renewal, capped at 5%"
+      },
+      "value_pct": {
+        "value": null,
+        "confidence": 0.7,
+        "citation": null
+      },
+      "cap_pct": {
+        "value": 5,
+        "confidence": 0.95,
+        "citation": {
+          "doc_id": "DOC-04",
+          "section": "12.2",
+          "quote": "any such increase shall not exceed five per cent (5%) of the Subscription Fees"
+        },
+        "verified": true
+      }
+    },
+    "tfc": {
+      "value": true,
+      "confidence": 0.95,
+      "citation": {
+        "doc_id": "DOC-04",
+        "section": "15.1",
+        "quote": "The Client may terminate this Agreement or any Order Form for convenience by giving PeopleGrid sixty (60) days' written notice."
+      },
+      "verified": true
+    },
+    "tfc_notice_days": {
+      "value": 60,
+      "confidence": 0.95,
+      "citation": {
+        "doc_id": "DOC-04",
+        "section": "15.1",
+        "quote": "The Client may terminate this Agreement or any Order Form for convenience by giving PeopleGrid sixty (60) days' written notice."
+      },
+      "verified": true
+    },
+    "payment_terms_days": {
+      "value": 45,
+      "confidence": 0.95,
+      "citation": {
+        "doc_id": "DOC-04",
+        "section": "13.2",
+        "quote": "The Client shall pay each correctly raised invoice within forty-five (45) days of receipt."
+      },
+      "verified": true
+    },
+    "sla_credits": {
+      "value": true,
+      "confidence": 0.95,
+      "citation": {
+        "doc_id": "DOC-04",
+        "section": "14.2",
+        "quote": "PeopleGrid shall issue a service credit to the Client in accordance with Annexure 1"
+      },
+      "verified": true
+    },
+    "currency": {
+      "value": "INR",
+      "confidence": 0.9,
+      "citation": {
+        "doc_id": "DOC-05",
+        "section": "Order Form table",
+        "quote": "₹28,00,000 per annum, exclusive of GST"
+      },
+      "verified": true
+    },
+    "governing_law": {
+      "value": "India",
+      "confidence": 0.95,
+      "citation": {
+        "doc_id": "DOC-04",
+        "section": "19.1",
+        "quote": "This Agreement shall be governed by the laws of India"
+      },
+      "verified": true
+    },
+    "annual_value": {
+      "value": 2800000,
+      "confidence": 0.95,
+      "citation": {
+        "doc_id": "DOC-05",
+        "section": "Order Form table",
+        "quote": "₹28,00,000 per annum, exclusive of GST"
+      },
+      "verified": true
+    }
+  },
+  "quote": {
+    "doc_id": "DOC-06",
+    "proposed_annual_inr": 3108000,
+    "proposed_uplift_pct": 11,
+    "citation": {
+      "doc_id": "DOC-06",
+      "section": "Quote Q-26-1184",
+      "quote": "The renewal reflects an 11% revision on the current annual fee"
+    }
+  },
+  "sla_terms": {
+    "metric": "availability_pct",
+    "target": 99.7,
+    "currency": "INR",
+    "credit_rule": [
+      {
+        "from_incl": 0,
+        "to_excl": 97.5,
+        "credit_pct": 25
+      },
+      {
+        "from_incl": 97.5,
+        "to_excl": 99,
+        "credit_pct": 10
+      },
+      {
+        "from_incl": 99,
+        "to_excl": 99.7,
+        "credit_pct": 5
+      }
+    ],
+    "credit_basis": "monthly_fees",
+    "citation": {
+      "doc_id": "DOC-04",
+      "section": "14.1",
+      "quote": "PeopleGrid shall maintain Platform availability of not less than 99.7% in each calendar month"
+    },
+    "fee_basis_monthly": null
+  },
+  "licensed_units": [
+    {
+      "metric": "active_employees",
+      "licensed_units": 3200,
+      "doc_id": "DOC-05"
+    }
+  ],
+  "pipeline": {
+    "source": "ai",
+    "model": "claude-sonnet-5-5",
+    "prompt_version": "extraction-2",
+    "generated_at": "2026-11-24T06:36:16.884Z",
+    "input_key": "231dbd2a66b5924e195ff5f619c7b035f9b181fda24460b566de8680a1eab820",
+    "docs": [
+      {
+        "doc_id": "DOC-04",
+        "sha256": "3e8d6bbd13b0ba7b16c465246ac646bd760712b5ddaa39179b38b072cf257e58",
+        "text_source": "pdf"
+      },
+      {
+        "doc_id": "DOC-05",
+        "sha256": "3d824636b34365b21672ce487be26e4aea5622479d90ae4b21a0be54f0412159",
+        "text_source": "pdf"
+      },
+      {
+        "doc_id": "DOC-06",
+        "sha256": "539489b161d2fc8d790f269bfc3270aef4e787961cb24d15e7c7c0fc3727006f",
+        "text_source": "pdf"
+      }
+    ],
+    "ocr_fields": [],
+    "verification": [
+      {
+        "key": "renewal_type",
+        "doc_id": "DOC-04",
+        "section": "11.2",
+        "quote": "Each Subscription Period shall automatically renew for further periods of twelve (12) months",
+        "ok": true
+      },
+      {
+        "key": "renewal_term_months",
+        "doc_id": "DOC-04",
+        "section": "11.2",
+        "quote": "Each Subscription Period shall automatically renew for further periods of twelve (12) months",
+        "ok": true
+      },
+      {
+        "key": "notice_days",
+        "doc_id": "DOC-04",
+        "section": "1.20",
+        "quote": "\"Non-Renewal Notice Period\" means sixty (60) days.",
+        "ok": true
+      },
+      {
+        "key": "notice_day_type",
+        "doc_id": "DOC-04",
+        "section": "1.34",
+        "quote": "References to a number of days are to calendar days unless Business Days are expressly specified.",
+        "ok": true
+      },
+      {
+        "key": "notice_method",
+        "doc_id": "DOC-04",
+        "section": "18.1",
+        "quote": "Any notice under this Agreement shall be in writing and shall be sent by email to the addresses below.",
+        "ok": true
+      },
+      {
+        "key": "notice_address",
+        "doc_id": "DOC-04",
+        "section": "18.2",
+        "quote": "PeopleGrid: contracts@peoplegrid.in",
+        "ok": true
+      },
+      {
+        "key": "uplift.type",
+        "doc_id": "DOC-04",
+        "section": "12.2",
+        "quote": "PeopleGrid may revise the Subscription Fees with effect from the start of any renewed Subscription Period",
+        "ok": true
+      },
+      {
+        "key": "uplift.cap_pct",
+        "doc_id": "DOC-04",
+        "section": "12.2",
+        "quote": "any such increase shall not exceed five per cent (5%) of the Subscription Fees",
+        "ok": true
+      },
+      {
+        "key": "tfc",
+        "doc_id": "DOC-04",
+        "section": "15.1",
+        "quote": "The Client may terminate this Agreement or any Order Form for convenience by giving PeopleGrid sixty (60) days' written notice.",
+        "ok": true
+      },
+      {
+        "key": "tfc_notice_days",
+        "doc_id": "DOC-04",
+        "section": "15.1",
+        "quote": "The Client may terminate this Agreement or any Order Form for convenience by giving PeopleGrid sixty (60) days' written notice.",
+        "ok": true
+      },
+      {
+        "key": "payment_terms_days",
+        "doc_id": "DOC-04",
+        "section": "13.2",
+        "quote": "The Client shall pay each correctly raised invoice within forty-five (45) days of receipt.",
+        "ok": true
+      },
+      {
+        "key": "sla_credits",
+        "doc_id": "DOC-04",
+        "section": "14.2",
+        "quote": "PeopleGrid shall issue a service credit to the Client in accordance with Annexure 1",
+        "ok": true
+      },
+      {
+        "key": "governing_law",
+        "doc_id": "DOC-04",
+        "section": "19.1",
+        "quote": "This Agreement shall be governed by the laws of India",
+        "ok": true
+      },
+      {
+        "key": "initial_term_end",
+        "doc_id": "DOC-05",
+        "section": "Order Form table",
+        "quote": "1 March 2025 to 28 February 2027 (24 months)",
+        "ok": true
+      },
+      {
+        "key": "annual_value",
+        "doc_id": "DOC-05",
+        "section": "Order Form table",
+        "quote": "₹28,00,000 per annum, exclusive of GST",
+        "ok": true
+      },
+      {
+        "key": "currency",
+        "doc_id": "DOC-05",
+        "section": "Order Form table",
+        "quote": "₹28,00,000 per annum, exclusive of GST",
+        "ok": true
+      },
+      {
+        "key": "quote",
+        "doc_id": "DOC-06",
+        "section": "Quote Q-26-1184",
+        "quote": "The renewal reflects an 11% revision on the current annual fee",
+        "ok": true
+      },
+      {
+        "key": "sla_terms",
+        "doc_id": "DOC-04",
+        "section": "14.1",
+        "quote": "PeopleGrid shall maintain Platform availability of not less than 99.7% in each calendar month",
+        "ok": true
+      },
+      {
+        "key": "licensed:active_employees",
+        "doc_id": "DOC-05",
+        "section": "Order Form table",
+        "quote": "Up to 3,200 active employees",
+        "ok": true
+      }
+    ],
+    "verification_failures": 0,
+    "grouping": [
+      {
+        "doc_id": "DOC-04",
+        "confidence": 0.97,
+        "evidence": [
+          "GSTIN 29AAGCP2905M1Z2 = vendor master V-10057"
+        ]
+      },
+      {
+        "doc_id": "DOC-05",
+        "confidence": 0.97,
+        "evidence": [
+          "References Master Agreement No. PG/MSA/2025/017 dated 18 February 2025 (DOC-04, GSTIN 29AAGCP2905M1Z2 = V-10057)"
+        ]
+      },
+      {
+        "doc_id": "DOC-06",
+        "confidence": 0.9,
+        "evidence": [
+          "Sender signature names exact legal name PeopleGrid HR Technologies Private Limited; references Order Form PG-OF-2025-017 (DOC-05)"
+        ]
+      }
+    ],
+    "raw": {
+      "family": [
+        {
+          "doc_id": "DOC-04",
+          "doc_role": "msa",
+          "executed": true,
+          "execution_evidence": [
+            "Signature blocks with names and dates: Sneha Kulkarni 18/02/2025, Kavita Deshpande 19/02/2025",
+            "Two witnesses signed"
+          ],
+          "references": [],
+          "signed_date": "2025-02-19"
+        },
+        {
+          "doc_id": "DOC-05",
+          "doc_role": "order_form",
+          "executed": true,
+          "execution_evidence": [
+            "Signed by Sneha Kulkarni, CRO 18/02/2025 and Kavita Deshpande, CFO 19/02/2025"
+          ],
+          "references": [
+            "DOC-04"
+          ],
+          "signed_date": "2025-02-19"
+        },
+        {
+          "doc_id": "DOC-06",
+          "doc_role": "quote",
+          "executed": false,
+          "execution_evidence": [
+            "Supplier email with renewal quote; not countersigned"
+          ],
+          "references": [
+            "DOC-05",
+            "DOC-04"
+          ],
+          "signed_date": null
+        }
+      ],
+      "documents": [
+        {
+          "doc_id": "DOC-04",
+          "fields": [
+            {
+              "key": "renewal_type",
+              "value": "auto",
+              "confidence": 0.95,
+              "citation": {
+                "doc_id": "DOC-04",
+                "section": "11.2",
+                "quote": "Each Subscription Period shall automatically renew for further periods of twelve (12) months"
+              },
+              "note": null
+            },
+            {
+              "key": "renewal_term_months",
+              "value": 12,
+              "confidence": 0.95,
+              "citation": {
+                "doc_id": "DOC-04",
+                "section": "11.2",
+                "quote": "Each Subscription Period shall automatically renew for further periods of twelve (12) months"
+              },
+              "note": null
+            },
+            {
+              "key": "notice_days",
+              "value": 60,
+              "confidence": 0.95,
+              "citation": {
+                "doc_id": "DOC-04",
+                "section": "1.20",
+                "quote": "\"Non-Renewal Notice Period\" means sixty (60) days."
+              },
+              "note": null
+            },
+            {
+              "key": "notice_day_type",
+              "value": "calendar",
+              "confidence": 0.9,
+              "citation": {
+                "doc_id": "DOC-04",
+                "section": "1.34",
+                "quote": "References to a number of days are to calendar days unless Business Days are expressly specified."
+              },
+              "note": null
+            },
+            {
+              "key": "notice_method",
+              "value": "email",
+              "confidence": 0.9,
+              "citation": {
+                "doc_id": "DOC-04",
+                "section": "18.1",
+                "quote": "Any notice under this Agreement shall be in writing and shall be sent by email to the addresses below."
+              },
+              "note": null
+            },
+            {
+              "key": "notice_address",
+              "value": "contracts@peoplegrid.in",
+              "confidence": 0.95,
+              "citation": {
+                "doc_id": "DOC-04",
+                "section": "18.2",
+                "quote": "PeopleGrid: contracts@peoplegrid.in"
+              },
+              "note": null
+            },
+            {
+              "key": "uplift.type",
+              "value": "discretionary",
+              "confidence": 0.8,
+              "citation": {
+                "doc_id": "DOC-04",
+                "section": "12.2",
+                "quote": "PeopleGrid may revise the Subscription Fees with effect from the start of any renewed Subscription Period"
+              },
+              "note": "Supplier may revise at renewal, capped at 5%"
+            },
+            {
+              "key": "uplift.cap_pct",
+              "value": 5,
+              "confidence": 0.95,
+              "citation": {
+                "doc_id": "DOC-04",
+                "section": "12.2",
+                "quote": "any such increase shall not exceed five per cent (5%) of the Subscription Fees"
+              },
+              "note": null
+            },
+            {
+              "key": "tfc",
+              "value": true,
+              "confidence": 0.95,
+              "citation": {
+                "doc_id": "DOC-04",
+                "section": "15.1",
+                "quote": "The Client may terminate this Agreement or any Order Form for convenience by giving PeopleGrid sixty (60) days' written notice."
+              },
+              "note": null
+            },
+            {
+              "key": "tfc_notice_days",
+              "value": 60,
+              "confidence": 0.95,
+              "citation": {
+                "doc_id": "DOC-04",
+                "section": "15.1",
+                "quote": "The Client may terminate this Agreement or any Order Form for convenience by giving PeopleGrid sixty (60) days' written notice."
+              },
+              "note": null
+            },
+            {
+              "key": "payment_terms_days",
+              "value": 45,
+              "confidence": 0.95,
+              "citation": {
+                "doc_id": "DOC-04",
+                "section": "13.2",
+                "quote": "The Client shall pay each correctly raised invoice within forty-five (45) days of receipt."
+              },
+              "note": null
+            },
+            {
+              "key": "sla_credits",
+              "value": true,
+              "confidence": 0.95,
+              "citation": {
+                "doc_id": "DOC-04",
+                "section": "14.2",
+                "quote": "PeopleGrid shall issue a service credit to the Client in accordance with Annexure 1"
+              },
+              "note": null
+            },
+            {
+              "key": "governing_law",
+              "value": "India",
+              "confidence": 0.95,
+              "citation": {
+                "doc_id": "DOC-04",
+                "section": "19.1",
+                "quote": "This Agreement shall be governed by the laws of India"
+              },
+              "note": null
+            }
+          ],
+          "rate_lines": []
+        },
+        {
+          "doc_id": "DOC-05",
+          "fields": [
+            {
+              "key": "initial_term_end",
+              "value": "2027-02-28",
+              "confidence": 0.95,
+              "citation": {
+                "doc_id": "DOC-05",
+                "section": "Order Form table",
+                "quote": "1 March 2025 to 28 February 2027 (24 months)"
+              },
+              "note": null
+            },
+            {
+              "key": "annual_value",
+              "value": 2800000,
+              "confidence": 0.95,
+              "citation": {
+                "doc_id": "DOC-05",
+                "section": "Order Form table",
+                "quote": "₹28,00,000 per annum, exclusive of GST"
+              },
+              "note": null
+            },
+            {
+              "key": "currency",
+              "value": "INR",
+              "confidence": 0.9,
+              "citation": {
+                "doc_id": "DOC-05",
+                "section": "Order Form table",
+                "quote": "₹28,00,000 per annum, exclusive of GST"
+              },
+              "note": null
+            }
+          ],
+          "rate_lines": []
+        },
+        {
+          "doc_id": "DOC-06",
+          "fields": [],
+          "rate_lines": []
+        }
+      ],
+      "not_stated": [
+        {
+          "key": "uplift.value_pct",
+          "confidence": 0.7,
+          "reason": "Contract states only a cap, no fixed uplift value"
+        }
+      ],
+      "quote": {
+        "doc_id": "DOC-06",
+        "proposed_annual_inr": 3108000,
+        "proposed_uplift_pct": 11,
+        "citation": {
+          "doc_id": "DOC-06",
+          "section": "Quote Q-26-1184",
+          "quote": "The renewal reflects an 11% revision on the current annual fee"
+        }
+      },
+      "sla_terms": {
+        "metric": "availability_pct",
+        "target": 99.7,
+        "currency": "INR",
+        "credit_rule": [
+          {
+            "from_incl": 0,
+            "to_excl": 97.5,
+            "credit_pct": 25
+          },
+          {
+            "from_incl": 97.5,
+            "to_excl": 99,
+            "credit_pct": 10
+          },
+          {
+            "from_incl": 99,
+            "to_excl": 99.7,
+            "credit_pct": 5
+          }
+        ],
+        "credit_basis": "monthly_fees",
+        "citation": {
+          "doc_id": "DOC-04",
+          "section": "14.1",
+          "quote": "PeopleGrid shall maintain Platform availability of not less than 99.7% in each calendar month"
+        }
+      },
+      "licensed_units": [
+        {
+          "metric": "active_employees",
+          "licensed_units": 3200,
+          "citation": {
+            "doc_id": "DOC-05",
+            "section": "Order Form table",
+            "quote": "Up to 3,200 active employees"
+          }
+        }
+      ]
+    }
+  }
+}

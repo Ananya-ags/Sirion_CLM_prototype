@@ -237,6 +237,12 @@ export function fieldSchema<T extends z.ZodType>(value: T) {
     confidence: z.number().min(0).max(1),
     citation: CitationSchema.nullable(),
     overridden_by: z.string().optional(),
+    /** AI pipeline: the cited quote was found in the document text (guardrail 1). */
+    verified: z.boolean().optional(),
+    /** AI pipeline: the value comes from an OCR transcription (confidence capped at 0.8). */
+    ocr: z.boolean().optional(),
+    /** AI pipeline: why the value is unclear / low-confidence (shown in the review queue). */
+    note: z.string().optional(),
   });
 }
 export type Field<T> = {
@@ -244,6 +250,9 @@ export type Field<T> = {
   confidence: number;
   citation: Citation | null;
   overridden_by?: string;
+  verified?: boolean;
+  ocr?: boolean;
+  note?: string;
 };
 
 export const DocRoleSchema = z.enum(["msa", "sow", "amendment", "order_form", "quote", "email", "other"]);
@@ -325,6 +334,8 @@ export const SlaTermsSchema = z.object({
   credit_rule: z.union([z.array(CreditBandSchema), z.string()]),
   fee_basis_monthly: z.number().nullable(),
   citation: CitationSchema.optional(),
+  /** AI pipeline: what the credit % applies to. "monthly_fees" → Rules use annual value ÷ 12 as fee basis. */
+  credit_basis: z.enum(["monthly_fees", "per_unit_charge", "other"]).optional(),
 });
 export type SlaTerms = z.infer<typeof SlaTermsSchema>;
 
@@ -394,6 +405,25 @@ export const DevGoldFileSchema = z.looseObject({
   doc_supplier_map: DocSupplierMapSchema.optional(),
 });
 export type DevGoldFile = z.infer<typeof DevGoldFileSchema>;
+
+/** cache/grouping.json (AI grouping, post-checked in code). */
+export const GroupAssignmentSchema = z.object({
+  doc_id: z.string(),
+  supplier_id: z.string().nullable(),
+  vendor_id: z.string().nullable(),
+  confidence: z.number(),
+  evidence: z.array(z.string()),
+  evidence_quotes: z.array(z.object({ quote: z.string(), verified: z.boolean() })),
+  status: z.enum(["assigned", "review"]),
+  review_reason: z.string().nullable(),
+});
+export type GroupAssignmentRecord = z.infer<typeof GroupAssignmentSchema>;
+export const GroupingFileSchema = z.looseObject({
+  generated_at: z.string().optional(),
+  model: z.string().optional(),
+  assignments: z.array(GroupAssignmentSchema),
+});
+export type GroupingFile = z.infer<typeof GroupingFileSchema>;
 
 /** Held-out gold: flat expected values per HO doc; never used for prompt tuning. */
 export const HeldoutGoldItemSchema = z.looseObject({

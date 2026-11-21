@@ -1,6 +1,12 @@
-/** Format-neutral document handling for the LLM (server-only). */
+/**
+ * Format-neutral document handling for the LLM (server-only).
+ * The pipeline reads ONLY docket_data/data/docs/*.pdf (+ documents.json). Never docs_src/, never gold.
+ */
+import { createHash } from "node:crypto";
 import { promises as fs } from "node:fs";
 import path from "node:path";
+import type { DocumentMeta } from "../types";
+import { pdfText, type PdfText } from "./pdfText";
 
 const MIME: Record<string, string> = {
   ".md": "text/markdown",
@@ -11,35 +17,42 @@ const MIME: Record<string, string> = {
 
 export const mimeTypeFor = (file: string) => MIME[path.extname(file).toLowerCase()] ?? "application/octet-stream";
 export const isTextMime = (m: string) => m.startsWith("text/");
+export const sha256 = (b: Uint8Array | string) => createHash("sha256").update(b).digest("hex");
 
 export type DocumentPart = {
-  /** Base64 payload + MIME, provider-neutral (Claude: document/text block; PDF support later). */
+  /** Base64 payload + MIME (Claude: document block for PDFs, text block otherwise). */
   part: { mimeType: string; data: string };
   mimeType: string;
-  /** Decoded text for quote verification (null for binary formats such as PDF, until we add text extraction). */
+  /** Cleaned text for prompts and quote verification. For a PDF without a text layer this is "" (→ OCR). */
   text: string | null;
+  /** PDF only: per-page text, footer metadata, text-layer flag. */
+  pdf?: PdfText;
+  hash: string;
 };
 
-/** Reads file bytes and wraps them with the right MIME type (text/markdown today, application/pdf later). */
+/** Reads file bytes; PDFs also get cleaned text (running headers/footers stripped, pages joined). */
 export async function loadDocumentPart(filePath: string): Promise<DocumentPart> {
   const bytes = await fs.readFile(filePath);
   const mimeType = mimeTypeFor(filePath);
-  return {
-    part: { mimeType, data: bytes.toString("base64") },
-    mimeType,
-    text: isTextMime(mimeType) ? bytes.toString("utf8") : null,
-  };
+  const hash = sha256(bytes);
+  if (mimeType === "application/pdf") {
+    const pdf = await pdfText(new Uint8Array(bytes));
+    return { part: { mimeType, data: bytes.toString("base64") }, mimeType, text: pdf.text, pdf, hash };
+  }
+  return { part: { mimeType, data: bytes.toString("base64") }, mimeType, text: isTextMime(mimeType) ? bytes.toString("utf8") : null, hash };
 }
 
-export type DocInput = { doc_id: string; filename: string; text?: string | null };
-export type DocGroup = { group_id: string; doc_ids: string[]; supplier_hint?: string };
+/** A document as the pipeline sees it: metadata + bytes + text (PDF text layer or OCR). */
+export type PipelineDoc = {
+  meta: DocumentMeta;
+  hash: string;
+  base64: string;
+  pdf: PdfText;
+  /** Text used for prompts and quote verification. */
+  text: string;
+  textSource: "pdf" | "ocr" | "none";
+};
 
-/**
- * Groups documents into contract families (one group per supplier relationship).
- * STUB: one group per document. Real grouping (AI family linking: references, parties, contract refs)
- * comes with live extraction.
- * TODO: test against doc_supplier_map when it arrives (do NOT use documents.json supplier_id as truth).
- */
-export async function groupDocuments(docs: DocInput[]): Promise<DocGroup[]> {
-  return docs.map((d, i) => ({ group_id: `GRP-${String(i + 1).padStart(2, "0")}`, doc_ids: [d.doc_id] }));
-}
+/** Footer identifiers as text lines (so grouping evidence quotes can be verified against them). */
+export const footerLines = (pdf: PdfText) =>
+  [...pdf.footer.envelopeIds.map((e) => `DocuSign Envelope ID: ${e}`), ...(pdf.footer.title ? [`Running title: ${pdf.footer.title}${pdf.footer.marker ? ` ${pdf.footer.marker}` : ""}`] : [])].join("\n");

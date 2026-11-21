@@ -1,6 +1,6 @@
 "use client";
 
-import { Activity, ArrowLeft, BadgeCheck, Hourglass, Users, CalendarClock, CheckCircle2, ExternalLink, FileSignature, FileText, Handshake, Loader2, Mail, Paperclip, ShieldCheck, Target } from "lucide-react";
+import { Activity, ArrowLeft, BadgeCheck, Hourglass, ScanLine, Users, CalendarClock, CheckCircle2, ExternalLink, FileSignature, FileText, Handshake, Loader2, Mail, Paperclip, ShieldCheck, Target } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { ActorBadge, ConfidencePill, FlagChip, Hint, LaneBadge, MiniBars, SourceChip, StateChip } from "@/components/docket";
@@ -70,9 +70,7 @@ export function ContractView({ view }: { view: SupplierView }) {
             <LaneBadge lane={view.lane} />
             <StateChip state={req.state} />
             <span className="text-xs text-muted-foreground">{CATEGORY_LABEL[view.category]} · {view.vendorId}</span>
-            <Hint content="Extraction was pre-computed and checked by a human against the gold set. Live extraction ships with AI grouping and PDF parsing.">
-              <Badge variant="secondary" className="gap-1"><BadgeCheck className="size-3" /> Pre-computed · human-verified</Badge>
-            </Hint>
+            <ExtractionBadge view={view} />
           </div>
         </div>
         <div className="flex gap-3">
@@ -121,6 +119,7 @@ export function ContractView({ view }: { view: SupplierView }) {
                       {d?.meta && <SourceChip source={d.meta.source} detail={`${d.doc_id} · ${d.meta.filename}`} />}
                       {l.field.citation && <span className="text-[11px] text-muted-foreground">{l.field.citation.doc_id} §{l.field.citation.section}</span>}
                       {l.field.overridden_by && <span className="text-[11px] font-medium text-src-docusign">overridden by {l.field.overridden_by}</span>}
+                      {l.field.ocr && <OcrChip />}
                     </div>
                   </button>
                 );
@@ -303,7 +302,8 @@ export function ContractView({ view }: { view: SupplierView }) {
                 <div className="flex flex-wrap gap-2">
                   <ConfidencePill value={open.field.confidence} unclear={open.field.value === "unclear"} />
                   <ActorBadge actor="AI" />
-                  <Badge variant="secondary" className="gap-1"><BadgeCheck className="size-3" /> Pre-computed · human-verified</Badge>
+                  <ExtractionBadge view={view} />
+                  {open.field.ocr && <OcrChip />}
                 </div>
                 {open.field.citation ? (
                   <>
@@ -312,6 +312,8 @@ export function ContractView({ view }: { view: SupplierView }) {
                       {open.field.citation.doc_id} · §{open.field.citation.section}
                       {docOf(open.field.citation.doc_id)?.meta && ` · ${docOf(open.field.citation.doc_id)!.meta!.filename}`}
                     </div>
+                    {open.field.verified && <p className="flex items-center gap-1 text-xs font-medium text-lane-green"><CheckCircle2 className="size-3.5" /> Quote found verbatim in {open.field.citation.doc_id}{open.field.ocr ? " (OCR text)" : ""}</p>}
+                    {open.field.note && <p className="text-xs text-muted-foreground">{open.field.note}</p>}
                     {open.field.overridden_by && <p className="text-xs font-medium text-src-docusign">Overridden by {open.field.overridden_by} (latest executed amendment wins).</p>}
                     <Button asChild variant="outline" size="sm">
                       <a href={`/api/docs/${open.field.citation.doc_id}`} target="_blank" rel="noreferrer"><ExternalLink /> Open {open.field.citation.doc_id} (PDF)</a>
@@ -326,6 +328,30 @@ export function ContractView({ view }: { view: SupplierView }) {
         </SheetContent>
       </Sheet>
     </div>
+  );
+}
+
+function ExtractionBadge({ view }: { view: SupplierView }) {
+  if (view.source === "cache" && view.pipeline) {
+    const p = view.pipeline;
+    return (
+      <Hint content={`Claude (${p.model}) read the PDFs${p.ocrDocs.length ? ` (OCR: ${p.ocrDocs.join(", ")})` : ""}. ${p.quotesChecked - p.quotesFailed}/${p.quotesChecked} cited quotes found verbatim in the documents. Dates and ₹ computed by Rules. ${p.generatedAt.slice(0, 10)}.`}>
+        <Badge variant="secondary" className="gap-1"><BadgeCheck className="size-3" /> AI-extracted · quote-verified</Badge>
+      </Hint>
+    );
+  }
+  return (
+    <Hint content="No AI extraction cached for this supplier: showing the seed (dev gold) as a fallback.">
+      <Badge variant="outline" className="gap-1">Seed · fallback</Badge>
+    </Hint>
+  );
+}
+
+function OcrChip() {
+  return (
+    <Hint content="Read from a scanned page by OCR. Confidence capped at 0.8, so a human confirms it.">
+      <span className="inline-flex h-5 items-center gap-1 rounded-full bg-lane-review-bg px-1.5 text-[10px] font-medium text-lane-review"><ScanLine className="size-3" /> OCR</span>
+    </Hint>
   );
 }
 

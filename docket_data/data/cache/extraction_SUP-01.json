@@ -1,0 +1,722 @@
+{
+  "supplier_id": "SUP-01",
+  "family": [
+    {
+      "doc_id": "DOC-01",
+      "doc_role": "msa",
+      "executed": true,
+      "execution_evidence": [
+        "DocuSign Certificate of Completion, Status: Completed",
+        "Signed by: Arvind Rao (DocuSigned) and Kavita Deshpande (DocuSigned)",
+        "Envelope Completed: 27-Mar-2024 10:47 IST"
+      ],
+      "references": []
+    },
+    {
+      "doc_id": "DOC-02",
+      "doc_role": "order_form",
+      "executed": true,
+      "execution_evidence": [
+        "Signature: [signed] by both parties with names, titles and dates 21.03.2025 and 24.03.2025",
+        "Company seal: Nimbus CRM Pvt Ltd, Bengaluru"
+      ],
+      "references": [
+        "DOC-01"
+      ]
+    },
+    {
+      "doc_id": "DOC-03",
+      "doc_role": "email",
+      "executed": false,
+      "execution_evidence": [
+        "System-generated vendor billing email; no signature blocks"
+      ],
+      "references": []
+    }
+  ],
+  "effective_terms": {
+    "renewal_type": {
+      "value": "auto",
+      "confidence": 0.95,
+      "citation": {
+        "doc_id": "DOC-01",
+        "section": "14.2",
+        "quote": "each Subscription Term shall automatically renew for successive periods of twelve (12) months"
+      },
+      "verified": true
+    },
+    "initial_term_end": {
+      "value": "2027-03-31",
+      "confidence": 0.95,
+      "citation": {
+        "doc_id": "DOC-02",
+        "section": "3.1",
+        "quote": "Subscription Term: 1 April 2025 to 31 March 2027"
+      },
+      "verified": true
+    },
+    "renewal_term_months": {
+      "value": 12,
+      "confidence": 0.95,
+      "citation": {
+        "doc_id": "DOC-01",
+        "section": "14.2",
+        "quote": "each Subscription Term shall automatically renew for successive periods of twelve (12) months"
+      },
+      "verified": true
+    },
+    "notice_days": {
+      "value": 90,
+      "confidence": 0.95,
+      "citation": {
+        "doc_id": "DOC-01",
+        "section": "1.21",
+        "quote": "\"Notice Period\" means, in relation to any Subscription Term, ninety (90) days."
+      },
+      "verified": true
+    },
+    "notice_day_type": {
+      "value": "calendar",
+      "confidence": 0.93,
+      "citation": {
+        "doc_id": "DOC-01",
+        "section": "1.33",
+        "quote": "References to a number of days are to calendar days unless Business Days are expressly specified."
+      },
+      "verified": true
+    },
+    "notice_method": {
+      "value": "email",
+      "confidence": 0.9,
+      "citation": {
+        "doc_id": "DOC-01",
+        "section": "29.1",
+        "quote": "All notices under this Agreement shall be in writing and given by email to the notice address of the receiving Party"
+      },
+      "verified": true
+    },
+    "notice_address": {
+      "value": "legal@nimbuscrm.in",
+      "confidence": 0.95,
+      "citation": {
+        "doc_id": "DOC-01",
+        "section": "29.2",
+        "quote": "Notice addresses: Nimbus: legal@nimbuscrm.in;"
+      },
+      "verified": true
+    },
+    "uplift": {
+      "type": {
+        "value": "greater_of",
+        "confidence": 0.95,
+        "citation": {
+          "doc_id": "DOC-01",
+          "section": "15.3",
+          "quote": "the Fees for the Renewal Term shall increase by the greater of (a) seven per cent (7%) and (b)"
+        },
+        "verified": true
+      },
+      "value_pct": {
+        "value": 7,
+        "confidence": 0.95,
+        "citation": {
+          "doc_id": "DOC-01",
+          "section": "15.3",
+          "quote": "the Fees for the Renewal Term shall increase by the greater of (a) seven per cent (7%) and (b)"
+        },
+        "verified": true
+      },
+      "cap_pct": {
+        "value": null,
+        "confidence": 0.9,
+        "citation": null
+      }
+    },
+    "tfc": {
+      "value": true,
+      "confidence": 0.95,
+      "citation": {
+        "doc_id": "DOC-01",
+        "section": "19.2",
+        "quote": "Customer may terminate any Order Form for convenience by giving not less than ninety (90) days' prior written notice to Nimbus."
+      },
+      "verified": true
+    },
+    "tfc_notice_days": {
+      "value": 90,
+      "confidence": 0.95,
+      "citation": {
+        "doc_id": "DOC-01",
+        "section": "19.2",
+        "quote": "Customer may terminate any Order Form for convenience by giving not less than ninety (90) days' prior written notice to Nimbus."
+      },
+      "verified": true
+    },
+    "payment_terms_days": {
+      "value": 45,
+      "confidence": 0.95,
+      "citation": {
+        "doc_id": "DOC-01",
+        "section": "16.2",
+        "quote": "Undisputed invoices are payable within forty-five (45) days of the date of invoice."
+      },
+      "verified": true
+    },
+    "sla_credits": {
+      "value": true,
+      "confidence": 0.97,
+      "citation": {
+        "doc_id": "DOC-01",
+        "section": "17.2",
+        "quote": "Customer shall be entitled to Service Credits as set out in Schedule 1."
+      },
+      "verified": true
+    },
+    "currency": {
+      "value": "INR",
+      "confidence": 0.95,
+      "citation": {
+        "doc_id": "DOC-02",
+        "section": "4.1",
+        "quote": "Annual Subscription Fee: ₹62,00,000 (Rupees Sixty-Two Lakh only) per annum"
+      },
+      "verified": true
+    },
+    "governing_law": {
+      "value": "India",
+      "confidence": 0.97,
+      "citation": {
+        "doc_id": "DOC-01",
+        "section": "31.1",
+        "quote": "This Agreement shall be governed by and construed in accordance with the laws of India."
+      },
+      "verified": true
+    },
+    "annual_value": {
+      "value": 6200000,
+      "confidence": 0.95,
+      "citation": {
+        "doc_id": "DOC-02",
+        "section": "4.1",
+        "quote": "Annual Subscription Fee: ₹62,00,000 (Rupees Sixty-Two Lakh only) per annum"
+      },
+      "verified": true
+    }
+  },
+  "sla_terms": {
+    "metric": "uptime_pct",
+    "target": 99.5,
+    "currency": "INR",
+    "credit_rule": [
+      {
+        "from_incl": 0,
+        "to_excl": 98,
+        "credit_pct": 20
+      },
+      {
+        "from_incl": 98,
+        "to_excl": 99,
+        "credit_pct": 10
+      },
+      {
+        "from_incl": 99,
+        "to_excl": 99.5,
+        "credit_pct": 5
+      }
+    ],
+    "credit_basis": "monthly_fees",
+    "citation": {
+      "doc_id": "DOC-01",
+      "section": "17.1",
+      "quote": "Nimbus shall make the Subscription Services available with a Monthly Uptime of at least 99.5%"
+    },
+    "fee_basis_monthly": null
+  },
+  "licensed_units": [
+    {
+      "metric": "named_users_sales_cloud",
+      "licensed_units": 450,
+      "doc_id": "DOC-02"
+    },
+    {
+      "metric": "agents_service_desk",
+      "licensed_units": 120,
+      "doc_id": "DOC-02"
+    }
+  ],
+  "pipeline": {
+    "source": "ai",
+    "model": "claude-sonnet-5-5",
+    "prompt_version": "extraction-3",
+    "generated_at": "2026-11-24T06:37:29.532Z",
+    "input_key": "90b6b583746b85eb0b3391bdc35c772cad5403a70c07e84b7137adf463c9cbe8",
+    "docs": [
+      {
+        "doc_id": "DOC-01",
+        "sha256": "91fde7cb279f4fa4dc2f8103be6995cad987b3fa892d2226b54128bd27e9febb",
+        "text_source": "pdf"
+      },
+      {
+        "doc_id": "DOC-02",
+        "sha256": "521e278c06725b9e2c7db190696e34a6afebdf736d99879bf6859185a4c2ab9e",
+        "text_source": "pdf"
+      },
+      {
+        "doc_id": "DOC-03",
+        "sha256": "429cec3ce63eeea3d098c9e978f52e393e92ee2c96dcb12d6a5a0d747f352285",
+        "text_source": "pdf"
+      }
+    ],
+    "ocr_fields": [],
+    "verification": [
+      {
+        "key": "renewal_type",
+        "doc_id": "DOC-01",
+        "section": "14.2",
+        "quote": "each Subscription Term shall automatically renew for successive periods of twelve (12) months",
+        "ok": true
+      },
+      {
+        "key": "renewal_term_months",
+        "doc_id": "DOC-01",
+        "section": "14.2",
+        "quote": "each Subscription Term shall automatically renew for successive periods of twelve (12) months",
+        "ok": true
+      },
+      {
+        "key": "notice_days",
+        "doc_id": "DOC-01",
+        "section": "1.21",
+        "quote": "\"Notice Period\" means, in relation to any Subscription Term, ninety (90) days.",
+        "ok": true
+      },
+      {
+        "key": "notice_day_type",
+        "doc_id": "DOC-01",
+        "section": "1.33",
+        "quote": "References to a number of days are to calendar days unless Business Days are expressly specified.",
+        "ok": true
+      },
+      {
+        "key": "notice_method",
+        "doc_id": "DOC-01",
+        "section": "29.1",
+        "quote": "All notices under this Agreement shall be in writing and given by email to the notice address of the receiving Party",
+        "ok": true
+      },
+      {
+        "key": "notice_address",
+        "doc_id": "DOC-01",
+        "section": "29.2",
+        "quote": "Notice addresses: Nimbus: legal@nimbuscrm.in;",
+        "ok": true
+      },
+      {
+        "key": "uplift.type",
+        "doc_id": "DOC-01",
+        "section": "15.3",
+        "quote": "the Fees for the Renewal Term shall increase by the greater of (a) seven per cent (7%) and (b)",
+        "ok": true
+      },
+      {
+        "key": "uplift.value_pct",
+        "doc_id": "DOC-01",
+        "section": "15.3",
+        "quote": "the Fees for the Renewal Term shall increase by the greater of (a) seven per cent (7%) and (b)",
+        "ok": true
+      },
+      {
+        "key": "tfc",
+        "doc_id": "DOC-01",
+        "section": "19.2",
+        "quote": "Customer may terminate any Order Form for convenience by giving not less than ninety (90) days' prior written notice to Nimbus.",
+        "ok": true
+      },
+      {
+        "key": "tfc_notice_days",
+        "doc_id": "DOC-01",
+        "section": "19.2",
+        "quote": "Customer may terminate any Order Form for convenience by giving not less than ninety (90) days' prior written notice to Nimbus.",
+        "ok": true
+      },
+      {
+        "key": "payment_terms_days",
+        "doc_id": "DOC-01",
+        "section": "16.2",
+        "quote": "Undisputed invoices are payable within forty-five (45) days of the date of invoice.",
+        "ok": true
+      },
+      {
+        "key": "sla_credits",
+        "doc_id": "DOC-01",
+        "section": "17.2",
+        "quote": "Customer shall be entitled to Service Credits as set out in Schedule 1.",
+        "ok": true
+      },
+      {
+        "key": "governing_law",
+        "doc_id": "DOC-01",
+        "section": "31.1",
+        "quote": "This Agreement shall be governed by and construed in accordance with the laws of India.",
+        "ok": true
+      },
+      {
+        "key": "initial_term_end",
+        "doc_id": "DOC-02",
+        "section": "3.1",
+        "quote": "Subscription Term: 1 April 2025 to 31 March 2027",
+        "ok": true
+      },
+      {
+        "key": "annual_value",
+        "doc_id": "DOC-02",
+        "section": "4.1",
+        "quote": "Annual Subscription Fee: ₹62,00,000 (Rupees Sixty-Two Lakh only) per annum",
+        "ok": true
+      },
+      {
+        "key": "currency",
+        "doc_id": "DOC-02",
+        "section": "4.1",
+        "quote": "Annual Subscription Fee: ₹62,00,000 (Rupees Sixty-Two Lakh only) per annum",
+        "ok": true
+      },
+      {
+        "key": "sla_terms",
+        "doc_id": "DOC-01",
+        "section": "17.1",
+        "quote": "Nimbus shall make the Subscription Services available with a Monthly Uptime of at least 99.5%",
+        "ok": true
+      },
+      {
+        "key": "licensed:named_users_sales_cloud",
+        "doc_id": "DOC-02",
+        "section": "2",
+        "quote": "450 named users",
+        "ok": true
+      },
+      {
+        "key": "licensed:agents_service_desk",
+        "doc_id": "DOC-02",
+        "section": "2",
+        "quote": "120 agents",
+        "ok": true
+      }
+    ],
+    "verification_failures": 0,
+    "grouping": [
+      {
+        "doc_id": "DOC-01",
+        "confidence": 0.9,
+        "evidence": [
+          "Exact legal name NIMBUS CRM PRIVATE LIMITED as contracting party (vendor master V-10041); CIN given, no conflicting identifier"
+        ]
+      },
+      {
+        "doc_id": "DOC-02",
+        "confidence": 0.95,
+        "evidence": [
+          "Parent reference: Master Subscription Agreement dated 26 March 2024 (DOC-01, Nimbus CRM Private Limited)",
+          "Exact legal name Nimbus CRM Private Limited"
+        ]
+      },
+      {
+        "doc_id": "DOC-03",
+        "confidence": 0.9,
+        "evidence": [
+          "Email signed Nimbus CRM Private Limited; sender domain nimbuscrm.in matches arvind.rao@nimbuscrm.in in DOC-01 certificate"
+        ]
+      }
+    ],
+    "raw": {
+      "family": [
+        {
+          "doc_id": "DOC-01",
+          "doc_role": "msa",
+          "executed": true,
+          "execution_evidence": [
+            "DocuSign Certificate of Completion, Status: Completed",
+            "Signed by: Arvind Rao (DocuSigned) and Kavita Deshpande (DocuSigned)",
+            "Envelope Completed: 27-Mar-2024 10:47 IST"
+          ],
+          "references": [],
+          "signed_date": "2024-03-27"
+        },
+        {
+          "doc_id": "DOC-02",
+          "doc_role": "order_form",
+          "executed": true,
+          "execution_evidence": [
+            "Signature: [signed] by both parties with names, titles and dates 21.03.2025 and 24.03.2025",
+            "Company seal: Nimbus CRM Pvt Ltd, Bengaluru"
+          ],
+          "references": [
+            "DOC-01"
+          ],
+          "signed_date": "2025-03-24"
+        },
+        {
+          "doc_id": "DOC-03",
+          "doc_role": "email",
+          "executed": false,
+          "execution_evidence": [
+            "System-generated vendor billing email; no signature blocks"
+          ],
+          "references": [],
+          "signed_date": null
+        }
+      ],
+      "documents": [
+        {
+          "doc_id": "DOC-01",
+          "fields": [
+            {
+              "key": "renewal_type",
+              "value": "auto",
+              "confidence": 0.95,
+              "citation": {
+                "doc_id": "DOC-01",
+                "section": "14.2",
+                "quote": "each Subscription Term shall automatically renew for successive periods of twelve (12) months"
+              },
+              "note": null
+            },
+            {
+              "key": "renewal_term_months",
+              "value": 12,
+              "confidence": 0.95,
+              "citation": {
+                "doc_id": "DOC-01",
+                "section": "14.2",
+                "quote": "each Subscription Term shall automatically renew for successive periods of twelve (12) months"
+              },
+              "note": null
+            },
+            {
+              "key": "notice_days",
+              "value": 90,
+              "confidence": 0.95,
+              "citation": {
+                "doc_id": "DOC-01",
+                "section": "1.21",
+                "quote": "\"Notice Period\" means, in relation to any Subscription Term, ninety (90) days."
+              },
+              "note": null
+            },
+            {
+              "key": "notice_day_type",
+              "value": "calendar",
+              "confidence": 0.93,
+              "citation": {
+                "doc_id": "DOC-01",
+                "section": "1.33",
+                "quote": "References to a number of days are to calendar days unless Business Days are expressly specified."
+              },
+              "note": null
+            },
+            {
+              "key": "notice_method",
+              "value": "email",
+              "confidence": 0.9,
+              "citation": {
+                "doc_id": "DOC-01",
+                "section": "29.1",
+                "quote": "All notices under this Agreement shall be in writing and given by email to the notice address of the receiving Party"
+              },
+              "note": null
+            },
+            {
+              "key": "notice_address",
+              "value": "legal@nimbuscrm.in",
+              "confidence": 0.95,
+              "citation": {
+                "doc_id": "DOC-01",
+                "section": "29.2",
+                "quote": "Notice addresses: Nimbus: legal@nimbuscrm.in;"
+              },
+              "note": null
+            },
+            {
+              "key": "uplift.type",
+              "value": "greater_of",
+              "confidence": 0.95,
+              "citation": {
+                "doc_id": "DOC-01",
+                "section": "15.3",
+                "quote": "the Fees for the Renewal Term shall increase by the greater of (a) seven per cent (7%) and (b)"
+              },
+              "note": null
+            },
+            {
+              "key": "uplift.value_pct",
+              "value": 7,
+              "confidence": 0.95,
+              "citation": {
+                "doc_id": "DOC-01",
+                "section": "15.3",
+                "quote": "the Fees for the Renewal Term shall increase by the greater of (a) seven per cent (7%) and (b)"
+              },
+              "note": null
+            },
+            {
+              "key": "tfc",
+              "value": true,
+              "confidence": 0.95,
+              "citation": {
+                "doc_id": "DOC-01",
+                "section": "19.2",
+                "quote": "Customer may terminate any Order Form for convenience by giving not less than ninety (90) days' prior written notice to Nimbus."
+              },
+              "note": null
+            },
+            {
+              "key": "tfc_notice_days",
+              "value": 90,
+              "confidence": 0.95,
+              "citation": {
+                "doc_id": "DOC-01",
+                "section": "19.2",
+                "quote": "Customer may terminate any Order Form for convenience by giving not less than ninety (90) days' prior written notice to Nimbus."
+              },
+              "note": null
+            },
+            {
+              "key": "payment_terms_days",
+              "value": 45,
+              "confidence": 0.95,
+              "citation": {
+                "doc_id": "DOC-01",
+                "section": "16.2",
+                "quote": "Undisputed invoices are payable within forty-five (45) days of the date of invoice."
+              },
+              "note": null
+            },
+            {
+              "key": "sla_credits",
+              "value": true,
+              "confidence": 0.97,
+              "citation": {
+                "doc_id": "DOC-01",
+                "section": "17.2",
+                "quote": "Customer shall be entitled to Service Credits as set out in Schedule 1."
+              },
+              "note": null
+            },
+            {
+              "key": "governing_law",
+              "value": "India",
+              "confidence": 0.97,
+              "citation": {
+                "doc_id": "DOC-01",
+                "section": "31.1",
+                "quote": "This Agreement shall be governed by and construed in accordance with the laws of India."
+              },
+              "note": null
+            }
+          ],
+          "rate_lines": []
+        },
+        {
+          "doc_id": "DOC-02",
+          "fields": [
+            {
+              "key": "initial_term_end",
+              "value": "2027-03-31",
+              "confidence": 0.95,
+              "citation": {
+                "doc_id": "DOC-02",
+                "section": "3.1",
+                "quote": "Subscription Term: 1 April 2025 to 31 March 2027"
+              },
+              "note": null
+            },
+            {
+              "key": "annual_value",
+              "value": 6200000,
+              "confidence": 0.95,
+              "citation": {
+                "doc_id": "DOC-02",
+                "section": "4.1",
+                "quote": "Annual Subscription Fee: ₹62,00,000 (Rupees Sixty-Two Lakh only) per annum"
+              },
+              "note": null
+            },
+            {
+              "key": "currency",
+              "value": "INR",
+              "confidence": 0.95,
+              "citation": {
+                "doc_id": "DOC-02",
+                "section": "4.1",
+                "quote": "Annual Subscription Fee: ₹62,00,000 (Rupees Sixty-Two Lakh only) per annum"
+              },
+              "note": null
+            }
+          ],
+          "rate_lines": []
+        },
+        {
+          "doc_id": "DOC-03",
+          "fields": [],
+          "rate_lines": []
+        }
+      ],
+      "not_stated": [
+        {
+          "key": "uplift.cap_pct",
+          "confidence": 0.9,
+          "reason": "No cap on the renewal price increase in any executed document."
+        }
+      ],
+      "quote": null,
+      "sla_terms": {
+        "metric": "uptime_pct",
+        "target": 99.5,
+        "currency": "INR",
+        "credit_rule": [
+          {
+            "from_incl": 0,
+            "to_excl": 98,
+            "credit_pct": 20
+          },
+          {
+            "from_incl": 98,
+            "to_excl": 99,
+            "credit_pct": 10
+          },
+          {
+            "from_incl": 99,
+            "to_excl": 99.5,
+            "credit_pct": 5
+          }
+        ],
+        "credit_basis": "monthly_fees",
+        "citation": {
+          "doc_id": "DOC-01",
+          "section": "17.1",
+          "quote": "Nimbus shall make the Subscription Services available with a Monthly Uptime of at least 99.5%"
+        }
+      },
+      "licensed_units": [
+        {
+          "metric": "named_users_sales_cloud",
+          "licensed_units": 450,
+          "citation": {
+            "doc_id": "DOC-02",
+            "section": "2",
+            "quote": "450 named users"
+          }
+        },
+        {
+          "metric": "agents_service_desk",
+          "licensed_units": 120,
+          "citation": {
+            "doc_id": "DOC-02",
+            "section": "2",
+            "quote": "120 agents"
+          }
+        }
+      ]
+    }
+  }
+}

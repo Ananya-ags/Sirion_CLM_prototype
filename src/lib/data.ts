@@ -15,6 +15,7 @@ import {
   DocumentSchema,
   ExtractionOutputSchema,
   FxSchema,
+  GroupingFileSchema,
   HeldoutGoldFileSchema,
   HolidaysFileSchema,
   LedgerRowSchema,
@@ -114,6 +115,9 @@ export const loadHeldoutDoc = (file: string) => readDoc("gold/heldout", file);
 export function loadCache<S extends z.ZodType>(name: string, schema: S, fallback: z.output<S>) {
   return loadJson(`cache/${path.basename(name, ".json")}.json`, schema, fallback);
 }
+
+/** AI grouping (cache/grouping.json); null when the pipeline has not run. */
+export const loadGrouping = () => loadCache("grouping", GroupingFileSchema.nullable(), null);
 
 export const loadCachedExtractions = (): Promise<ExtractionOutput[]> =>
   loadCache("extraction", ExtractionOutputSchema.array(), []);

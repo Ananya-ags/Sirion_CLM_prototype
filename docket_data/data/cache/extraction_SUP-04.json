@@ -1,0 +1,624 @@
+{
+  "supplier_id": "SUP-04",
+  "family": [
+    {
+      "doc_id": "DOC-12",
+      "doc_role": "msa",
+      "executed": true,
+      "execution_evidence": [
+        "Signature blocks for Joseph D'Souza and Sanjay Hegde with [signature] marks",
+        "Company rubber stamps and company seal",
+        "Karnataka e-stamp certificate No. IN-KA41772093518842V",
+        "Two witnesses signed",
+        "Agreement made and executed on 22nd day of December 2023"
+      ],
+      "references": []
+    },
+    {
+      "doc_id": "DOC-13",
+      "doc_role": "email",
+      "executed": false,
+      "execution_evidence": [
+        "Supplier email confirming continuation; no countersigned agreement text"
+      ],
+      "references": [
+        "DOC-12"
+      ]
+    }
+  ],
+  "effective_terms": {
+    "renewal_type": {
+      "value": "evergreen",
+      "confidence": 0.8,
+      "citation": {
+        "doc_id": "DOC-12",
+        "section": "2.2",
+        "quote": "this Agreement shall continue on a month-to-month basis on the same terms and conditions until terminated by either party"
+      },
+      "verified": true,
+      "ocr": true
+    },
+    "initial_term_end": {
+      "value": "2025-12-31",
+      "confidence": 0.8,
+      "citation": {
+        "doc_id": "DOC-12",
+        "section": "2.1",
+        "quote": "This Agreement shall be in force from 01.01.2024 to 31.12.2025."
+      },
+      "verified": true,
+      "ocr": true
+    },
+    "renewal_term_months": {
+      "value": 1,
+      "confidence": 0.8,
+      "citation": {
+        "doc_id": "DOC-12",
+        "section": "2.2",
+        "quote": "shall continue on a month-to-month basis"
+      },
+      "verified": true,
+      "ocr": true
+    },
+    "notice_days": {
+      "value": 30,
+      "confidence": 0.8,
+      "citation": {
+        "doc_id": "DOC-12",
+        "section": "2.2",
+        "quote": "by giving not less than thirty (30) days prior written notice to the other party"
+      },
+      "verified": true,
+      "ocr": true
+    },
+    "notice_day_type": {
+      "value": "calendar",
+      "confidence": 0.8,
+      "citation": {
+        "doc_id": "DOC-12",
+        "section": "2.2",
+        "quote": "by giving not less than thirty (30) days prior written notice to the other party"
+      },
+      "verified": true,
+      "ocr": true
+    },
+    "notice_method": {
+      "value": "registered_post",
+      "confidence": 0.8,
+      "citation": {
+        "doc_id": "DOC-12",
+        "section": "13.1",
+        "quote": "shall be sent by Registered Post with Acknowledgement Due to the registered office of the other party stated above, and shall not be valid if sent by email alone."
+      },
+      "verified": true,
+      "ocr": true
+    },
+    "notice_address": {
+      "value": "No. 221, 5th Main, HSR Layout Sector 6, Bengaluru 560102",
+      "confidence": 0.8,
+      "citation": {
+        "doc_id": "DOC-12",
+        "section": "Parties",
+        "quote": "having its registered office at No. 221, 5th Main, HSR Layout Sector 6, Bengaluru 560102"
+      },
+      "verified": true,
+      "ocr": true,
+      "note": "Registered office of Service Provider per clause 13.1"
+    },
+    "uplift": {
+      "type": {
+        "value": "none",
+        "confidence": 0.8,
+        "citation": {
+          "doc_id": "DOC-12",
+          "section": "3.2",
+          "quote": "The monthly charges are fixed for the period of this Agreement including any continuation under Clause 2.2."
+        },
+        "verified": true,
+        "ocr": true
+      },
+      "value_pct": {
+        "value": null,
+        "confidence": 0.85,
+        "citation": null
+      },
+      "cap_pct": {
+        "value": null,
+        "confidence": 0.85,
+        "citation": null
+      }
+    },
+    "tfc": {
+      "value": true,
+      "confidence": 0.8,
+      "citation": {
+        "doc_id": "DOC-12",
+        "section": "11.2",
+        "quote": "Either party may terminate this Agreement at any time without assigning any reason by giving thirty (30) days written notice to the other party."
+      },
+      "verified": true,
+      "ocr": true
+    },
+    "tfc_notice_days": {
+      "value": 30,
+      "confidence": 0.8,
+      "citation": {
+        "doc_id": "DOC-12",
+        "section": "11.2",
+        "quote": "by giving thirty (30) days written notice to the other party"
+      },
+      "verified": true,
+      "ocr": true
+    },
+    "payment_terms_days": {
+      "value": 45,
+      "confidence": 0.8,
+      "citation": {
+        "doc_id": "DOC-12",
+        "section": "4.1",
+        "quote": "The Company shall release payment within forty-five (45) days from receipt of a correct invoice."
+      },
+      "verified": true,
+      "ocr": true
+    },
+    "sla_credits": {
+      "value": true,
+      "confidence": 0.8,
+      "citation": {
+        "doc_id": "DOC-12",
+        "section": "5.2",
+        "quote": "the Company shall be entitled to deduct two per cent (2%) of the monthly charges, subject to a maximum of ten per cent (10%) in any month."
+      },
+      "verified": true,
+      "ocr": true
+    },
+    "currency": {
+      "value": "INR",
+      "confidence": 0.8,
+      "citation": {
+        "doc_id": "DOC-12",
+        "section": "3.1",
+        "quote": "The Company shall pay the Service Provider a sum of Rs. 22,00,000/-"
+      },
+      "verified": true,
+      "ocr": true
+    },
+    "governing_law": {
+      "value": "India",
+      "confidence": 0.8,
+      "citation": {
+        "doc_id": "DOC-12",
+        "section": "14.1",
+        "quote": "This Agreement shall be governed by the laws of India"
+      },
+      "verified": true,
+      "ocr": true
+    },
+    "annual_value": {
+      "value": 2200000,
+      "confidence": 0.8,
+      "citation": {
+        "doc_id": "DOC-12",
+        "section": "3.1",
+        "quote": "Rs. 22,00,000/- (Rupees Twenty Two Lakhs only) per annum"
+      },
+      "verified": true,
+      "ocr": true
+    }
+  },
+  "sla_terms": {
+    "metric": "personnel_deployment_and_weekly_audit",
+    "target": 100,
+    "currency": "INR",
+    "credit_rule": "For every shortfall in deployment of personnel on any day, and for every failed weekly audit, the Company shall be entitled to deduct two per cent (2%) of the monthly charges, subject to a maximum of ten per cent (10%) in any month.",
+    "credit_basis": "monthly_fees",
+    "citation": {
+      "doc_id": "DOC-12",
+      "section": "5.2",
+      "quote": "For every shortfall in deployment of personnel on any day, and for every failed weekly audit, the Company shall be entitled to deduct two per cent (2%) of the monthly charges"
+    },
+    "fee_basis_monthly": null
+  },
+  "licensed_units": [],
+  "pipeline": {
+    "source": "ai",
+    "model": "claude-sonnet-5-5",
+    "prompt_version": "extraction-3",
+    "generated_at": "2026-11-24T06:37:25.470Z",
+    "input_key": "c54f3a37ec3f2216ec0795b3ec9971f1fe0289c8794761b86dccae870fd52a30",
+    "docs": [
+      {
+        "doc_id": "DOC-12",
+        "sha256": "31b72de11ee13172d9112ebbc7349ada622aeac2599a325e80866fc6e54074a1",
+        "text_source": "ocr"
+      },
+      {
+        "doc_id": "DOC-13",
+        "sha256": "0fba6a307d3e1b8da7ba4ee0c184135da0685547ba1a7b5467c63b36cbd4e875",
+        "text_source": "pdf"
+      }
+    ],
+    "ocr_fields": [
+      "renewal_type",
+      "initial_term_end",
+      "renewal_term_months",
+      "notice_days",
+      "notice_day_type",
+      "notice_method",
+      "notice_address",
+      "uplift.type",
+      "tfc",
+      "tfc_notice_days",
+      "payment_terms_days",
+      "sla_credits",
+      "currency",
+      "governing_law",
+      "annual_value"
+    ],
+    "verification": [
+      {
+        "key": "renewal_type",
+        "doc_id": "DOC-12",
+        "section": "2.2",
+        "quote": "this Agreement shall continue on a month-to-month basis on the same terms and conditions until terminated by either party",
+        "ok": true
+      },
+      {
+        "key": "initial_term_end",
+        "doc_id": "DOC-12",
+        "section": "2.1",
+        "quote": "This Agreement shall be in force from 01.01.2024 to 31.12.2025.",
+        "ok": true
+      },
+      {
+        "key": "renewal_term_months",
+        "doc_id": "DOC-12",
+        "section": "2.2",
+        "quote": "shall continue on a month-to-month basis",
+        "ok": true
+      },
+      {
+        "key": "notice_days",
+        "doc_id": "DOC-12",
+        "section": "2.2",
+        "quote": "by giving not less than thirty (30) days prior written notice to the other party",
+        "ok": true
+      },
+      {
+        "key": "notice_day_type",
+        "doc_id": "DOC-12",
+        "section": "2.2",
+        "quote": "by giving not less than thirty (30) days prior written notice to the other party",
+        "ok": true
+      },
+      {
+        "key": "notice_method",
+        "doc_id": "DOC-12",
+        "section": "13.1",
+        "quote": "shall be sent by Registered Post with Acknowledgement Due to the registered office of the other party stated above, and shall not be valid if sent by email alone.",
+        "ok": true
+      },
+      {
+        "key": "notice_address",
+        "doc_id": "DOC-12",
+        "section": "Parties",
+        "quote": "having its registered office at No. 221, 5th Main, HSR Layout Sector 6, Bengaluru 560102",
+        "ok": true
+      },
+      {
+        "key": "uplift.type",
+        "doc_id": "DOC-12",
+        "section": "3.2",
+        "quote": "The monthly charges are fixed for the period of this Agreement including any continuation under Clause 2.2.",
+        "ok": true
+      },
+      {
+        "key": "tfc",
+        "doc_id": "DOC-12",
+        "section": "11.2",
+        "quote": "Either party may terminate this Agreement at any time without assigning any reason by giving thirty (30) days written notice to the other party.",
+        "ok": true
+      },
+      {
+        "key": "tfc_notice_days",
+        "doc_id": "DOC-12",
+        "section": "11.2",
+        "quote": "by giving thirty (30) days written notice to the other party",
+        "ok": true
+      },
+      {
+        "key": "payment_terms_days",
+        "doc_id": "DOC-12",
+        "section": "4.1",
+        "quote": "The Company shall release payment within forty-five (45) days from receipt of a correct invoice.",
+        "ok": true
+      },
+      {
+        "key": "sla_credits",
+        "doc_id": "DOC-12",
+        "section": "5.2",
+        "quote": "the Company shall be entitled to deduct two per cent (2%) of the monthly charges, subject to a maximum of ten per cent (10%) in any month.",
+        "ok": true
+      },
+      {
+        "key": "currency",
+        "doc_id": "DOC-12",
+        "section": "3.1",
+        "quote": "The Company shall pay the Service Provider a sum of Rs. 22,00,000/-",
+        "ok": true
+      },
+      {
+        "key": "governing_law",
+        "doc_id": "DOC-12",
+        "section": "14.1",
+        "quote": "This Agreement shall be governed by the laws of India",
+        "ok": true
+      },
+      {
+        "key": "annual_value",
+        "doc_id": "DOC-12",
+        "section": "3.1",
+        "quote": "Rs. 22,00,000/- (Rupees Twenty Two Lakhs only) per annum",
+        "ok": true
+      },
+      {
+        "key": "sla_terms",
+        "doc_id": "DOC-12",
+        "section": "5.2",
+        "quote": "For every shortfall in deployment of personnel on any day, and for every failed weekly audit, the Company shall be entitled to deduct two per cent (2%) of the monthly charges",
+        "ok": true
+      }
+    ],
+    "verification_failures": 0,
+    "grouping": [
+      {
+        "doc_id": "DOC-12",
+        "confidence": 0.9,
+        "evidence": [
+          "Exact legal name CLEANSPHERE FACILITY SERVICES PRIVATE LIMITED as Service Provider (V-10008)"
+        ]
+      },
+      {
+        "doc_id": "DOC-13",
+        "confidence": 0.95,
+        "evidence": [
+          "Refers to Housekeeping Agreement dated 22 December 2023 (DOC-12); signed CleanSphere Facility Services Pvt Ltd"
+        ]
+      }
+    ],
+    "raw": {
+      "family": [
+        {
+          "doc_id": "DOC-12",
+          "doc_role": "msa",
+          "executed": true,
+          "execution_evidence": [
+            "Signature blocks for Joseph D'Souza and Sanjay Hegde with [signature] marks",
+            "Company rubber stamps and company seal",
+            "Karnataka e-stamp certificate No. IN-KA41772093518842V",
+            "Two witnesses signed",
+            "Agreement made and executed on 22nd day of December 2023"
+          ],
+          "references": [],
+          "signed_date": "2023-12-22"
+        },
+        {
+          "doc_id": "DOC-13",
+          "doc_role": "email",
+          "executed": false,
+          "execution_evidence": [
+            "Supplier email confirming continuation; no countersigned agreement text"
+          ],
+          "references": [
+            "DOC-12"
+          ],
+          "signed_date": null
+        }
+      ],
+      "documents": [
+        {
+          "doc_id": "DOC-12",
+          "fields": [
+            {
+              "key": "renewal_type",
+              "value": "evergreen",
+              "confidence": 0.9,
+              "citation": {
+                "doc_id": "DOC-12",
+                "section": "2.2",
+                "quote": "this Agreement shall continue on a month-to-month basis on the same terms and conditions until terminated by either party"
+              },
+              "note": null
+            },
+            {
+              "key": "initial_term_end",
+              "value": "2025-12-31",
+              "confidence": 0.95,
+              "citation": {
+                "doc_id": "DOC-12",
+                "section": "2.1",
+                "quote": "This Agreement shall be in force from 01.01.2024 to 31.12.2025."
+              },
+              "note": null
+            },
+            {
+              "key": "renewal_term_months",
+              "value": 1,
+              "confidence": 0.9,
+              "citation": {
+                "doc_id": "DOC-12",
+                "section": "2.2",
+                "quote": "shall continue on a month-to-month basis"
+              },
+              "note": null
+            },
+            {
+              "key": "notice_days",
+              "value": 30,
+              "confidence": 0.9,
+              "citation": {
+                "doc_id": "DOC-12",
+                "section": "2.2",
+                "quote": "by giving not less than thirty (30) days prior written notice to the other party"
+              },
+              "note": null
+            },
+            {
+              "key": "notice_day_type",
+              "value": "calendar",
+              "confidence": 0.85,
+              "citation": {
+                "doc_id": "DOC-12",
+                "section": "2.2",
+                "quote": "by giving not less than thirty (30) days prior written notice to the other party"
+              },
+              "note": null
+            },
+            {
+              "key": "notice_method",
+              "value": "registered_post",
+              "confidence": 0.9,
+              "citation": {
+                "doc_id": "DOC-12",
+                "section": "13.1",
+                "quote": "shall be sent by Registered Post with Acknowledgement Due to the registered office of the other party stated above, and shall not be valid if sent by email alone."
+              },
+              "note": null
+            },
+            {
+              "key": "notice_address",
+              "value": "No. 221, 5th Main, HSR Layout Sector 6, Bengaluru 560102",
+              "confidence": 0.85,
+              "citation": {
+                "doc_id": "DOC-12",
+                "section": "Parties",
+                "quote": "having its registered office at No. 221, 5th Main, HSR Layout Sector 6, Bengaluru 560102"
+              },
+              "note": "Registered office of Service Provider per clause 13.1"
+            },
+            {
+              "key": "uplift.type",
+              "value": "none",
+              "confidence": 0.8,
+              "citation": {
+                "doc_id": "DOC-12",
+                "section": "3.2",
+                "quote": "The monthly charges are fixed for the period of this Agreement including any continuation under Clause 2.2."
+              },
+              "note": null
+            },
+            {
+              "key": "tfc",
+              "value": true,
+              "confidence": 0.9,
+              "citation": {
+                "doc_id": "DOC-12",
+                "section": "11.2",
+                "quote": "Either party may terminate this Agreement at any time without assigning any reason by giving thirty (30) days written notice to the other party."
+              },
+              "note": null
+            },
+            {
+              "key": "tfc_notice_days",
+              "value": 30,
+              "confidence": 0.9,
+              "citation": {
+                "doc_id": "DOC-12",
+                "section": "11.2",
+                "quote": "by giving thirty (30) days written notice to the other party"
+              },
+              "note": null
+            },
+            {
+              "key": "payment_terms_days",
+              "value": 45,
+              "confidence": 0.95,
+              "citation": {
+                "doc_id": "DOC-12",
+                "section": "4.1",
+                "quote": "The Company shall release payment within forty-five (45) days from receipt of a correct invoice."
+              },
+              "note": null
+            },
+            {
+              "key": "sla_credits",
+              "value": true,
+              "confidence": 0.85,
+              "citation": {
+                "doc_id": "DOC-12",
+                "section": "5.2",
+                "quote": "the Company shall be entitled to deduct two per cent (2%) of the monthly charges, subject to a maximum of ten per cent (10%) in any month."
+              },
+              "note": null
+            },
+            {
+              "key": "currency",
+              "value": "INR",
+              "confidence": 0.9,
+              "citation": {
+                "doc_id": "DOC-12",
+                "section": "3.1",
+                "quote": "The Company shall pay the Service Provider a sum of Rs. 22,00,000/-"
+              },
+              "note": null
+            },
+            {
+              "key": "governing_law",
+              "value": "India",
+              "confidence": 0.95,
+              "citation": {
+                "doc_id": "DOC-12",
+                "section": "14.1",
+                "quote": "This Agreement shall be governed by the laws of India"
+              },
+              "note": null
+            },
+            {
+              "key": "annual_value",
+              "value": 2200000,
+              "confidence": 0.95,
+              "citation": {
+                "doc_id": "DOC-12",
+                "section": "3.1",
+                "quote": "Rs. 22,00,000/- (Rupees Twenty Two Lakhs only) per annum"
+              },
+              "note": null
+            }
+          ],
+          "rate_lines": []
+        },
+        {
+          "doc_id": "DOC-13",
+          "fields": [],
+          "rate_lines": []
+        }
+      ],
+      "not_stated": [
+        {
+          "key": "uplift.value_pct",
+          "confidence": 0.85,
+          "reason": "Charges fixed; no uplift percentage"
+        },
+        {
+          "key": "uplift.cap_pct",
+          "confidence": 0.85,
+          "reason": "No uplift, no cap"
+        }
+      ],
+      "quote": null,
+      "sla_terms": {
+        "metric": "personnel_deployment_and_weekly_audit",
+        "target": 100,
+        "currency": "INR",
+        "credit_rule": "For every shortfall in deployment of personnel on any day, and for every failed weekly audit, the Company shall be entitled to deduct two per cent (2%) of the monthly charges, subject to a maximum of ten per cent (10%) in any month.",
+        "credit_basis": "monthly_fees",
+        "citation": {
+          "doc_id": "DOC-12",
+          "section": "5.2",
+          "quote": "For every shortfall in deployment of personnel on any day, and for every failed weekly audit, the Company shall be entitled to deduct two per cent (2%) of the monthly charges"
+        }
+      },
+      "licensed_units": []
+    }
+  }
+}

@@ -12,6 +12,7 @@ import {
   loadDevGold,
   loadDocuments,
   loadFx,
+  loadGrouping,
   loadHolidays,
   loadLedger,
   loadPolicy,
@@ -23,6 +24,7 @@ import {
 import { initialStateFor } from "./requestFlow";
 import { evaluateSupplier, type RulesContext, type SupplierEvaluation } from "./rules/flags";
 import { isCreditNote, rowsForVendor } from "./rules/ledger";
+import { withFeeBasis } from "./rules/performance";
 import {
   ExtractionOutputSchema,
   RateLineSchema,
@@ -48,6 +50,16 @@ export const SupplierExtractionSchema = ExtractionOutputSchema.extend({
   sla_terms: SlaTermsSchema.nullable().optional(),
   /** v3: licensed units per line from the order form. */
   licensed_units: z.array(z.object({ metric: z.string(), licensed_units: z.number(), doc_id: z.string().optional() })).optional(),
+  /** AI pipeline metadata (model, verification log, OCR docs). Absent for the gold seed. */
+  pipeline: z
+    .looseObject({
+      model: z.string(),
+      generated_at: z.string(),
+      docs: z.array(z.object({ doc_id: z.string(), text_source: z.string() })).default([]),
+      verification: z.array(z.object({ key: z.string(), doc_id: z.string(), ok: z.boolean() })).default([]),
+      verification_failures: z.number().default(0),
+    })
+    .optional(),
 });
 export type SupplierExtraction = z.infer<typeof SupplierExtractionSchema> & { source: "seed" | "cache" };
 
@@ -128,12 +140,16 @@ export type FamilyDoc = FamilyMember & {
 };
 
 /**
- * Family = documents assigned to this supplier in doc_supplier_map (grouping truth until AI grouping ships),
+ * Family = documents the AI grouping assigned to this supplier (seed fallback: dev_gold doc_supplier_map),
  * enriched with the extraction's role/executed/evidence and documents.json metadata.
  */
 async function buildFamily(supplierId: string, ex: SupplierExtraction): Promise<FamilyDoc[]> {
-  const [gold, docs] = await Promise.all([loadDevGold(), loadDocuments()]);
-  const map = (gold.doc_supplier_map ?? []).filter((m) => m.supplier_id === supplierId);
+  const [gold, docs, grouping] = await Promise.all([loadDevGold(), loadDocuments(), loadGrouping()]);
+  // AI grouping when the extraction came from the pipeline; the gold map only backs the seed fallback.
+  const map =
+    ex.source === "cache" && grouping
+      ? grouping.assignments.filter((a) => a.supplier_id === supplierId && a.status === "assigned").map((a) => ({ doc_id: a.doc_id, evidence: a.evidence }))
+      : (gold.doc_supplier_map ?? []).filter((m) => m.supplier_id === supplierId);
   const ids = map.length ? map.map((m) => m.doc_id) : ex.family.map((f) => f.doc_id);
   const leaves = Object.entries(ex.effective_terms).flatMap(([k, v]) =>
     k === "uplift" ? Object.entries(v as Record<string, Field<unknown>>).map(([kk, vv]) => [`uplift.${kk}`, vv] as const) : [[k, v as Field<unknown>] as const],
@@ -168,12 +184,37 @@ export type SupplierView = SupplierMeta & {
   trackerConflicts: SupplierEvaluation["trackerConflicts"];
   sla: SupplierEvaluation["sla"];
   utilisation: SupplierEvaluation["utilisation"];
+  /** AI pipeline summary (null for the seed fallback). */
+  pipeline: { model: string; generatedAt: string; quotesChecked: number; quotesFailed: number; ocrDocs: string[] } | null;
+  /** Fields a human must look at: "unclear" or confidence below policy (cited quote included). */
+  reviewFields: ReviewField[];
 };
+
+export type ReviewField = { key: string; value: unknown; confidence: number; citation: Field<unknown>["citation"]; note?: string; ocr?: boolean; reason: string };
+
+export function reviewFieldsOf(terms: ExtractionOutput["effective_terms"], minConfidence: number): ReviewField[] {
+  const leaves = Object.entries(terms).flatMap(([k, v]) =>
+    k === "uplift" ? Object.entries(v as Record<string, Field<unknown>>).map(([kk, vv]) => [`uplift.${kk}`, vv] as const) : [[k, v as Field<unknown>] as const],
+  );
+  return leaves
+    .filter(([, f]) => f.value === "unclear" || f.confidence < minConfidence)
+    .map(([key, f]) => ({
+      key,
+      value: f.value,
+      confidence: f.confidence,
+      citation: f.citation,
+      ...(f.note ? { note: f.note } : {}),
+      ...(f.ocr ? { ocr: true } : {}),
+      reason: f.value === "unclear" ? (f.verified === false ? "Quote not found in the document" : "Unclear in the contract") : f.ocr ? "From OCR (scan): confidence capped at 0.8" : `Confidence ${f.confidence.toFixed(2)} below ${minConfidence}`,
+    }));
+}
 
 export async function getSupplierView(supplierId: string): Promise<SupplierView | null> {
   const meta = (await listSuppliers()).find((s) => s.supplierId === supplierId);
   const ex = await getExtraction(supplierId);
   if (!meta || !ex) return null;
+  const annualOriginal = typeof ex.effective_terms.annual_value.value === "number" ? ex.effective_terms.annual_value.value : null;
+  const slaTerms = ex.sla_terms ? withFeeBasis(ex.sla_terms, annualOriginal) : null;
   const ev = evaluateSupplier(
     {
       supplierId,
@@ -183,7 +224,7 @@ export async function getSupplierView(supplierId: string): Promise<SupplierView 
       quote: ex.quote,
       rateCard: ex.rate_card,
       vendorId: meta.vendorId,
-      slaTerms: ex.sla_terms ?? null,
+      slaTerms,
       licensed: ex.licensed_units,
     },
     await loadRulesContext(),
@@ -209,6 +250,16 @@ export async function getSupplierView(supplierId: string): Promise<SupplierView 
     trackerConflicts: ev.trackerConflicts,
     sla: ev.sla,
     utilisation: ev.utilisation,
+    pipeline: ex.pipeline
+      ? {
+          model: ex.pipeline.model,
+          generatedAt: ex.pipeline.generated_at,
+          quotesChecked: ex.pipeline.verification.length,
+          quotesFailed: ex.pipeline.verification_failures,
+          ocrDocs: ex.pipeline.docs.filter((d) => d.text_source === "ocr").map((d) => d.doc_id),
+        }
+      : null,
+    reviewFields: ex.source === "cache" ? reviewFieldsOf(ex.effective_terms, ctx.policy.global.confidence_min) : [],
   };
 }
 

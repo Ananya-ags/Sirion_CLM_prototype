@@ -1,0 +1,534 @@
+{
+  "generated_at": "2026-11-24T06:37:14.946Z",
+  "model": "claude-sonnet-5-5",
+  "prompt_version": "grouping-3",
+  "input_key": "4588931485792b4514b70ece369eb4cd375ebd5a849a3d9b06f4fc6eced6d5ee",
+  "assignments": [
+    {
+      "doc_id": "DOC-01",
+      "supplier_id": "SUP-01",
+      "vendor_id": "V-10041",
+      "confidence": 0.9,
+      "evidence": [
+        "Exact legal name NIMBUS CRM PRIVATE LIMITED as contracting party (vendor master V-10041); CIN given, no conflicting identifier"
+      ],
+      "evidence_quotes": [
+        {
+          "quote": "NIMBUS CRM PRIVATE LIMITED, a company incorporated under the Companies Act,",
+          "verified": true
+        }
+      ],
+      "status": "assigned",
+      "review_reason": null
+    },
+    {
+      "doc_id": "DOC-02",
+      "supplier_id": "SUP-01",
+      "vendor_id": "V-10041",
+      "confidence": 0.95,
+      "evidence": [
+        "Parent reference: Master Subscription Agreement dated 26 March 2024 (DOC-01, Nimbus CRM Private Limited)",
+        "Exact legal name Nimbus CRM Private Limited"
+      ],
+      "evidence_quotes": [
+        {
+          "quote": "Master Subscription Agreement\ndated 26 March 2024 between Nimbus CRM Private Limited and Velora Consumer Private\nLimited",
+          "verified": true
+        }
+      ],
+      "status": "assigned",
+      "review_reason": null
+    },
+    {
+      "doc_id": "DOC-03",
+      "supplier_id": "SUP-01",
+      "vendor_id": "V-10041",
+      "confidence": 0.9,
+      "evidence": [
+        "Email signed Nimbus CRM Private Limited; sender domain nimbuscrm.in matches arvind.rao@nimbuscrm.in in DOC-01 certificate"
+      ],
+      "evidence_quotes": [
+        {
+          "quote": "From: Billing Team <billing@nimbuscrm.in>",
+          "verified": true
+        },
+        {
+          "quote": "Nimbus CRM Private Limited",
+          "verified": true
+        }
+      ],
+      "status": "assigned",
+      "review_reason": null
+    },
+    {
+      "doc_id": "DOC-04",
+      "supplier_id": "SUP-02",
+      "vendor_id": "V-10057",
+      "confidence": 0.97,
+      "evidence": [
+        "GSTIN 29AAGCP2905M1Z2 = vendor master V-10057"
+      ],
+      "evidence_quotes": [
+        {
+          "quote": "GSTIN 29AAGCP2905M1Z2",
+          "verified": true
+        }
+      ],
+      "status": "assigned",
+      "review_reason": null
+    },
+    {
+      "doc_id": "DOC-05",
+      "supplier_id": "SUP-02",
+      "vendor_id": "V-10057",
+      "confidence": 0.97,
+      "evidence": [
+        "References SaaS Master Agreement No. PG/MSA/2025/017 dated 18 February 2025 (DOC-04, GSTIN 29AAGCP2905M1Z2 = V-10057)"
+      ],
+      "evidence_quotes": [
+        {
+          "quote": "Issued under SaaS Master Agreement No. PG/MSA/2025/017 dated 18 February 2025",
+          "verified": true
+        }
+      ],
+      "status": "assigned",
+      "review_reason": null
+    },
+    {
+      "doc_id": "DOC-06",
+      "supplier_id": "SUP-02",
+      "vendor_id": "V-10057",
+      "confidence": 0.95,
+      "evidence": [
+        "Exact legal name PeopleGrid HR Technologies Private Limited in signature; references Order Form PG-OF-2025-017 (DOC-05); domain peoplegrid.in"
+      ],
+      "evidence_quotes": [
+        {
+          "quote": "Order Form\nPG-OF-2025-017",
+          "verified": true
+        },
+        {
+          "quote": "PeopleGrid HR Technologies Private Limited",
+          "verified": true
+        }
+      ],
+      "status": "assigned",
+      "review_reason": null
+    },
+    {
+      "doc_id": "DOC-07",
+      "supplier_id": "SUP-03",
+      "vendor_id": "V-10012",
+      "confidence": 0.9,
+      "evidence": [
+        "Exact legal name CODECRAFT STAFFING SOLUTIONS PRIVATE LIMITED, CIN U74140KA2014PTC077310 (same CIN as DOC-08, GSTIN = V-10012)"
+      ],
+      "evidence_quotes": [
+        {
+          "quote": "CODECRAFT STAFFING SOLUTIONS PRIVATE LIMITED, CIN U74140KA2014PTC077310",
+          "verified": true
+        }
+      ],
+      "status": "assigned",
+      "review_reason": null
+    },
+    {
+      "doc_id": "DOC-08",
+      "supplier_id": "SUP-03",
+      "vendor_id": "V-10012",
+      "confidence": 0.97,
+      "evidence": [
+        "GSTIN 29AAECC7310R1Z6 = vendor master V-10012"
+      ],
+      "evidence_quotes": [
+        {
+          "quote": "GSTIN 29AAECC7310R1Z6",
+          "verified": true
+        }
+      ],
+      "status": "assigned",
+      "review_reason": null
+    },
+    {
+      "doc_id": "DOC-09",
+      "supplier_id": "SUP-03",
+      "vendor_id": "V-10012",
+      "confidence": 0.95,
+      "evidence": [
+        "Refers to Master Services Agreement dated 29 January 2024 (DOC-08, executed) between CodeCraft Staffing Solutions Private Limited and Velora"
+      ],
+      "evidence_quotes": [
+        {
+          "quote": "Under the Master Services Agreement dated 29 January 2024 between CodeCraft Staffing\nSolutions Private Limited",
+          "verified": true
+        }
+      ],
+      "status": "assigned",
+      "review_reason": null
+    },
+    {
+      "doc_id": "DOC-10",
+      "supplier_id": "SUP-03",
+      "vendor_id": "V-10012",
+      "confidence": 0.95,
+      "evidence": [
+        "Parent reference: Master Services Agreement dated 29 January 2024 with CodeCraft (executed DOC-08)"
+      ],
+      "evidence_quotes": [
+        {
+          "quote": "Under the Master Services Agreement dated 29 January 2024 (the \"MSA\") between\nCodeCraft (\"the Supplier\")",
+          "verified": true
+        }
+      ],
+      "status": "assigned",
+      "review_reason": null
+    },
+    {
+      "doc_id": "DOC-11",
+      "supplier_id": "SUP-03",
+      "vendor_id": "V-10012",
+      "confidence": 0.95,
+      "evidence": [
+        "Amendment refers to MSA dated 29 January 2024 (DOC-08) and SOW-2; sender domain codecraftstaffing.in matches rohan.k@codecraftstaffing.in in DOC-08"
+      ],
+      "evidence_quotes": [
+        {
+          "quote": "to the Master Services Agreement dated 29 January 2024 (the \"MSA\") and Statement of\nWork No. 2",
+          "verified": true
+        },
+        {
+          "quote": "From: Rohan Kulkarni <rohan.k@codecraftstaffing.in>",
+          "verified": true
+        }
+      ],
+      "status": "assigned",
+      "review_reason": null
+    },
+    {
+      "doc_id": "DOC-12",
+      "supplier_id": "SUP-04",
+      "vendor_id": "V-10008",
+      "confidence": 0.9,
+      "evidence": [
+        "Exact legal name CLEANSPHERE FACILITY SERVICES PRIVATE LIMITED as Service Provider (V-10008)"
+      ],
+      "evidence_quotes": [
+        {
+          "quote": "CLEANSPHERE FACILITY SERVICES PRIVATE LIMITED, a company incorporated under the Companies Act, 1956",
+          "verified": true
+        }
+      ],
+      "status": "assigned",
+      "review_reason": null
+    },
+    {
+      "doc_id": "DOC-13",
+      "supplier_id": "SUP-04",
+      "vendor_id": "V-10008",
+      "confidence": 0.95,
+      "evidence": [
+        "Refers to Housekeeping Agreement dated 22 December 2023 (DOC-12); signed CleanSphere Facility Services Pvt Ltd"
+      ],
+      "evidence_quotes": [
+        {
+          "quote": "our\nHousekeeping Agreement dated 22\nDecember 2023",
+          "verified": true
+        },
+        {
+          "quote": "Managing Director, CleanSphere Facility Services Pvt Ltd",
+          "verified": true
+        }
+      ],
+      "status": "assigned",
+      "review_reason": null
+    },
+    {
+      "doc_id": "DOC-14",
+      "supplier_id": "SUP-05",
+      "vendor_id": "V-10066",
+      "confidence": 0.97,
+      "evidence": [
+        "GSTIN 29AAHCS1558Q1ZJ = vendor master V-10066"
+      ],
+      "evidence_quotes": [
+        {
+          "quote": "GSTIN\n29AAHCS1558Q1ZJ",
+          "verified": true
+        }
+      ],
+      "status": "assigned",
+      "review_reason": null
+    },
+    {
+      "doc_id": "DOC-15",
+      "supplier_id": "SUP-05",
+      "vendor_id": "V-10066",
+      "confidence": 0.95,
+      "evidence": [
+        "References Logistics Services Master Agreement dated 11 March 2025 (DOC-14) between SwiftMove Logistics Private Limited and Velora"
+      ],
+      "evidence_quotes": [
+        {
+          "quote": "to the Logistics Services Master Agreement dated 11 March 2025 between SwiftMove\nLogistics Private Limited and Velora Consumer Private Limited.",
+          "verified": true
+        }
+      ],
+      "status": "assigned",
+      "review_reason": null
+    },
+    {
+      "doc_id": "DOC-16",
+      "supplier_id": "SUP-06",
+      "vendor_id": "V-10071",
+      "confidence": 0.9,
+      "evidence": [
+        "Exact legal name BrightLoop Marketing LLP, LLPIN AAX-4471"
+      ],
+      "evidence_quotes": [
+        {
+          "quote": "BRIGHTLOOP MARKETING LLP, a limited liability partnership registered under the\nLimited Liability Partnership Act, 2008, LLPIN AAX-4471",
+          "verified": true
+        }
+      ],
+      "status": "assigned",
+      "review_reason": null
+    },
+    {
+      "doc_id": "DOC-17",
+      "supplier_id": "SUP-06",
+      "vendor_id": "V-10071",
+      "confidence": 0.9,
+      "evidence": [
+        "Email signed with exact legal name BrightLoop Marketing LLP; retainer agreement is the same family as DOC-16"
+      ],
+      "evidence_quotes": [
+        {
+          "quote": "Neha Bhat\nBrightLoop Marketing LLP",
+          "verified": false
+        },
+        {
+          "quote": "For BrightLoop Marketing LLP",
+          "verified": true
+        }
+      ],
+      "status": "assigned",
+      "review_reason": null
+    },
+    {
+      "doc_id": "DOC-18",
+      "supplier_id": "SUP-06",
+      "vendor_id": "V-10071",
+      "confidence": 0.97,
+      "evidence": [
+        "LLPIN AAX-4471 shared with DOC-16 (BrightLoop Marketing LLP)"
+      ],
+      "evidence_quotes": [
+        {
+          "quote": "BrightLoop Marketing LLP (LLPIN AAX-4471)",
+          "verified": true
+        }
+      ],
+      "status": "assigned",
+      "review_reason": null
+    },
+    {
+      "doc_id": "DOC-19",
+      "supplier_id": "SUP-07",
+      "vendor_id": "V-10074",
+      "confidence": 0.9,
+      "evidence": [
+        "Exact legal name STRATUS CLOUD PTE. LTD. as contracting party (V-10074)"
+      ],
+      "evidence_quotes": [
+        {
+          "quote": "STRATUS CLOUD PTE. LTD. (UEN 201912345K)",
+          "verified": true
+        }
+      ],
+      "status": "assigned",
+      "review_reason": null
+    },
+    {
+      "doc_id": "DOC-20",
+      "supplier_id": "SUP-07",
+      "vendor_id": "V-10074",
+      "confidence": 0.97,
+      "evidence": [
+        "DocuSign Envelope ID 9E0C47A2-61B5-4F88-AD3E-2C7B19F05D64 shared with DOC-19"
+      ],
+      "evidence_quotes": [
+        {
+          "quote": "DocuSign Envelope ID: 9E0C47A2-61B5-4F88-AD3E-2C7B19F05D64",
+          "verified": true
+        }
+      ],
+      "status": "assigned",
+      "review_reason": null
+    },
+    {
+      "doc_id": "DOC-21",
+      "supplier_id": "SUP-07",
+      "vendor_id": "V-10074",
+      "confidence": 0.97,
+      "evidence": [
+        "DocuSign Envelope ID 9E0C47A2-61B5-4F88-AD3E-2C7B19F05D64 shared with DOC-19"
+      ],
+      "evidence_quotes": [
+        {
+          "quote": "DocuSign Envelope ID: 9E0C47A2-61B5-4F88-AD3E-2C7B19F05D64",
+          "verified": true
+        }
+      ],
+      "status": "assigned",
+      "review_reason": null
+    },
+    {
+      "doc_id": "DOC-22",
+      "supplier_id": "SUP-08",
+      "vendor_id": "V-10049",
+      "confidence": 0.9,
+      "evidence": [
+        "Exact legal name SENTINEL GUARDING SERVICES PRIVATE LIMITED as Agency (V-10049)"
+      ],
+      "evidence_quotes": [
+        {
+          "quote": "SENTINEL GUARDING SERVICES PRIVATE LIMITED, a company licensed as a private\nsecurity agency",
+          "verified": true
+        }
+      ],
+      "status": "assigned",
+      "review_reason": null
+    },
+    {
+      "doc_id": "DOC-23",
+      "supplier_id": "SUP-08",
+      "vendor_id": "V-10049",
+      "confidence": 0.95,
+      "evidence": [
+        "References Security Services Agreement dated 10 January 2025 (DOC-22) with Sentinel Guarding Services Private Limited"
+      ],
+      "evidence_quotes": [
+        {
+          "quote": "to the Security Services Agreement dated 10 January 2025 between Sentinel Guarding\nServices Private Limited and Velora Consumer Private Limited.",
+          "verified": true
+        }
+      ],
+      "status": "assigned",
+      "review_reason": null
+    },
+    {
+      "doc_id": "DOC-24",
+      "supplier_id": "SUP-09",
+      "vendor_id": "V-10069",
+      "confidence": 0.9,
+      "evidence": [
+        "Forwarded email signed TalkWave Communications Private Limited; domain talkwave.in; attachment is DOC-25 with GSTIN 29AAFCT6219N1ZQ"
+      ],
+      "evidence_quotes": [
+        {
+          "quote": "TalkWave Communications Private Limited",
+          "verified": true
+        },
+        {
+          "quote": "From: Ayesha Khan <ayesha.khan@talkwave.in>",
+          "verified": true
+        }
+      ],
+      "status": "assigned",
+      "review_reason": null
+    },
+    {
+      "doc_id": "DOC-25",
+      "supplier_id": "SUP-09",
+      "vendor_id": "V-10069",
+      "confidence": 0.97,
+      "evidence": [
+        "GSTIN 29AAFCT6219N1ZQ = vendor master V-10069"
+      ],
+      "evidence_quotes": [
+        {
+          "quote": "GSTIN 29AAFCT6219N1ZQ",
+          "verified": true
+        }
+      ],
+      "status": "assigned",
+      "review_reason": null
+    },
+    {
+      "doc_id": "DOC-26",
+      "supplier_id": "SUP-10",
+      "vendor_id": "V-10077",
+      "confidence": 0.97,
+      "evidence": [
+        "GSTIN 29AAKCL5870P1ZI = vendor master V-10077"
+      ],
+      "evidence_quotes": [
+        {
+          "quote": "GSTIN 29AAKCL5870P1ZI",
+          "verified": true
+        }
+      ],
+      "status": "assigned",
+      "review_reason": null
+    },
+    {
+      "doc_id": "DOC-27",
+      "supplier_id": "SUP-10",
+      "vendor_id": "V-10077",
+      "confidence": 0.9,
+      "evidence": [
+        "Email from Shweta Rao, LearnLeap Training Academy; domain learnleap.in matches partnerships@learnleap.in in DOC-26"
+      ],
+      "evidence_quotes": [
+        {
+          "quote": "Co-founder & CEO, LearnLeap Training Academy",
+          "verified": true
+        },
+        {
+          "quote": "From: Shweta Rao <shweta@learnleap.in>",
+          "verified": true
+        }
+      ],
+      "status": "assigned",
+      "review_reason": null
+    },
+    {
+      "doc_id": "DOC-28",
+      "supplier_id": "SUP-10",
+      "vendor_id": "V-10077",
+      "confidence": 0.97,
+      "evidence": [
+        "GSTIN 29AAKCL5870P1ZI = vendor master V-10077"
+      ],
+      "evidence_quotes": [
+        {
+          "quote": "Supplier GSTIN: 29AAKCL5870P1ZI",
+          "verified": true
+        }
+      ],
+      "status": "assigned",
+      "review_reason": null
+    },
+    {
+      "doc_id": "DOC-29",
+      "supplier_id": null,
+      "vendor_id": null,
+      "confidence": 0.1,
+      "evidence": [
+        "Nimbus Analytics LLP (LLPIN ABC-7712, GSTIN 29AAPFN3318E1Z5) is a different entity from Nimbus CRM Private Limited; no vendor master match"
+      ],
+      "evidence_quotes": [
+        {
+          "quote": "NIMBUS ANALYTICS LLP",
+          "verified": true
+        },
+        {
+          "quote": "LLPIN ABC-7712 · GSTIN 29AAPFN3318E1Z5",
+          "verified": true
+        }
+      ],
+      "status": "review",
+      "review_reason": "Model abstained: Nimbus Analytics LLP (LLPIN ABC-7712, GSTIN 29AAPFN3318E1Z5) is a different entity from Nimbus CRM Private Limited; no vendor master match"
+    }
+  ]
+}

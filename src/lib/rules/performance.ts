@@ -1,6 +1,6 @@
 /**
  * v3 Rules: S1 SLA_CREDIT_UNCLAIMED and U1 LOW_UTILISATION. Pure and deterministic.
- * Source-agnostic: SLA terms and licensed quantities are passed in (gold seed today,
+ * Source-agnostic: SLA terms and licensed quantities are passed in (AI extraction from the cache, gold seed as fallback,
  * AI extraction from the executed contract / order form later).
  */
 import type { Citation, CreditBand, LicensedLine, SlaPerformanceRow, SlaTerms, UsageRow } from "../types";
@@ -175,4 +175,13 @@ export function utilisation(i: UtilisationInput): UtilisationResult | null {
   }
   if (!lines.length) return null;
   return { lines, totalLicensedUnits: total, impliedAnnualCostPerUnitInr: Math.round(perUnit), unusedValueInr: lines.reduce((a, l) => a + l.unused_value_inr, 0), flagPct: i.flagPct };
+}
+
+/**
+ * Contracted monthly fee for SLA credits (Rules, never the LLM): annual value ÷ 12 in the contract currency,
+ * only when the contract applies the credit % to the monthly fees. Per-circuit / per-unit bases stay null.
+ */
+export function withFeeBasis(t: SlaTerms, annualOriginal: number | null): SlaTerms {
+  if (t.fee_basis_monthly != null || t.credit_basis !== "monthly_fees" || annualOriginal == null) return t;
+  return { ...t, fee_basis_monthly: Math.round(annualOriginal / 12) };
 }

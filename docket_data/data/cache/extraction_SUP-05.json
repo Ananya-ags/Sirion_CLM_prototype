@@ -1,0 +1,612 @@
+{
+  "supplier_id": "SUP-05",
+  "family": [
+    {
+      "doc_id": "DOC-14",
+      "doc_role": "msa",
+      "executed": true,
+      "execution_evidence": [
+        "DocuSign Certificate of Completion, Status: Completed",
+        "Harish Gowda (DocuSigned) — Chief Operating Officer — 11-Mar-2025",
+        "Kavita Deshpande (DocuSigned) — CFO — 12-Mar-2025"
+      ],
+      "references": [
+        "DOC-15"
+      ]
+    },
+    {
+      "doc_id": "DOC-15",
+      "doc_role": "other",
+      "executed": true,
+      "execution_evidence": [
+        "Initialled for identification: SwiftMove: [initials] H.G. · Velora: [initials] K.D. · 11/12-03-2025"
+      ],
+      "references": [
+        "DOC-14"
+      ]
+    }
+  ],
+  "effective_terms": {
+    "renewal_type": {
+      "value": "auto",
+      "confidence": 0.95,
+      "citation": {
+        "doc_id": "DOC-14",
+        "section": "12.2",
+        "quote": "this Agreement shall renew automatically for a further period of one (1) year"
+      },
+      "verified": true
+    },
+    "initial_term_end": {
+      "value": "2027-03-15",
+      "confidence": 0.97,
+      "citation": {
+        "doc_id": "DOC-14",
+        "section": "12.1",
+        "quote": "continues until 15 March 2027 (the \"Initial Term\")"
+      },
+      "verified": true
+    },
+    "renewal_term_months": {
+      "value": 12,
+      "confidence": 0.95,
+      "citation": {
+        "doc_id": "DOC-14",
+        "section": "12.2",
+        "quote": "renew automatically for a further period of one (1) year"
+      },
+      "verified": true
+    },
+    "notice_days": {
+      "value": 45,
+      "confidence": 0.95,
+      "citation": {
+        "doc_id": "DOC-14",
+        "section": "Annexure C",
+        "quote": "forty-five (45) days before the date of expiry"
+      },
+      "verified": true
+    },
+    "notice_day_type": {
+      "value": "calendar",
+      "confidence": 0.9,
+      "citation": {
+        "doc_id": "DOC-14",
+        "section": "1.32",
+        "quote": "References to a number of days are to calendar days unless Business Days are"
+      },
+      "verified": true
+    },
+    "notice_method": {
+      "value": "email",
+      "confidence": 0.9,
+      "citation": {
+        "doc_id": "DOC-14",
+        "section": "18.1",
+        "quote": "Notices under this Agreement shall be in writing and delivered by email to"
+      },
+      "verified": true
+    },
+    "notice_address": {
+      "value": "legal@swiftmove.in",
+      "confidence": 0.95,
+      "citation": {
+        "doc_id": "DOC-14",
+        "section": "18.1",
+        "quote": "Provider — legal@swiftmove.in"
+      },
+      "verified": true
+    },
+    "uplift": {
+      "type": {
+        "value": "none",
+        "confidence": 0.8,
+        "citation": {
+          "doc_id": "DOC-14",
+          "section": "13.2",
+          "quote": "No other price escalation shall apply during the Initial Term or any renewal."
+        },
+        "verified": true,
+        "note": "Only fuel index adjustment; no fixed uplift."
+      },
+      "value_pct": {
+        "value": null,
+        "confidence": 0.85,
+        "citation": null
+      },
+      "cap_pct": {
+        "value": null,
+        "confidence": 0.9,
+        "citation": null
+      }
+    },
+    "tfc": {
+      "value": true,
+      "confidence": 0.97,
+      "citation": {
+        "doc_id": "DOC-14",
+        "section": "16.1",
+        "quote": "The Customer may terminate this Agreement for convenience by giving sixty (60)"
+      },
+      "verified": true
+    },
+    "tfc_notice_days": {
+      "value": 60,
+      "confidence": 0.97,
+      "citation": {
+        "doc_id": "DOC-14",
+        "section": "16.1",
+        "quote": "for convenience by giving sixty (60)"
+      },
+      "verified": true
+    },
+    "payment_terms_days": {
+      "value": 45,
+      "confidence": 0.97,
+      "citation": {
+        "doc_id": "DOC-14",
+        "section": "14.2",
+        "quote": "Payment shall be made within forty-five (45) days from the date of receipt"
+      },
+      "verified": true
+    },
+    "sla_credits": {
+      "value": true,
+      "confidence": 0.95,
+      "citation": {
+        "doc_id": "DOC-14",
+        "section": "15.2",
+        "quote": "the Customer shall receive a credit of two per cent (2%) of that month's fixed charges"
+      },
+      "verified": true
+    },
+    "currency": {
+      "value": "INR",
+      "confidence": 0.95,
+      "citation": {
+        "doc_id": "DOC-14",
+        "section": "13.1",
+        "quote": "The estimated annual value of this Agreement is ₹41,00,000, exclusive of GST."
+      },
+      "verified": true
+    },
+    "governing_law": {
+      "value": "India",
+      "confidence": 0.97,
+      "citation": {
+        "doc_id": "DOC-14",
+        "section": "19.1",
+        "quote": "This Agreement is governed by the laws of India"
+      },
+      "verified": true
+    },
+    "annual_value": {
+      "value": 4100000,
+      "confidence": 0.9,
+      "citation": {
+        "doc_id": "DOC-14",
+        "section": "13.1",
+        "quote": "The estimated annual value of this Agreement is ₹41,00,000, exclusive of GST."
+      },
+      "verified": true
+    }
+  },
+  "sla_terms": {
+    "metric": "on_time_delivery_pct",
+    "target": 97,
+    "currency": "INR",
+    "credit_rule": "For each full percentage point by which monthly on-time delivery falls below 97%, the Customer shall receive a credit of two per cent (2%) of that month's fixed charges, up to a maximum of fifteen per cent (15%).",
+    "credit_basis": "monthly_fees",
+    "citation": {
+      "doc_id": "DOC-14",
+      "section": "15.2",
+      "quote": "For each full percentage point by which monthly on-time delivery falls below 97%, the"
+    },
+    "fee_basis_monthly": null
+  },
+  "licensed_units": [],
+  "pipeline": {
+    "source": "ai",
+    "model": "claude-sonnet-5-5",
+    "prompt_version": "extraction-2",
+    "generated_at": "2026-11-24T06:36:23.613Z",
+    "input_key": "27844de7d9e7e2725baa6e955c3a936ebadf7465c09aaf822f6f66fd831ba960",
+    "docs": [
+      {
+        "doc_id": "DOC-14",
+        "sha256": "a204a3776cfc1c19e3b23f243e8d85c48cd9c8ed5b59e2edf394351005e76bbd",
+        "text_source": "pdf"
+      },
+      {
+        "doc_id": "DOC-15",
+        "sha256": "c20ab505e76d0c6d11e5b987fa52c4efca693c1e6e60f98ee53c44c8ae8d6a0b",
+        "text_source": "pdf"
+      }
+    ],
+    "ocr_fields": [],
+    "verification": [
+      {
+        "key": "renewal_type",
+        "doc_id": "DOC-14",
+        "section": "12.2",
+        "quote": "this Agreement shall renew automatically for a further period of one (1) year",
+        "ok": true
+      },
+      {
+        "key": "initial_term_end",
+        "doc_id": "DOC-14",
+        "section": "12.1",
+        "quote": "continues until 15 March 2027 (the \"Initial Term\")",
+        "ok": true
+      },
+      {
+        "key": "renewal_term_months",
+        "doc_id": "DOC-14",
+        "section": "12.2",
+        "quote": "renew automatically for a further period of one (1) year",
+        "ok": true
+      },
+      {
+        "key": "notice_days",
+        "doc_id": "DOC-14",
+        "section": "Annexure C",
+        "quote": "forty-five (45) days before the date of expiry",
+        "ok": true
+      },
+      {
+        "key": "notice_day_type",
+        "doc_id": "DOC-14",
+        "section": "1.32",
+        "quote": "References to a number of days are to calendar days unless Business Days are",
+        "ok": true
+      },
+      {
+        "key": "notice_method",
+        "doc_id": "DOC-14",
+        "section": "18.1",
+        "quote": "Notices under this Agreement shall be in writing and delivered by email to",
+        "ok": true
+      },
+      {
+        "key": "notice_address",
+        "doc_id": "DOC-14",
+        "section": "18.1",
+        "quote": "Provider — legal@swiftmove.in",
+        "ok": true
+      },
+      {
+        "key": "uplift.type",
+        "doc_id": "DOC-14",
+        "section": "13.2",
+        "quote": "No other price escalation shall apply during the Initial Term or any renewal.",
+        "ok": true
+      },
+      {
+        "key": "tfc",
+        "doc_id": "DOC-14",
+        "section": "16.1",
+        "quote": "The Customer may terminate this Agreement for convenience by giving sixty (60)",
+        "ok": true
+      },
+      {
+        "key": "tfc_notice_days",
+        "doc_id": "DOC-14",
+        "section": "16.1",
+        "quote": "for convenience by giving sixty (60)",
+        "ok": true
+      },
+      {
+        "key": "payment_terms_days",
+        "doc_id": "DOC-14",
+        "section": "14.2",
+        "quote": "Payment shall be made within forty-five (45) days from the date of receipt",
+        "ok": true
+      },
+      {
+        "key": "sla_credits",
+        "doc_id": "DOC-14",
+        "section": "15.2",
+        "quote": "the Customer shall receive a credit of two per cent (2%) of that month's fixed charges",
+        "ok": true
+      },
+      {
+        "key": "currency",
+        "doc_id": "DOC-14",
+        "section": "13.1",
+        "quote": "The estimated annual value of this Agreement is ₹41,00,000, exclusive of GST.",
+        "ok": true
+      },
+      {
+        "key": "governing_law",
+        "doc_id": "DOC-14",
+        "section": "19.1",
+        "quote": "This Agreement is governed by the laws of India",
+        "ok": true
+      },
+      {
+        "key": "annual_value",
+        "doc_id": "DOC-14",
+        "section": "13.1",
+        "quote": "The estimated annual value of this Agreement is ₹41,00,000, exclusive of GST.",
+        "ok": true
+      },
+      {
+        "key": "currency",
+        "doc_id": "DOC-15",
+        "section": "B1",
+        "quote": "Monthly charge (₹, excl. GST)",
+        "ok": true
+      },
+      {
+        "key": "sla_terms",
+        "doc_id": "DOC-14",
+        "section": "15.2",
+        "quote": "For each full percentage point by which monthly on-time delivery falls below 97%, the",
+        "ok": true
+      }
+    ],
+    "verification_failures": 0,
+    "grouping": [
+      {
+        "doc_id": "DOC-14",
+        "confidence": 0.97,
+        "evidence": [
+          "GSTIN 29AAHCS1558Q1ZJ = vendor master V-10066"
+        ]
+      },
+      {
+        "doc_id": "DOC-15",
+        "confidence": 0.95,
+        "evidence": [
+          "Annexure to Logistics Services Master Agreement dated 11 March 2025 between SwiftMove Logistics Private Limited and Velora (DOC-14)"
+        ]
+      }
+    ],
+    "raw": {
+      "family": [
+        {
+          "doc_id": "DOC-14",
+          "doc_role": "msa",
+          "executed": true,
+          "execution_evidence": [
+            "DocuSign Certificate of Completion, Status: Completed",
+            "Harish Gowda (DocuSigned) — Chief Operating Officer — 11-Mar-2025",
+            "Kavita Deshpande (DocuSigned) — CFO — 12-Mar-2025"
+          ],
+          "references": [
+            "DOC-15"
+          ],
+          "signed_date": "2025-03-12"
+        },
+        {
+          "doc_id": "DOC-15",
+          "doc_role": "other",
+          "executed": true,
+          "execution_evidence": [
+            "Initialled for identification: SwiftMove: [initials] H.G. · Velora: [initials] K.D. · 11/12-03-2025"
+          ],
+          "references": [
+            "DOC-14"
+          ],
+          "signed_date": "2025-03-12"
+        }
+      ],
+      "documents": [
+        {
+          "doc_id": "DOC-14",
+          "fields": [
+            {
+              "key": "renewal_type",
+              "value": "auto",
+              "confidence": 0.95,
+              "citation": {
+                "doc_id": "DOC-14",
+                "section": "12.2",
+                "quote": "this Agreement shall renew automatically for a further period of one (1) year"
+              },
+              "note": null
+            },
+            {
+              "key": "initial_term_end",
+              "value": "2027-03-15",
+              "confidence": 0.97,
+              "citation": {
+                "doc_id": "DOC-14",
+                "section": "12.1",
+                "quote": "continues until 15 March 2027 (the \"Initial Term\")"
+              },
+              "note": null
+            },
+            {
+              "key": "renewal_term_months",
+              "value": 12,
+              "confidence": 0.95,
+              "citation": {
+                "doc_id": "DOC-14",
+                "section": "12.2",
+                "quote": "renew automatically for a further period of one (1) year"
+              },
+              "note": null
+            },
+            {
+              "key": "notice_days",
+              "value": 45,
+              "confidence": 0.95,
+              "citation": {
+                "doc_id": "DOC-14",
+                "section": "Annexure C",
+                "quote": "forty-five (45) days before the date of expiry"
+              },
+              "note": null
+            },
+            {
+              "key": "notice_day_type",
+              "value": "calendar",
+              "confidence": 0.9,
+              "citation": {
+                "doc_id": "DOC-14",
+                "section": "1.32",
+                "quote": "References to a number of days are to calendar days unless Business Days are"
+              },
+              "note": null
+            },
+            {
+              "key": "notice_method",
+              "value": "email",
+              "confidence": 0.9,
+              "citation": {
+                "doc_id": "DOC-14",
+                "section": "18.1",
+                "quote": "Notices under this Agreement shall be in writing and delivered by email to"
+              },
+              "note": null
+            },
+            {
+              "key": "notice_address",
+              "value": "legal@swiftmove.in",
+              "confidence": 0.95,
+              "citation": {
+                "doc_id": "DOC-14",
+                "section": "18.1",
+                "quote": "Provider — legal@swiftmove.in"
+              },
+              "note": null
+            },
+            {
+              "key": "uplift.type",
+              "value": "none",
+              "confidence": 0.8,
+              "citation": {
+                "doc_id": "DOC-14",
+                "section": "13.2",
+                "quote": "No other price escalation shall apply during the Initial Term or any renewal."
+              },
+              "note": "Only fuel index adjustment; no fixed uplift."
+            },
+            {
+              "key": "tfc",
+              "value": true,
+              "confidence": 0.97,
+              "citation": {
+                "doc_id": "DOC-14",
+                "section": "16.1",
+                "quote": "The Customer may terminate this Agreement for convenience by giving sixty (60)"
+              },
+              "note": null
+            },
+            {
+              "key": "tfc_notice_days",
+              "value": 60,
+              "confidence": 0.97,
+              "citation": {
+                "doc_id": "DOC-14",
+                "section": "16.1",
+                "quote": "for convenience by giving sixty (60)"
+              },
+              "note": null
+            },
+            {
+              "key": "payment_terms_days",
+              "value": 45,
+              "confidence": 0.97,
+              "citation": {
+                "doc_id": "DOC-14",
+                "section": "14.2",
+                "quote": "Payment shall be made within forty-five (45) days from the date of receipt"
+              },
+              "note": null
+            },
+            {
+              "key": "sla_credits",
+              "value": true,
+              "confidence": 0.95,
+              "citation": {
+                "doc_id": "DOC-14",
+                "section": "15.2",
+                "quote": "the Customer shall receive a credit of two per cent (2%) of that month's fixed charges"
+              },
+              "note": null
+            },
+            {
+              "key": "currency",
+              "value": "INR",
+              "confidence": 0.95,
+              "citation": {
+                "doc_id": "DOC-14",
+                "section": "13.1",
+                "quote": "The estimated annual value of this Agreement is ₹41,00,000, exclusive of GST."
+              },
+              "note": null
+            },
+            {
+              "key": "governing_law",
+              "value": "India",
+              "confidence": 0.97,
+              "citation": {
+                "doc_id": "DOC-14",
+                "section": "19.1",
+                "quote": "This Agreement is governed by the laws of India"
+              },
+              "note": null
+            },
+            {
+              "key": "annual_value",
+              "value": 4100000,
+              "confidence": 0.9,
+              "citation": {
+                "doc_id": "DOC-14",
+                "section": "13.1",
+                "quote": "The estimated annual value of this Agreement is ₹41,00,000, exclusive of GST."
+              },
+              "note": null
+            }
+          ],
+          "rate_lines": []
+        },
+        {
+          "doc_id": "DOC-15",
+          "fields": [
+            {
+              "key": "currency",
+              "value": "INR",
+              "confidence": 0.85,
+              "citation": {
+                "doc_id": "DOC-15",
+                "section": "B1",
+                "quote": "Monthly charge (₹, excl. GST)"
+              },
+              "note": null
+            }
+          ],
+          "rate_lines": []
+        }
+      ],
+      "not_stated": [
+        {
+          "key": "uplift.value_pct",
+          "confidence": 0.85,
+          "reason": "No fixed uplift percentage; only fuel index adjustment."
+        },
+        {
+          "key": "uplift.cap_pct",
+          "confidence": 0.9,
+          "reason": "No cap stated."
+        }
+      ],
+      "quote": null,
+      "sla_terms": {
+        "metric": "on_time_delivery_pct",
+        "target": 97,
+        "currency": "INR",
+        "credit_rule": "For each full percentage point by which monthly on-time delivery falls below 97%, the Customer shall receive a credit of two per cent (2%) of that month's fixed charges, up to a maximum of fifteen per cent (15%).",
+        "credit_basis": "monthly_fees",
+        "citation": {
+          "doc_id": "DOC-14",
+          "section": "15.2",
+          "quote": "For each full percentage point by which monthly on-time delivery falls below 97%, the"
+        }
+      },
+      "licensed_units": []
+    }
+  }
+}

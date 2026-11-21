@@ -8,6 +8,8 @@ import type { Field } from "../types";
 export function normaliseText(s: string): string {
   return s
     .normalize("NFKC")
+    // Markdown punctuation (table pipes, **bold**, `code`) never appears in a PDF's text layer.
+    .replace(/[|*`]/g, " ")
     .replace(/[‘’‚′]/g, "'")
     .replace(/[“”„″]/g, '"')
     .replace(/[‐-―−]/g, "-")

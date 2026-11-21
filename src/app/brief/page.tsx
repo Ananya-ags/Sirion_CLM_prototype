@@ -146,7 +146,7 @@ export default function Page() {
             <li>Demo clock fixed at {DEMO_TODAY_LABEL}; USD→INR {FX.USD_INR}; India CPI {CPI_INDIA_YOY_PCT}% YoY.</li>
             <li>Internal decision target = act-by − 15 days; red at ≤ 14 days to act-by.</li>
             <li>Business-day notices skip weekends and Velora&apos;s Bengaluru holiday list.</li>
-            <li>Portfolio extraction is pre-computed and human-verified; live AI is used for drafting.</li>
+            <li>Portfolio extraction is pre-computed by the AI pipeline (Claude reads the PDFs; every cited quote is verified in code; OCR and low-confidence fields go to human review); live AI is used for drafting.</li>
             <li>Velora sizing (₹320 Cr unreviewed, ₹25–40 Cr avoidable) is an estimate.</li>
           </ul>
         </Block>
