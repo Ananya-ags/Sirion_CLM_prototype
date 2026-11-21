@@ -22,6 +22,7 @@ import {
   loadVendorMaster,
 } from "./data";
 import { initialStateFor } from "./requestFlow";
+import { SUPPLIER_REGISTER } from "./suppliers";
 import { evaluateSupplier, type RulesContext, type SupplierEvaluation } from "./rules/flags";
 import { isCreditNote, rowsForVendor } from "./rules/ledger";
 import { withFeeBasis } from "./rules/performance";
@@ -37,8 +38,10 @@ import {
   type ExtractionOutput,
   type FamilyMember,
   type Field,
+  type HumanOverride,
   type Request,
 } from "./types";
+import { coerceValue, FIELD_KEYS, type FieldKey } from "./ai/precedence";
 
 export const SEED_CONFIDENCE = 0.95;
 
@@ -118,12 +121,19 @@ export function loadRulesContext(): Promise<RulesContext> {
 
 export type SupplierMeta = { supplierId: string; name: string; category: Category; vendorId: string; erpVendorName: string };
 
+/** "Nimbus CRM Private Limited" → "Nimbus CRM Pvt Ltd" (display only). */
+export const displayName = (legal: string) => legal.replace(/\bPrivate Limited\b/i, "Pvt Ltd").replace(/\s+/g, " ").trim();
+
+/** Suppliers Docket tracks: the supplier register (src/lib/suppliers.ts) joined to vendor_master.csv. Never gold. */
 export async function listSuppliers(): Promise<SupplierMeta[]> {
-  const { suppliers } = await loadDevGold();
-  return suppliers.map((s) => ({ supplierId: s.supplier_id, name: s.contract_name, category: s.category, vendorId: s.vendor_id, erpVendorName: s.erp_vendor_name }));
+  const vendors = await loadVendorMaster();
+  return SUPPLIER_REGISTER.flatMap((r) => {
+    const v = vendors.find((x) => x.vendor_id === r.vendor_id);
+    return v ? [{ supplierId: r.supplier_id, name: displayName(v.legal_name), category: v.category, vendorId: v.vendor_id, erpVendorName: v.erp_vendor_name }] : [];
+  });
 }
 
-/** Cached AI extraction wins; otherwise the gold seed. */
+/** Cached AI extraction wins; otherwise the gold seed (labelled "seed" in the UI). */
 export async function getExtraction(supplierId: string): Promise<SupplierExtraction | null> {
   const cached = await loadCache(`extraction_${supplierId}`, SupplierExtractionSchema.nullable(), null);
   if (cached) return { ...cached, source: "cache" };
@@ -144,12 +154,12 @@ export type FamilyDoc = FamilyMember & {
  * enriched with the extraction's role/executed/evidence and documents.json metadata.
  */
 async function buildFamily(supplierId: string, ex: SupplierExtraction): Promise<FamilyDoc[]> {
-  const [gold, docs, grouping] = await Promise.all([loadDevGold(), loadDocuments(), loadGrouping()]);
-  // AI grouping when the extraction came from the pipeline; the gold map only backs the seed fallback.
+  const [docs, grouping] = await Promise.all([loadDocuments(), loadGrouping()]);
+  // AI grouping when the extraction came from the pipeline; the gold map is read ONLY for the seed fallback.
   const map =
     ex.source === "cache" && grouping
       ? grouping.assignments.filter((a) => a.supplier_id === supplierId && a.status === "assigned").map((a) => ({ doc_id: a.doc_id, evidence: a.evidence }))
-      : (gold.doc_supplier_map ?? []).filter((m) => m.supplier_id === supplierId);
+      : ((await loadDevGold()).doc_supplier_map ?? []).filter((m) => m.supplier_id === supplierId);
   const ids = map.length ? map.map((m) => m.doc_id) : ex.family.map((f) => f.doc_id);
   const leaves = Object.entries(ex.effective_terms).flatMap(([k, v]) =>
     k === "uplift" ? Object.entries(v as Record<string, Field<unknown>>).map(([kk, vv]) => [`uplift.${kk}`, vv] as const) : [[k, v as Field<unknown>] as const],
@@ -209,10 +219,26 @@ export function reviewFieldsOf(terms: ExtractionOutput["effective_terms"], minCo
     }));
 }
 
-export async function getSupplierView(supplierId: string): Promise<SupplierView | null> {
+/** Applies human overrides (confirm keeps the value, correct replaces it) as source:"human", confidence 1.0. */
+export function applyOverrides(terms: ExtractionOutput["effective_terms"], overrides: HumanOverride[]): ExtractionOutput["effective_terms"] {
+  const t = structuredClone(terms) as unknown as Record<string, Field<unknown> | Record<string, Field<unknown>>>;
+  for (const o of overrides) {
+    if (!(FIELD_KEYS as readonly string[]).includes(o.key)) continue;
+    const [a, b] = o.key.split(".");
+    const holder = (b ? t[a] : t) as Record<string, Field<unknown>>;
+    const leaf = b ?? a;
+    const f = holder[leaf];
+    const value = o.action === "corrected" && o.value !== undefined ? coerceValue(o.key as FieldKey, o.value) : f.value;
+    holder[leaf] = { ...f, value, confidence: 1, source: "human", note: o.action === "corrected" ? `Corrected by Procurement (was ${JSON.stringify(f.value)})` : "Confirmed by Procurement" };
+  }
+  return t as unknown as ExtractionOutput["effective_terms"];
+}
+
+export async function getSupplierView(supplierId: string, overrides: HumanOverride[] = []): Promise<SupplierView | null> {
   const meta = (await listSuppliers()).find((s) => s.supplierId === supplierId);
-  const ex = await getExtraction(supplierId);
-  if (!meta || !ex) return null;
+  const raw = await getExtraction(supplierId);
+  if (!meta || !raw) return null;
+  const ex = overrides.length ? { ...raw, effective_terms: applyOverrides(raw.effective_terms, overrides) } : raw;
   const annualOriginal = typeof ex.effective_terms.annual_value.value === "number" ? ex.effective_terms.annual_value.value : null;
   const slaTerms = ex.sla_terms ? withFeeBasis(ex.sla_terms, annualOriginal) : null;
   const ev = evaluateSupplier(

@@ -243,6 +243,8 @@ export function fieldSchema<T extends z.ZodType>(value: T) {
     ocr: z.boolean().optional(),
     /** AI pipeline: why the value is unclear / low-confidence (shown in the review queue). */
     note: z.string().optional(),
+    /** Set when a human confirmed or corrected the value (confidence 1.0; audited). */
+    source: z.literal("human").optional(),
   });
 }
 export type Field<T> = {
@@ -253,7 +255,11 @@ export type Field<T> = {
   verified?: boolean;
   ocr?: boolean;
   note?: string;
+  source?: "human";
 };
+
+/** A human decision on an extracted field (Priya's review queue). */
+export type HumanOverride = { key: string; action: "confirmed" | "corrected"; value?: string };
 
 export const DocRoleSchema = z.enum(["msa", "sow", "amendment", "order_form", "quote", "email", "other"]);
 export type DocRole = z.infer<typeof DocRoleSchema>;

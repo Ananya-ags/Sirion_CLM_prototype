@@ -15,12 +15,13 @@ export type Portfolio = {
 
 export async function getPortfolio(): Promise<Portfolio> {
   "use cache";
-  const [views, docs, gold, tracker, ledger, policy, grouping] = await Promise.all([getAllSupplierViews(), loadDocuments(), loadDevGold(), loadTracker(), loadLedger(), loadPolicy(), loadGrouping()]);
+  const [views, docs, tracker, ledger, policy, grouping] = await Promise.all([getAllSupplierViews(), loadDocuments(), loadTracker(), loadLedger(), loadPolicy(), loadGrouping()]);
   // AI grouping: every document the grouping sent to review (null supplier). Seed fallback: gold map nulls.
   const unmatched: UnmatchedDoc[] = (
     grouping
       ? grouping.assignments.filter((a) => a.status === "review").map((a) => ({ doc_id: a.doc_id, evidence: a.evidence, reason: a.review_reason ?? "Uncertain", confidence: a.confidence, source: "ai" as const }))
-      : (gold.doc_supplier_map ?? []).filter((m) => m.supplier_id === null).map((m) => ({ doc_id: m.doc_id, evidence: m.evidence, reason: "No supplier match", confidence: null, source: "seed" as const }))
+      : // seed fallback only (no AI grouping cached)
+        ((await loadDevGold()).doc_supplier_map ?? []).filter((m) => m.supplier_id === null).map((m) => ({ doc_id: m.doc_id, evidence: m.evidence, reason: "No supplier match", confidence: null, source: "seed" as const }))
   )
     .map(({ doc_id, ...rest }) => ({ doc: docs.find((d) => d.doc_id === doc_id)!, ...rest }))
     .filter((u) => !!u.doc);

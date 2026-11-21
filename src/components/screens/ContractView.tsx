@@ -17,6 +17,7 @@ import type { Field, Flag } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { approveRenewal, confirmReview, draftNotice, handOffRenegotiation } from "@/store/actions";
 import { useDocketStore } from "@/store/useDocketStore";
+import { useLiveViews } from "./useLiveViews";
 import { useRequestMap } from "./useRequest";
 
 type Leaf = { key: string; field: Field<unknown> };
@@ -33,7 +34,8 @@ const fmtValue = (key: string, v: unknown, currency: string) => {
   return String(v).replace(/_/g, " ");
 };
 
-export function ContractView({ view }: { view: SupplierView }) {
+export function ContractView({ view: serverView }: { view: SupplierView }) {
+  const view = useLiveViews([serverView])[0];
   const req = useRequestMap([view])[view.supplierId];
   const audit = useDocketStore((s) => s.audit).filter((a) => a.requestId === req.id).slice().reverse();
   const confirmations = Object.values(useDocketStore((s) => s.financeConfirmations)).filter((c) => c.requestId === req.id);
@@ -119,7 +121,8 @@ export function ContractView({ view }: { view: SupplierView }) {
                       {d?.meta && <SourceChip source={d.meta.source} detail={`${d.doc_id} · ${d.meta.filename}`} />}
                       {l.field.citation && <span className="text-[11px] text-muted-foreground">{l.field.citation.doc_id} §{l.field.citation.section}</span>}
                       {l.field.overridden_by && <span className="text-[11px] font-medium text-src-docusign">overridden by {l.field.overridden_by}</span>}
-                      {l.field.ocr && <OcrChip />}
+                      {l.field.ocr && l.field.source !== "human" && <OcrChip />}
+                      {l.field.source === "human" && <Hint content={l.field.note}><span className="inline-flex h-5 items-center gap-1 rounded-full bg-lane-green-bg px-1.5 text-[10px] font-medium text-lane-green"><CheckCircle2 className="size-3" /> Human</span></Hint>}
                     </div>
                   </button>
                 );

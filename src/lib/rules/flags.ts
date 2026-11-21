@@ -88,6 +88,7 @@ export const KEY_FIELDS = ["renewal_type", "initial_term_end", "renewal_term_mon
 /** Guardrail 1: a value with no citation is not usable; treat it as unclear. */
 export function usable<T>(f: Field<T>): T | "unclear" | null {
   if (f.value === "unclear") return "unclear";
+  if (f.source === "human") return f.value; // a human confirmed/corrected it (audited)
   if (f.value !== null && !f.citation) return "unclear";
   return f.value;
 }

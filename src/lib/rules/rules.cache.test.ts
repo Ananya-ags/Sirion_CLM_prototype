@@ -50,3 +50,21 @@ describe.skipIf(!cached.length)("rules fed by the AI cache", () => {
     }
   });
 });
+
+describe.skipIf(!cached.includes("SUP-04"))("human overrides re-run the rules", () => {
+  const KEY = ["renewal_type", "initial_term_end", "renewal_term_months", "notice_days", "notice_day_type"] as const;
+  it("confirming CleanSphere's OCR key fields moves it from needs_review to amber (X1 cleared)", async () => {
+    const v = (await getSupplierView("SUP-04", KEY.map((key) => ({ key, action: "confirmed" as const }))))!;
+    expect(v.lane).toBe("amber");
+    expect(v.flags.map((f) => f.code).sort()).toEqual(["T1", "X2"]);
+    expect(v.terms.notice_days).toMatchObject({ value: 30, confidence: 1, source: "human" });
+    expect(v.reviewFields.map((f) => f.key)).not.toContain("notice_days");
+  });
+  it("confirming only some key fields keeps it in review", async () => {
+    expect((await getSupplierView("SUP-04", [{ key: "renewal_type", action: "confirmed" }]))!.lane).toBe("needs_review");
+  });
+  it("a correction is coerced to the field type and feeds the rules (notice 30 → 60 changes nothing but the value)", async () => {
+    const v = (await getSupplierView("SUP-04", [...KEY.map((key) => ({ key, action: "confirmed" as const })), { key: "notice_days", action: "corrected", value: "60" }]))!;
+    expect(v.terms.notice_days).toMatchObject({ value: 60, source: "human" });
+  });
+});

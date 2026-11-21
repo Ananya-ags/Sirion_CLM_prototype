@@ -26,9 +26,9 @@ export function extractionParts(supplierName: string, docs: PipelineDoc[], vocab
   ].join("\n");
   const parts: Part[] = [{ text: `TRUSTED CONTEXT\n${context}` }];
   for (const d of docs) {
-    const head = `=== ${d.meta.doc_id} · channel: ${d.meta.source} · received ${d.meta.received_date} · ${d.pdf.pages.length} page(s) · ${d.textSource === "ocr" ? "OCR TRANSCRIPTION of a scan (may contain errors)" : d.textSource === "none" ? "NO TEXT (scan, OCR failed)" : "cleaned text"} ===`;
+    const head = `=== ${d.meta.doc_id}${d.meta.received_date ? ` · channel: ${d.meta.source} · received ${d.meta.received_date}` : ""} · ${d.pdf.pages.length} page(s) · ${d.textSource === "ocr" ? "OCR TRANSCRIPTION of a scan (may contain errors)" : d.textSource === "none" ? "NO TEXT (scan, OCR failed)" : "cleaned text"} ===`;
     const foot = footerLines(d.pdf);
-    parts.push({ pdfBase64: d.base64, title: d.meta.doc_id });
+    if (d.base64) parts.push({ pdfBase64: d.base64, title: d.meta.doc_id }); // text-only items (snippets) have no PDF
     parts.push({ text: `${head}\n${foot ? `[footer identifiers]\n${foot}\n` : ""}<untrusted_document doc_id="${d.meta.doc_id}">\n${d.text}\n</untrusted_document>` });
   }
   parts.push({ text: `Extract per the instructions for documents ${docs.map((d) => d.meta.doc_id).join(", ")}. Quote verbatim from the text above.` });

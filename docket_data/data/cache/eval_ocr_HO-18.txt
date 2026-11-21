@@ -1,0 +1,35 @@
+--- Page 1 ---
+FLEET TELEMATICS SERVICES AGREEMENT — with
+ADDENDUM No. 1
+
+PART I — PRINCIPAL AGREEMENT (signed 2 September 2025)
+
+Parties: Kestrelnet Telematics Private Limited, Plot 18, Phase II, IDA Uppal, Hyderabad 500039 ("Kestrelnet"), and Velora Consumer Private Limited, Bengaluru ("Customer").
+
+P1. Duration. The services run from 15 September 2025 to 14 September 2027 (the "First Period"). The Agreement then continues automatically for further periods of one (1) year each unless a party gives notice to stop not later than thirty (30) days before the First Period or any further period ends.
+
+P2. Charges. ₹420 per vehicle per month for 180 vehicles (approximately ₹9,07,200 per year), plus GST. Charges stay the same for the First Period; for each further period they may be increased by Kestrelnet by the annual rise in the CPI (Combined), with no upper limit stated.
+
+P3. Payment. Within thirty (30) days of invoice.
+
+P4. Service credits. Where GPS data latency exceeds 5 minutes for more than 2% of pings in a month, Kestrelnet shall credit 5% of that month's charges.
+
+P5. Early termination. The Customer may end the Agreement on sixty (60) days' notice for any reason.
+
+P6. Notices. By email to the addresses in the order form.
+
+P7. Law. Laws of India; courts at Hyderabad.
+
+Signed: Kestrelnet — [signature] R. Venkatesh, Director — 02.09.2025 · Customer — [signature] Kavita Deshpande, CFO — 02.09.2025
+
+PART II — ADDENDUM No. 1 (signed 20 March 2026)
+
+A1. With effect from the date of this Addendum, in clause P1 the words "thirty (30) days" are replaced by "ninety (90) days".
+
+A2. In clause P3, "thirty (30) days" is replaced by "sixty (60) days".
+
+A3. Everything else in the Principal Agreement stays as it is. Where this Addendum and the Principal Agreement differ, this Addendum governs.
+
+Signed: Kestrelnet — [signature] R. Venkatesh, Director — 18.03.2026 · Customer — [signature] Kavita Deshpande, CFO — 20.03.2026
+
+[company seal: circular stamp reading "KESTRELNET TELEMATICS PRIVATE LIMITED" with "BENGALURU" in the centre]

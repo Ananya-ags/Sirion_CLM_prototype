@@ -3,6 +3,7 @@
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import { DEFAULT_PERSONA, demoNowISO } from "@/lib/config";
+import { initialStateFor } from "@/lib/requestFlow";
 import {
   canTransition,
   type Actor,
@@ -10,6 +11,9 @@ import {
   type Draft,
   type FinanceConfirmation,
   type FinanceDismissal,
+  type Flag,
+  type HumanOverride,
+  type Lane,
   type PersonaId,
   type Request,
   type RequestState,
@@ -24,7 +28,12 @@ type Data = {
   drafts: Record<string, Draft>;
   /** Human review of AI output: field confirmations/corrections and unmatched-document decisions. */
   reviews: Record<string, ReviewDecision>;
+  /** Human overrides per supplier (source "human", confidence 1.0), fed back into the rules engine. */
+  overrides: Record<string, (HumanOverride & { by: PersonaId; ts: string })[]>;
 };
+
+/** Result of re-running the rules engine after a human override. */
+export type Reevaluation = { lane: Lane | null; laneReason: string; flags: Flag[]; actBy: string | null; internalBy: string | null; annualInr: number };
 
 export type ReviewDecision = { itemId: string; kind: "field" | "document"; action: "confirmed" | "corrected"; value?: string; by: PersonaId; ts: string };
 
@@ -41,6 +50,8 @@ type Actions = {
   saveDraft: (d: Draft) => void;
   confirmFinance: (c: Omit<FinanceConfirmation, "ts">) => void;
   dismissFinance: (d: Omit<FinanceDismissal, "ts">) => void;
+  /** Applies a rules re-run to the request: lane/flags/dates; a review-lane request leaves human review once clear. */
+  applyReevaluation: (requestId: string, r: Reevaluation) => void;
   /** Records a human decision on an AI field or unmatched document (always audited). */
   recordReview: (d: Omit<ReviewDecision, "ts">, requestId: string | null, label: string) => void;
   resetDemo: () => void;
@@ -56,6 +67,7 @@ const initialData = (): Data => ({
   financeDismissals: {},
   drafts: {},
   reviews: {},
+  overrides: {},
 });
 
 let seq = 0;
@@ -148,10 +160,33 @@ export const useDocketStore = create<DocketStore>()(
         }));
       },
 
-      recordReview: (d, requestId, label) => {
+      applyReevaluation: (requestId, r) => {
+        const req = get().requests[requestId];
+        if (!req) return;
+        const same = req.lane === r.lane && JSON.stringify(req.flags.map((f) => f.code)) === JSON.stringify(r.flags.map((f) => f.code)) && req.act_by === r.actBy;
+        if (same) return;
         const ts = demoNowISO();
         set((s) => ({
+          requests: { ...s.requests, [requestId]: { ...req, lane: r.lane, lane_reason: r.laneReason, flags: r.flags, act_by: r.actBy, internal_by: r.internalBy, annual_value_inr: r.annualInr, updated_at: ts } },
+          audit: [
+            ...s.audit,
+            { id: auditId(), ts, requestId, actor: "Rules", action: `Re-evaluated after human review: ${req.lane ?? "—"} → ${r.lane ?? "—"}`, reason: r.laneReason },
+          ],
+        }));
+        // Out of human review once no key field is unclear: route like a freshly raised request.
+        if (req.state === "human_review" && r.lane && r.lane !== "needs_review") {
+          get().transition(requestId, initialStateFor(r.lane), "Rules", `Key fields confirmed by a human; ${r.lane} lane`);
+        }
+      },
+
+      recordReview: (d, requestId, label) => {
+        const ts = demoNowISO();
+        const m = d.kind === "field" ? d.itemId.match(/^field:(SUP-\d{2}):(.+)$/) : null;
+        set((s) => ({
           reviews: { ...s.reviews, [d.itemId]: { ...d, ts } },
+          overrides: m
+            ? { ...s.overrides, [m[1]]: [...(s.overrides[m[1]] ?? []).filter((o) => o.key !== m[2]), { key: m[2], action: d.action, ...(d.value !== undefined ? { value: d.value } : {}), by: d.by, ts }] }
+            : s.overrides,
           audit: [
             ...s.audit,
             {
@@ -160,7 +195,7 @@ export const useDocketStore = create<DocketStore>()(
               requestId,
               actor: d.by,
               action: d.action === "confirmed" ? `Confirmed ${label}` : `Corrected ${label} → ${d.value}`,
-              reason: d.kind === "field" ? "Human review of AI-extracted field" : "Human review of document grouping",
+              reason: d.kind === "field" ? "Human override (source: human, confidence 1.0); rules re-run" : "Human review of document grouping",
             },
           ],
         }));
@@ -171,7 +206,7 @@ export const useDocketStore = create<DocketStore>()(
     {
       name: "docket-demo-v3",
       storage: createJSONStorage(() => localStorage),
-      partialize: ({ persona, requests, audit, financeConfirmations, financeDismissals, drafts, reviews }) => ({ persona, requests, audit, financeConfirmations, financeDismissals, drafts, reviews }),
+      partialize: ({ persona, requests, audit, financeConfirmations, financeDismissals, drafts, reviews, overrides }) => ({ persona, requests, audit, financeConfirmations, financeDismissals, drafts, reviews, overrides }),
       // Rehydrated on the client by <StoreHydrator /> to avoid SSR mismatches.
       skipHydration: true,
     },

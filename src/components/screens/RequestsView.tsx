@@ -13,6 +13,7 @@ import type { SupplierView } from "@/lib/seed";
 import type { OwnerChoice } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { ownerDecide } from "@/store/actions";
+import { useLiveViews } from "./useLiveViews";
 import { useRequestMap } from "./useRequest";
 
 /** Plain-language flag sentences for budget owners (numbers from Rules). */
@@ -45,7 +46,8 @@ function seatsLine(v: SupplierView): string | null {
   return `You use ${d.latest_active} of ${d.licensed_units} ${metricLabel(d.metric)} (${Math.round(d.latest_pct)}%) · ~${lakh1(u1.impactInr ?? 0)}/yr unused`;
 }
 
-export function RequestsView({ views }: { views: SupplierView[] }) {
+export function RequestsView({ views: serverViews }: { views: SupplierView[] }) {
+  const views = useLiveViews(serverViews);
   const req = useRequestMap(views);
   const mine = views
     .filter((v) => v.lane !== "green")

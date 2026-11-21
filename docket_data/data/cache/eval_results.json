@@ -1,84 +1,646 @@
-[
-  {
-    "suite": "heldout_field_accuracy",
-    "passed": 0,
-    "total": 0,
-    "skipped": true,
-    "details": [
-      "skipped: held-out live evals are skipped in this build (Phase 3 scope)"
-    ]
+{
+  "generated_at": "2026-11-24T09:00:22.365Z",
+  "models": {
+    "extract": "claude-sonnet-5-5",
+    "draft": "claude-haiku-5-5"
   },
-  {
-    "suite": "heldout_citations_exist",
-    "passed": 0,
-    "total": 0,
-    "skipped": true,
-    "details": [
-      "skipped: held-out live evals are skipped in this build (Phase 3 scope)"
-    ]
+  "budget": {
+    "limit_usd": 3,
+    "spent_usd": 1.355,
+    "skipped": []
   },
-  {
-    "suite": "citation_verifier_dev_docs",
-    "passed": 340,
-    "total": 340,
-    "details": [
-      "340/340 checks (real gold quotes must verify; fabricated variants must not)"
-    ]
+  "headline": {
+    "dev": {
+      "fields": 170,
+      "correct": 168,
+      "wrong": 0,
+      "correct_abstention": 2,
+      "wrong_abstention": 0,
+      "missed_abstention": 0,
+      "accuracy": 1
+    },
+    "heldout": {
+      "fields": 75,
+      "correct": 59,
+      "wrong": 13,
+      "correct_abstention": 2,
+      "wrong_abstention": 0,
+      "missed_abstention": 1,
+      "accuracy": 0.8133333333333334
+    }
   },
-  {
-    "suite": "draft_safety",
-    "passed": 5,
-    "total": 5,
-    "details": [
-      {
-        "case": "clean notice passes boundary",
-        "ok": true
-      },
-      {
-        "case": "clean notice passes numeric fidelity",
-        "ok": true,
-        "info": []
-      },
-      {
-        "case": "negotiation draft is blocked",
-        "ok": true,
-        "info": [
-          "discount",
-          "we propose"
-        ]
-      },
-      {
-        "case": "wrong date is caught",
-        "ok": true,
-        "info": [
-          {
-            "raw": "2 January 2027",
-            "kind": "date",
-            "value": "2027-01-02"
-          }
-        ]
-      },
-      {
-        "case": "unapproved ₹ amount is caught",
-        "ok": true
-      },
-      {
-        "case": "injection snippet (live)",
-        "skipped": "ANTHROPIC_API_KEY not set"
-      }
-    ]
-  },
-  {
-    "suite": "rules_and_unit_tests",
-    "passed": 127,
-    "total": 127,
-    "details": [
-      "data.test.ts: 4/4",
-      "format.test.ts: 3/3",
-      "useDocketStore.test.ts: 3/3",
-      "rules.gold.test.ts: 63/63",
-      "rules.unit.test.ts: 36/36",
-      "guardrails.test.ts: 18/18"
-    ]
-  }
-]
+  "suites": [
+    {
+      "id": "heldout",
+      "title": "Held-out extraction",
+      "protects": "Over-fitting to the dev set: the true estimate of extraction accuracy on unseen contracts.",
+      "status": "info",
+      "passed": 61,
+      "total": 75,
+      "metrics": [
+        {
+          "label": "Correct",
+          "value": "59"
+        },
+        {
+          "label": "Wrong",
+          "value": "13"
+        },
+        {
+          "label": "Correct abstention",
+          "value": "2"
+        },
+        {
+          "label": "Wrong abstention",
+          "value": "0"
+        },
+        {
+          "label": "Missed abstention",
+          "value": "1"
+        },
+        {
+          "label": "Executed vs draft (contracts)",
+          "value": "3/3"
+        },
+        {
+          "label": "HO-01",
+          "value": "5/5"
+        },
+        {
+          "label": "HO-02",
+          "value": "4/4"
+        },
+        {
+          "label": "HO-03",
+          "value": "3/3"
+        },
+        {
+          "label": "HO-04",
+          "value": "3/3"
+        },
+        {
+          "label": "HO-05",
+          "value": "3/3"
+        },
+        {
+          "label": "HO-06",
+          "value": "2/2"
+        },
+        {
+          "label": "HO-07",
+          "value": "1/1"
+        },
+        {
+          "label": "HO-08",
+          "value": "1/1"
+        },
+        {
+          "label": "HO-09",
+          "value": "1/1"
+        },
+        {
+          "label": "HO-10",
+          "value": "1/1"
+        },
+        {
+          "label": "HO-11",
+          "value": "1/1"
+        },
+        {
+          "label": "HO-12",
+          "value": "2/2"
+        },
+        {
+          "label": "HO-13",
+          "value": "2/2"
+        },
+        {
+          "label": "HO-14",
+          "value": "1/1"
+        },
+        {
+          "label": "HO-15",
+          "value": "2/3"
+        },
+        {
+          "label": "HO-16",
+          "value": "14/14"
+        },
+        {
+          "label": "HO-17",
+          "value": "1/14"
+        },
+        {
+          "label": "HO-18",
+          "value": "14/14"
+        }
+      ],
+      "misses": [
+        {
+          "item": "HO-15 renewal_term_months",
+          "expected": "unclear",
+          "got": null,
+          "note": "missed abstention · conf 0.8"
+        },
+        {
+          "item": "HO-17 renewal_type",
+          "expected": "auto",
+          "got": null,
+          "note": "wrong · conf 0.9"
+        },
+        {
+          "item": "HO-17 initial_term_end",
+          "expected": "2028-03-31",
+          "got": null,
+          "note": "wrong · conf 0.9"
+        },
+        {
+          "item": "HO-17 renewal_term_months",
+          "expected": 12,
+          "got": null,
+          "note": "wrong · conf 0.9"
+        },
+        {
+          "item": "HO-17 notice_days",
+          "expected": 30,
+          "got": null,
+          "note": "wrong · conf 0.9"
+        },
+        {
+          "item": "HO-17 notice_day_type",
+          "expected": "calendar",
+          "got": null,
+          "note": "wrong · conf 0.9"
+        },
+        {
+          "item": "HO-17 notice_method",
+          "expected": "email_and_physical",
+          "got": null,
+          "note": "wrong · conf 0.9"
+        },
+        {
+          "item": "HO-17 uplift.type",
+          "expected": "discretionary",
+          "got": null,
+          "note": "wrong · conf 0.9"
+        },
+        {
+          "item": "HO-17 uplift.cap_pct",
+          "expected": 5,
+          "got": null,
+          "note": "wrong · conf 0.9"
+        },
+        {
+          "item": "HO-17 tfc",
+          "expected": true,
+          "got": null,
+          "note": "wrong · conf 0.9"
+        },
+        {
+          "item": "HO-17 payment_terms_days",
+          "expected": 45,
+          "got": null,
+          "note": "wrong · conf 0.9"
+        },
+        {
+          "item": "HO-17 sla_credits",
+          "expected": true,
+          "got": null,
+          "note": "wrong · conf 0.9"
+        },
+        {
+          "item": "HO-17 governing_law",
+          "expected": "India",
+          "got": null,
+          "note": "wrong · conf 0.9"
+        },
+        {
+          "item": "HO-17 currency",
+          "expected": "INR",
+          "got": null,
+          "note": "wrong · conf 0.9"
+        }
+      ]
+    },
+    {
+      "id": "grouping",
+      "title": "Grouping (dev)",
+      "protects": "Mis-filed documents: contracts attached to the wrong supplier, or look-alike entities merged in.",
+      "status": "pass",
+      "passed": 29,
+      "total": 29,
+      "metrics": [
+        {
+          "label": "Correct",
+          "value": "29/29"
+        },
+        {
+          "label": "Wrong",
+          "value": "0"
+        },
+        {
+          "label": "Sent to review",
+          "value": "0"
+        },
+        {
+          "label": "Decoy DOC-29 → null",
+          "value": "yes"
+        }
+      ],
+      "misses": []
+    },
+    {
+      "id": "citations",
+      "title": "Citation quality",
+      "protects": "Hallucinated or mis-located evidence: every value must point to the exact words and clause it came from.",
+      "status": "pass",
+      "passed": 206,
+      "total": 206,
+      "metrics": [
+        {
+          "label": "Quote exists (dev)",
+          "value": "152/152"
+        },
+        {
+          "label": "Quote exists (held-out)",
+          "value": "54/54"
+        },
+        {
+          "label": "Section matches gold (dev)",
+          "value": "143/152 (94%)"
+        }
+      ],
+      "misses": [
+        {
+          "item": "SUP-02 notice_day_type",
+          "expected": "DOC-04 §1.20 (via 'Non-Renewal Notice Period' in 11.2)",
+          "got": "DOC-04 §1.34",
+          "note": "section"
+        },
+        {
+          "item": "SUP-05 notice_day_type",
+          "expected": "DOC-14 §Annexure C (Key Commercial Terms) — Non-renewal Notice Period (via 12.2)",
+          "got": "DOC-14 §1.32",
+          "note": "section"
+        },
+        {
+          "item": "SUP-07 initial_term_end",
+          "expected": "DOC-19 §11.1",
+          "got": "DOC-20 §2",
+          "note": "section"
+        },
+        {
+          "item": "SUP-07 notice_day_type",
+          "expected": "DOC-19 §11.2",
+          "got": "DOC-19 §1.33",
+          "note": "section"
+        },
+        {
+          "item": "SUP-07 currency",
+          "expected": "DOC-19 §12.1",
+          "got": "DOC-20 §Fee table",
+          "note": "section"
+        },
+        {
+          "item": "SUP-07 annual_value",
+          "expected": "DOC-20 §Order Schedule — Total annual committed Fee",
+          "got": "DOC-20 §Fee table",
+          "note": "section"
+        },
+        {
+          "item": "SUP-08 renewal_term_months",
+          "expected": "DOC-22 §13.3",
+          "got": "DOC-22 §13.2",
+          "note": "section"
+        },
+        {
+          "item": "SUP-08 notice_day_type",
+          "expected": "DOC-22 §13.3",
+          "got": "DOC-22 §1.33",
+          "note": "section"
+        },
+        {
+          "item": "SUP-09 notice_day_type",
+          "expected": "DOC-25 §12.2",
+          "got": "DOC-25 §1.34",
+          "note": "section"
+        }
+      ],
+      "note": "sections 143/152"
+    },
+    {
+      "id": "abstention",
+      "title": "Abstention",
+      "protects": "Confident guessing on genuinely ambiguous clauses (e.g. Sentinel's two conflicting renewal provisions).",
+      "status": "fail",
+      "passed": 4,
+      "total": 5,
+      "metrics": [
+        {
+          "label": "Ambiguous items → unclear",
+          "value": "4/5"
+        },
+        {
+          "label": "Over-abstentions (unclear where gold has a value)",
+          "value": "0"
+        }
+      ],
+      "misses": [
+        {
+          "item": "HO-15 renewal_term_months",
+          "expected": "unclear",
+          "got": null
+        }
+      ]
+    },
+    {
+      "id": "injection",
+      "title": "Prompt injection",
+      "protects": "Prompt injection: instructions hidden in a contract changing what Docket extracts.",
+      "status": "pass",
+      "passed": 7,
+      "total": 7,
+      "metrics": [
+        {
+          "label": "Checks",
+          "value": "7/7"
+        }
+      ],
+      "misses": []
+    },
+    {
+      "id": "drafts",
+      "title": "Draft safety",
+      "protects": "Docket negotiating or changing a deadline / amount in an outgoing letter.",
+      "status": "pass",
+      "passed": 10,
+      "total": 10,
+      "metrics": [
+        {
+          "label": "Guardrail controls (offline)",
+          "value": "4/4"
+        },
+        {
+          "label": "Live drafts",
+          "value": "6/6"
+        },
+        {
+          "label": "Boundary check pass",
+          "value": "6/6"
+        },
+        {
+          "label": "Numeric fidelity pass",
+          "value": "6/6"
+        },
+        {
+          "label": "Retries needed",
+          "value": "0"
+        },
+        {
+          "label": "TalkWave exit",
+          "value": "live · boundary ✓ · numbers ✓ · attempts 1"
+        },
+        {
+          "label": "BrightLoop exit",
+          "value": "live · boundary ✓ · numbers ✓ · attempts 1"
+        },
+        {
+          "label": "CleanSphere exit",
+          "value": "live · boundary ✓ · numbers ✓ · attempts 1"
+        },
+        {
+          "label": "PeopleGrid cap letter",
+          "value": "live · boundary ✓ · numbers ✓ · attempts 1"
+        },
+        {
+          "label": "Nimbus exit",
+          "value": "live · boundary ✓ · numbers ✓ · attempts 1"
+        },
+        {
+          "label": "CodeCraft exit",
+          "value": "live · boundary ✓ · numbers ✓ · attempts 1"
+        }
+      ],
+      "misses": []
+    },
+    {
+      "id": "calibration",
+      "title": "Confidence calibration",
+      "protects": "A review threshold that is too loose (wrong values auto-used) or too strict (reviewers drown in correct fields).",
+      "status": "info",
+      "passed": 231,
+      "total": 245,
+      "metrics": [
+        {
+          "label": "Dev ≥ 0.85",
+          "value": "144/144 (100%)"
+        },
+        {
+          "label": "Dev < 0.85",
+          "value": "26/26 (100%)"
+        },
+        {
+          "label": "Held-out ≥ 0.85",
+          "value": "43/56 (77%)"
+        },
+        {
+          "label": "Held-out < 0.85",
+          "value": "18/19 (95%)"
+        },
+        {
+          "label": "Recommendation",
+          "value": "Below-0.85 fields are about as accurate as the rest (98% vs 94%): model confidence does not separate right from wrong here. Keep 0.85 for OCR / unclear, but route mainly on quote-verified + Rules checks rather than self-reported confidence."
+        }
+      ],
+      "misses": [
+        {
+          "item": "HO-17 renewal_type",
+          "expected": "correct",
+          "got": "wrong",
+          "note": "confident miss · conf 0.9"
+        },
+        {
+          "item": "HO-17 initial_term_end",
+          "expected": "correct",
+          "got": "wrong",
+          "note": "confident miss · conf 0.9"
+        },
+        {
+          "item": "HO-17 renewal_term_months",
+          "expected": "correct",
+          "got": "wrong",
+          "note": "confident miss · conf 0.9"
+        },
+        {
+          "item": "HO-17 notice_days",
+          "expected": "correct",
+          "got": "wrong",
+          "note": "confident miss · conf 0.9"
+        },
+        {
+          "item": "HO-17 notice_day_type",
+          "expected": "correct",
+          "got": "wrong",
+          "note": "confident miss · conf 0.9"
+        },
+        {
+          "item": "HO-17 notice_method",
+          "expected": "correct",
+          "got": "wrong",
+          "note": "confident miss · conf 0.9"
+        },
+        {
+          "item": "HO-17 uplift.type",
+          "expected": "correct",
+          "got": "wrong",
+          "note": "confident miss · conf 0.9"
+        },
+        {
+          "item": "HO-17 uplift.cap_pct",
+          "expected": "correct",
+          "got": "wrong",
+          "note": "confident miss · conf 0.9"
+        },
+        {
+          "item": "HO-17 tfc",
+          "expected": "correct",
+          "got": "wrong",
+          "note": "confident miss · conf 0.9"
+        },
+        {
+          "item": "HO-17 payment_terms_days",
+          "expected": "correct",
+          "got": "wrong",
+          "note": "confident miss · conf 0.9"
+        },
+        {
+          "item": "HO-17 sla_credits",
+          "expected": "correct",
+          "got": "wrong",
+          "note": "confident miss · conf 0.9"
+        },
+        {
+          "item": "HO-17 governing_law",
+          "expected": "correct",
+          "got": "wrong",
+          "note": "confident miss · conf 0.9"
+        },
+        {
+          "item": "HO-17 currency",
+          "expected": "correct",
+          "got": "wrong",
+          "note": "confident miss · conf 0.9"
+        }
+      ]
+    },
+    {
+      "id": "rules",
+      "title": "Rules engine & unit tests",
+      "protects": "Wrong dates, ₹ or lanes: the deterministic engine must reproduce every gold figure.",
+      "status": "pass",
+      "passed": 225,
+      "total": 225,
+      "metrics": [
+        {
+          "label": "Gold match (seed + AI cache)",
+          "value": "129/129"
+        },
+        {
+          "label": "useDocketStore.test.ts",
+          "value": "3/3"
+        },
+        {
+          "label": "data.test.ts",
+          "value": "4/4"
+        },
+        {
+          "label": "evals.test.ts",
+          "value": "3/3"
+        },
+        {
+          "label": "format.test.ts",
+          "value": "3/3"
+        },
+        {
+          "label": "guardrails.test.ts",
+          "value": "18/18"
+        },
+        {
+          "label": "pipeline.test.ts",
+          "value": "14/14"
+        },
+        {
+          "label": "rules.cache.test.ts",
+          "value": "33/33"
+        },
+        {
+          "label": "rules.gold.test.ts",
+          "value": "96/96"
+        },
+        {
+          "label": "rules.unit.test.ts",
+          "value": "51/51"
+        }
+      ],
+      "misses": []
+    },
+    {
+      "id": "stability",
+      "title": "Stability (3 runs)",
+      "protects": "Run-to-run drift: the same contract giving different answers on different days.",
+      "status": "pass",
+      "passed": 51,
+      "total": 51,
+      "metrics": [
+        {
+          "label": "SUP-01",
+          "value": "17/17 fields identical across 3 runs"
+        },
+        {
+          "label": "SUP-03",
+          "value": "17/17 fields identical across 3 runs"
+        },
+        {
+          "label": "SUP-08",
+          "value": "17/17 fields identical across 3 runs"
+        }
+      ],
+      "misses": []
+    },
+    {
+      "id": "ops",
+      "title": "Cost & latency",
+      "protects": "Silent cost or latency creep as documents and suppliers grow.",
+      "status": "info",
+      "passed": 55,
+      "total": 55,
+      "metrics": [
+        {
+          "label": "ocr",
+          "value": "2 calls · 5,656 in / 2,727 out · $0.039 · p50 5.8s · p95 9.7s"
+        },
+        {
+          "label": "grouping",
+          "value": "3 calls · 86,118 in / 13,410 out · $0.306 · p50 22.2s · p95 22.2s"
+        },
+        {
+          "label": "extraction",
+          "value": "44 calls · 13,68,221 in / 76,491 out · $3.501 · p50 9.9s · p95 18.8s"
+        },
+        {
+          "label": "draft",
+          "value": "6 calls · 5,569 in / 8,678 out · $0.005 · p50 6.4s · p95 6.8s"
+        },
+        {
+          "label": "This eval run",
+          "value": "32 calls · $1.355 of $3.00 budget"
+        },
+        {
+          "label": "Precompute (all logged runs)",
+          "value": "$2.497"
+        }
+      ],
+      "misses": []
+    }
+  ]
+}

@@ -14,12 +14,14 @@ import type { Portfolio } from "@/lib/portfolio";
 import type { Lane } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { ReviewQueue } from "./ReviewQueue";
+import { useLiveViews } from "./useLiveViews";
 import { useRequestMap } from "./useRequest";
 
 type Filter = "all" | Lane;
 const HORIZON = 120;
 
-export function InboxView({ views, unmatched, sources }: Pick<Portfolio, "views" | "unmatched" | "sources">) {
+export function InboxView({ views: serverViews, unmatched, sources }: Pick<Portfolio, "views" | "unmatched" | "sources">) {
+  const views = useLiveViews(serverViews);
   const router = useRouter();
   const req = useRequestMap(views);
   const [filter, setFilter] = useState<Filter>("all");
