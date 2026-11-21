@@ -2,6 +2,7 @@ import { Activity, BookOpen, Compass, Cpu, DoorOpen, Gauge, Lightbulb, Puzzle, S
 import type { ReactNode } from "react";
 import { ActorBadge, Hint, SourceChip } from "@/components/docket";
 import { ProblemSection, type EvidenceRow } from "@/components/brief/ProblemSection";
+import { SuccessMetrics } from "@/components/brief/SuccessMetrics";
 import { ValueChain } from "@/components/brief/ValueChain";
 import { TourButton } from "@/components/tour/TourButton";
 import { getPortfolio } from "@/lib/portfolio";
@@ -198,22 +199,7 @@ export default async function Page() {
         </Block>
 
         <Block id="metrics" icon={Gauge} title="5 · Success metrics">
-          <div className="rounded-xl bg-hero-gradient p-4 text-white">
-            <div className="text-sm text-white/80">North star</div>
-            <div className="text-lg font-semibold">% of renewing contract value (next 120 days) with an active decision before act-by</div>
-          </div>
-          <div className="grid gap-3 md:grid-cols-3">
-            {[
-              ["Inputs", ["Verified contract coverage", "Time to decision", "Review-queue burn-down"]],
-              ["Guardrails", ["False auto-renew flags", "Override rate", "Extraction accuracy"]],
-              ["Rethink if", ["Owners renew >90% unchanged", "Act-by already passed at discovery", "Review queue outgrows capacity"]],
-            ].map(([t, items]) => (
-              <div key={t as string} className="rounded-xl border p-4">
-                <div className="text-base font-semibold text-navy">{t}</div>
-                <ul className="mt-1 list-disc pl-5 text-sm">{(items as string[]).map((i) => <li key={i}>{i}</li>)}</ul>
-              </div>
-            ))}
-          </div>
+          <SuccessMetrics />
         </Block>
 
         <Block id="evals" icon={Cpu} title="AI design & evals">
