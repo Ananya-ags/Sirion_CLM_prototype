@@ -1,7 +1,8 @@
-import { Activity, ArrowRight, BookOpen, Compass, Cpu, DoorOpen, Gauge, Lightbulb, Puzzle, ScrollText, ShieldAlert, ShieldCheck, Users } from "lucide-react";
+import { Activity, BookOpen, Compass, Cpu, DoorOpen, Gauge, Lightbulb, Puzzle, ScrollText, ShieldAlert, ShieldCheck, Users } from "lucide-react";
 import type { ReactNode } from "react";
 import { ActorBadge, Hint, SourceChip } from "@/components/docket";
 import { ProblemSection, type EvidenceRow } from "@/components/brief/ProblemSection";
+import { ValueChain } from "@/components/brief/ValueChain";
 import { TourButton } from "@/components/tour/TourButton";
 import { getPortfolio } from "@/lib/portfolio";
 import type { SupplierView } from "@/lib/seed";
@@ -87,33 +88,9 @@ function Block({ id, icon: Icon, title, children }: { id: string; icon: typeof B
   );
 }
 
+/** The handoff value chain (2 rows, AI / Rules / Human per step): see components/brief/ValueChain. */
 function Flow() {
-  const steps: [string, "Rules" | "owner" | "procurement" | "legal", string][] = [
-    ["Docket raises", "Rules", "Renewal found before act-by"],
-    ["Rahul decides", "owner", "Renew / Exit / Procurement"],
-    ["Priya acts", "procurement", "Evidence, drafts, decision"],
-    ["Meera approves", "legal", "Locked deadline & address"],
-    ["Closed", "Rules", "Sent by a human, audited"],
-  ];
-  return (
-    <div className="space-y-3">
-      <div className="flex flex-wrap items-stretch gap-2">
-        {steps.map(([t, a, d], i) => (
-          <div key={t} className="flex items-center gap-2">
-            <div className="w-44 rounded-xl border bg-surface p-3">
-              <ActorBadge actor={a} />
-              <div className="mt-1.5 text-base font-semibold text-navy">{t}</div>
-              <div className="text-sm text-slate-600">{d}</div>
-            </div>
-            {i < steps.length - 1 && <ArrowRight className="size-5 text-slate-400" />}
-          </div>
-        ))}
-      </div>
-      <div className="inline-flex items-center gap-2 rounded-xl border border-dashed px-3 py-2 text-sm text-navy">
-        <ActorBadge actor="finance" /> Akshat confirms billing alerts <ArrowRight className="size-4" /> evidence on Priya&apos;s card
-      </div>
-    </div>
-  );
+  return <ValueChain />;
 }
 
 function Num({ n, label, sub }: { n: string; label: string; sub?: string }) {
