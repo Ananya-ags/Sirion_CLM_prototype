@@ -2,11 +2,63 @@
 
 import { LayoutGrid, Table2 } from "lucide-react";
 import { useState } from "react";
-import { ActorBadge, Hint } from "@/components/docket";
+import { ActorBadge, Expandable, Hint } from "@/components/docket";
+import { FLAG_CATALOG, FLAG_GROUPS, flagEffect } from "@/lib/flags-catalog";
 import { Button } from "@/components/ui/button";
 import { formatINRShort } from "@/lib/format";
 import { CATEGORY_LABEL } from "@/lib/labels";
 import type { Policy } from "@/lib/types";
+
+const EFFECT_STYLE = { Minor: "bg-lane-amber-bg text-lane-amber", "Can make red": "bg-lane-red-bg text-lane-red", "Needs review": "bg-lane-review-bg text-lane-review" } as const;
+
+/** "What Docket checks": the 16 flags from the single catalogue, thresholds from policy.json. */
+function ChecksCatalog({ g }: { g: Policy["global"] }) {
+  return (
+    <Expandable
+      id="checks"
+      defaultOpen
+      className="scroll-mt-24 rounded-xl border bg-card px-5 py-3 shadow-soft"
+      triggerClassName="py-2"
+      contentClassName="pb-2"
+      title={<span className="text-lg font-semibold text-navy">What Docket checks on every contract ({FLAG_CATALOG.length} checks)</span>}
+    >
+      <p className="mb-3 text-[0.9375rem] text-slate-600">Every contract up for renewal runs through these checks; thresholds below are set by Procurement.</p>
+      <div className="overflow-x-auto rounded-lg border">
+        <table className="w-full min-w-[720px] text-sm">
+          <thead>
+            <tr className="text-left text-xs font-semibold tracking-wide text-slate-500 uppercase">
+              <th className="px-3 py-2">Code</th>
+              <th className="px-3 py-2">Check</th>
+              <th className="px-3 py-2">Data source</th>
+              <th className="px-3 py-2">Effect</th>
+            </tr>
+          </thead>
+          {FLAG_GROUPS.map((grp) => (
+            <tbody key={grp}>
+              <tr className="bg-surface-2">
+                <td colSpan={4} className="px-3 py-1.5 text-xs font-semibold tracking-wide text-brand-strong uppercase">{grp}</td>
+              </tr>
+              {FLAG_CATALOG.filter((e) => e.group === grp).map((e) => {
+                const eff = flagEffect(e, g);
+                return (
+                  <tr key={e.code} className="border-t align-top">
+                    <td className="px-3 py-2 font-mono text-xs font-semibold text-navy">{e.code}</td>
+                    <td className="px-3 py-2">
+                      <span className="font-semibold text-navy">{e.label}</span>
+                      <span className="text-slate-700"> · {e.describe(g)}</span>
+                    </td>
+                    <td className="px-3 py-2 whitespace-nowrap text-slate-600">{e.source}</td>
+                    <td className="px-3 py-2"><span className={`rounded-full px-2 py-0.5 text-xs font-semibold whitespace-nowrap ${EFFECT_STYLE[eff]}`}>{eff}</span></td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          ))}
+        </table>
+      </div>
+    </Expandable>
+  );
+}
 
 /** Category policy in plain language, with the raw policy.json values one toggle away. */
 export function PolicyView({ policy }: { policy: Policy }) {
@@ -15,6 +67,7 @@ export function PolicyView({ policy }: { policy: Policy }) {
   const cats = Object.entries(policy.categories);
   return (
     <div className="space-y-6">
+      <ChecksCatalog g={g} />
       <div className="flex flex-wrap items-center justify-between gap-3">
         <p className="flex items-center gap-2 text-base text-slate-700">
           <ActorBadge actor="Rules" /> Rules Docket applies; set by Procurement, read-only in this demo.

@@ -1,4 +1,4 @@
-import { FLAGS } from "@/lib/flags";
+import { FLAGS } from "@/lib/flags"; // derived from lib/flags-catalog.ts (single source)
 import type { FlagCode, FlagSeverity } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { Hint } from "./Hint";

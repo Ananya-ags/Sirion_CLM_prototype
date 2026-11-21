@@ -1,4 +1,5 @@
 import { Activity, BookOpen, Compass, Cpu, DoorOpen, Gauge, Info, Lightbulb, Puzzle, ScrollText, ShieldAlert, ShieldCheck, Users } from "lucide-react";
+import Link from "next/link";
 import type { ReactNode } from "react";
 import { ActorBadge, Expandable, Hint, SourceChip } from "@/components/docket";
 import { ProblemSection, type EvidenceRow } from "@/components/brief/ProblemSection";
@@ -204,6 +205,7 @@ export default async function Page() {
 
         <Block id="prototype" icon={Puzzle} title="4 · The prototype">
           <Flow />
+          <Link href="/policy#checks" className="inline-flex text-[0.9375rem] font-medium text-brand hover:underline">Docket runs 16 checks on every renewal → see the full list</Link>
           <div className="grid gap-3 md:grid-cols-3">
             {[
               ["AI", "Reads PDFs (OCR for scans), groups documents, extracts terms with verbatim citations, writes notice wording."],
