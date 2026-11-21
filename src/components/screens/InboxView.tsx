@@ -211,7 +211,7 @@ function AlertCard({ icon: Icon, tone, title, count, line, onView, active }: { i
         </div>
         <p className="text-xs text-slate-600">{line}</p>
       </div>
-      <Button size="sm" variant={active ? "default" : "outline"} onClick={onView} disabled={!count}>View</Button>
+      <Button size="sm" className="text-sm" variant={active ? "default" : "outline"} onClick={onView} disabled={!count}>View</Button>
     </div>
   );
 }

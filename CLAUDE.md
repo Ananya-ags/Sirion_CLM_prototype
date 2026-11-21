@@ -67,7 +67,7 @@ Extraction output per supplier (every leaf = {value, confidence, citation:{doc_i
 ## Live vs cached
 Pre-computed (scripts/precompute.ts writes docket_data/data/cache): OCR, grouping/families, classification (roles, executed), extraction with quote verification; eval results (scripts/evals.ts).
 Live: (A) "Add a contract" upload with live extraction; (B) live drafting of briefs, notices and cap letters. Both fall back to the cache.
-Models: Claude via @anthropic-ai/sdk (src/lib/ai/claude.ts). Live drafting (/api/draft) uses claude-haiku-5-5, overridable with ANTHROPIC_MODEL_DRAFT; the pipeline (OCR, grouping, extraction) uses ANTHROPIC_MODEL_EXTRACT; names live in lib/config.ts. ANTHROPIC_API_KEY comes from env, server routes only. Missing key or failed call → template draft with a "cached" badge; never block the UI.
+Models: Claude via @anthropic-ai/sdk (src/lib/ai/claude.ts). Live drafting (/api/draft) uses claude-haiku-5-5, overridable with ANTHROPIC_MODEL_DRAFT; the pipeline (OCR, grouping, extraction) uses ANTHROPIC_MODEL_EXTRACT; names live in lib/ai/models.ts (server-only). ANTHROPIC_API_KEY comes from env, server routes only. Missing key or failed call → template draft with a "cached" badge; never block the UI.
 
 ## Current build status (Phase 3)
 Live: /api/draft (Claude, guardrails, template fallback "cached"), /api/docs/[docId] (PDFs). Step 1 (branch v2): data pack v3 (sla_performance.csv, usage.csv, CN- credit notes), Rules S1/U1, owner-first request flow.

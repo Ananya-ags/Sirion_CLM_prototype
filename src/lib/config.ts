@@ -44,12 +44,6 @@ export const DEFAULT_GLOBAL_POLICY: GlobalPolicy = {
 /** Staffing rate cards: planned hours per resource per month (from the data pack's build script). */
 export const PLANNED_HOURS_PER_RESOURCE_MONTH = 150;
 
-/** Claude model names (server-side only). Override with env vars without code changes. */
-export const MODELS = {
-  draft: process.env.ANTHROPIC_MODEL_DRAFT ?? "claude-haiku-5-5",
-  extract: process.env.ANTHROPIC_MODEL_EXTRACT ?? "claude-haiku-5-5",
-} as const;
-
 export type PersonaMeta = {
   id: PersonaId;
   name: string;

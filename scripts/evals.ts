@@ -33,7 +33,7 @@ async function main() {
   // Dynamic imports: config reads env at import time.
   const { DATA_DIR, loadBenchmarks, loadDevGold, loadHeldoutDoc, loadHeldoutGold, loadSlaPerformance, loadUsage, loadVendorMaster } = await import("../src/lib/data");
   const { vendorForSupplier } = await import("../src/lib/suppliers");
-  const { MODELS } = await import("../src/lib/config");
+  const { MODELS } = await import("../src/lib/ai/models");
   const { hasClaudeKey } = await import("../src/lib/ai/claude");
   const { verifyQuote } = await import("../src/lib/ai/guardrails");
   const { boundaryCheck, numericFidelity } = await import("../src/lib/ai/guardrails");

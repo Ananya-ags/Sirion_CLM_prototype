@@ -2,7 +2,8 @@
 import { callJSON, FallbackError, hasClaudeKey, type CallMeta } from "./ai/claude";
 import { boundaryCheck, numericFidelity } from "./ai/guardrails";
 import { UNTRUSTED_DOCUMENT_RULES } from "./ai/prompts";
-import { DEMO_TODAY, MODELS } from "./config";
+import { MODELS } from "./ai/models";
+import { DEMO_TODAY } from "./config";
 import { allowedValues, canDraft, lockedValues, templateDraft } from "./drafts";
 import { getSupplierView } from "./seed";
 import type { Draft, DraftKind } from "./types";

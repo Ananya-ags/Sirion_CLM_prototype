@@ -18,7 +18,7 @@ type Json = Record<string, unknown>;
 
 async function main() {
   const { DATA_DIR, loadBenchmarks, loadDocuments, loadSlaPerformance, loadUsage, loadVendorMaster } = await import("../src/lib/data");
-  const { MODELS } = await import("../src/lib/config");
+  const { MODELS } = await import("../src/lib/ai/models");
   const { hasClaudeKey } = await import("../src/lib/ai/claude");
   const { pdfText } = await import("../src/lib/ai/pdfText");
   const { sha256 } = await import("../src/lib/ai/documents");
