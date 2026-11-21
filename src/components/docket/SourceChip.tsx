@@ -11,14 +11,15 @@ const SOURCE_META: Record<SourceKind, { label: string; icon: LucideIcon; classNa
   ledger: { label: "Ledger", icon: BookText, className: "bg-src-ledger-bg text-src-ledger" },
 };
 
-export function SourceChip({ source, detail, className }: { source: SourceKind; detail?: string; className?: string }) {
+/** `label` overrides the default source name (e.g. "Shared drives (SharePoint)"); styles and icon stay the same. */
+export function SourceChip({ source, detail, label, className }: { source: SourceKind; detail?: string; label?: string; className?: string }) {
   const m = SOURCE_META[source];
   const Icon = m.icon;
   return (
     <Hint content={detail}>
       <span className={cn("inline-flex h-6 items-center gap-1 rounded-full px-2.5 text-xs font-medium", m.className, className)}>
         <Icon className="size-3.5" />
-        {m.label}
+        {label ?? m.label}
       </span>
     </Hint>
   );

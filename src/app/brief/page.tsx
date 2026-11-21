@@ -1,10 +1,9 @@
-import { ArrowRight, BookOpen, Compass, Cpu, DoorOpen, Gauge, Lightbulb, Puzzle, ScrollText, ShieldAlert, Users } from "lucide-react";
+import { Activity, ArrowRight, BookOpen, Compass, Cpu, DoorOpen, Gauge, Lightbulb, Puzzle, ScrollText, ShieldAlert, ShieldCheck, Users } from "lucide-react";
 import type { ReactNode } from "react";
-import { z } from "zod";
-import { ActorBadge, Hint } from "@/components/docket";
+import { ActorBadge, Hint, SourceChip } from "@/components/docket";
 import { TourButton } from "@/components/tour/TourButton";
-import { estimateCostUsd } from "@/lib/ai/pricing";
 import { CPI_INDIA_YOY_PCT, DEMO_TODAY_LABEL, FX, PERSONA_ORDER, PERSONAS } from "@/lib/config";
+import { fullRunCost } from "@/lib/costs";
 import { loadCache } from "@/lib/data";
 import { EvalResultsSchema, type Score } from "@/lib/evals";
 
@@ -29,18 +28,10 @@ const STAKEHOLDERS = [
   ["Supplier", "Auto-renewal, with an uplift", "Wins when Velora misses the notice window"],
 ];
 
-const LogSchema = z.looseObject({
-  runs: z.array(z.looseObject({ calls: z.array(z.looseObject({ scope: z.string(), model: z.string(), input_tokens: z.number(), output_tokens: z.number() })) })),
-});
-
 async function getData() {
   "use cache";
-  const [evals, log] = await Promise.all([loadCache("eval_results", EvalResultsSchema.nullable(), null), loadCache("pipeline_log", LogSchema.nullable(), null)]);
-  // Cost of one full precompute run = the most recent call per scope (OCR, grouping, each supplier's extraction).
-  const latest = new Map<string, { model: string; input_tokens: number; output_tokens: number }>();
-  for (const r of log?.runs ?? []) for (const c of r.calls) latest.set(c.scope, c);
-  const fullRun = [...latest.values()].reduce((n, c) => n + (estimateCostUsd(c.model, c.input_tokens, c.output_tokens) ?? 0), 0);
-  return { evals, fullRun, calls: latest.size };
+  const [evals, cost] = await Promise.all([loadCache("eval_results", EvalResultsSchema.nullable(), null), fullRunCost()]);
+  return { evals, fullRun: cost.usd, calls: cost.calls };
 }
 
 const score = (s: Score | null | undefined) => (s ? `${s.correct + s.correct_abstention}/${s.fields}` : "—");
@@ -129,6 +120,28 @@ export default async function Page() {
         <Block id="why" icon={DoorOpen} title="1 · Why this stage: intake, triggered by renewal">
           <p className="text-lg font-semibold text-navy">“The riskiest request is the one never filed.”</p>
           <p>Renewals roll over unless someone acts, so nobody files them. Docket <b>raises the intake request itself</b> before act-by: existing contracts pass through one guarded front door. New purchases use the same door later (v2).</p>
+          <div className="rounded-xl border border-brand/20 bg-surface-2 p-5">
+            <div className="flex items-center gap-2 text-base font-semibold text-navy"><ShieldCheck className="size-5 text-brand" /> Stopping the problem at its source</div>
+            <p className="mt-2 text-base leading-relaxed text-slate-800">
+              Docket intervenes at the renewal decision point, before a contract rolls into another term. Every contract is reviewed when it comes up for renewal: contracts that should not continue are exited, and those that do renew continue only on reviewed terms. Addressing the problem at this point stops it at its source. It prevents the issues the case highlights (unreviewed auto-renewals, missed service levels, and invoices that do not match agreed prices) from carrying into the next contract term, rather than having to detect and recover them after the fact.
+            </p>
+          </div>
+          <div className="rounded-xl border p-5">
+            <div className="text-base font-semibold text-navy">Where Docket&apos;s data comes from</div>
+            <div className="mt-3 flex flex-wrap gap-2">
+              <SourceChip source="sharepoint" label="Shared drives (SharePoint)" className="h-7 text-sm" />
+              <SourceChip source="email" label="Shared mailboxes (email attachments)" className="h-7 text-sm" />
+              <SourceChip source="docusign" label="DocuSign" className="h-7 text-sm" />
+              <SourceChip source="tracker" label="Procurement Excel tracker" className="h-7 text-sm" />
+              <SourceChip source="ledger" label="AP ledger (NetSuite)" className="h-7 text-sm" />
+              <span className="inline-flex h-7 items-center gap-1 rounded-full bg-surface-2 px-2.5 text-sm font-medium text-brand-strong">
+                <Activity className="size-3.5" /> SLA &amp; usage reports
+              </span>
+            </div>
+            <p className="mt-3 text-sm text-slate-700">
+              Docket brings together contracts and trackers scattered across these sources, so each renewal is decided on one consolidated, verified view rather than on a single, often outdated spreadsheet. Personal inboxes are never scanned.
+            </p>
+          </div>
         </Block>
 
         <Block id="stakeholders" icon={Users} title="2 · Stakeholder map">

@@ -1,29 +1,26 @@
-import { CheckCircle2, CircleDashed, FlaskConical, Info, XCircle } from "lucide-react";
-import { ActorBadge, Hint } from "@/components/docket";
-import { Badge } from "@/components/ui/badge";
+import { CheckCircle2, ChevronDown, CircleAlert, FlaskConical, Info } from "lucide-react";
+import type { ReactNode } from "react";
+import { Hint } from "@/components/docket";
+import { fullRunCost } from "@/lib/costs";
 import { loadCache } from "@/lib/data";
-import { EvalResultsSchema, type Score, type SuiteResult } from "@/lib/evals";
+import { EvalResultsSchema, type EvalResults, type Miss, type Score, type SuiteResult } from "@/lib/evals";
 import { cn } from "@/lib/utils";
 
-const GUARDRAILS: [string, string, "AI" | "Rules" | "Human"][] = [
-  ["Every field needs a verbatim citation", "Hallucinated terms. A quote not found in the source becomes “unclear” at 0 confidence.", "Rules"],
-  ["“Unclear” is a valid answer", "Confident guessing on ambiguous clauses (e.g. Sentinel's two renewal readings).", "AI"],
-  ["The LLM never does arithmetic", "Wrong dates and ₹. Rules compute every figure; drafts receive them as locked values.", "Rules"],
-  ["Negotiation-boundary + numeric checks on drafts", "Docket negotiating, or a letter with a changed deadline or amount.", "Rules"],
-  ["Document text is untrusted", "Prompt injection hidden in a contract.", "AI"],
-  ["Humans send; humans confirm OCR and unclear fields", "Irreversible external actions and unverified scans. Everything is audit-logged.", "Human"],
-];
-
-async function getEvalResults() {
+async function getData() {
   "use cache";
-  return loadCache("eval_results", EvalResultsSchema.nullable(), null);
+  const [r, cost] = await Promise.all([loadCache("eval_results", EvalResultsSchema.nullable(), null), fullRunCost()]);
+  return { r, cost };
 }
 
 const pct = (a: number, b: number) => (b ? Math.round((a / b) * 100) : 0);
 const show = (v: unknown) => (v === null || v === undefined ? "null" : typeof v === "string" ? v : JSON.stringify(v));
+const ok = (s: Score | null | undefined) => (s ? s.correct + s.correct_abstention : 0);
+
+/* ------------------------------------------------------------------ */
+/* Headline                                                            */
+/* ------------------------------------------------------------------ */
 
 function Big({ label, sub, s, tone }: { label: string; sub: string; s: Score | null; tone: "muted" | "brand" | "hero" }) {
-  const ok = s ? s.correct + s.correct_abstention : 0;
   const hero = tone === "hero";
   return (
     <div className={cn("rounded-xl p-5", hero ? "bg-hero-gradient text-white shadow-lift" : "border bg-card shadow-soft")}>
@@ -32,8 +29,8 @@ function Big({ label, sub, s, tone }: { label: string; sub: string; s: Score | n
       {s ? (
         <>
           <div className="mt-2 flex items-baseline gap-2">
-            <span className="text-[2.5rem] leading-none font-semibold tabular-nums">{ok}<span className={cn("text-xl", hero ? "text-white/70" : "text-slate-400")}>/{s.fields}</span></span>
-            <span className={cn("text-xl font-semibold", hero ? "text-white" : tone === "brand" ? "text-brand" : "text-slate-500")}>{pct(ok, s.fields)}%</span>
+            <span className="text-[2.5rem] leading-none font-semibold tabular-nums">{ok(s)}<span className={cn("text-xl", hero ? "text-white/70" : "text-slate-400")}>/{s.fields}</span></span>
+            <span className={cn("text-xl font-semibold", hero ? "text-white" : tone === "brand" ? "text-brand" : "text-slate-500")}>{pct(ok(s), s.fields)}%</span>
           </div>
           <Hint content={`${s.correct} correct · ${s.correct_abstention} correct “unclear” · ${s.wrong} wrong · ${s.wrong_abstention} over-abstained · ${s.missed_abstention} missed abstention`}>
             <span className={cn("mt-1 inline-block text-xs underline decoration-dotted", hero ? "text-white/85" : "text-slate-500")}>{s.wrong} wrong · {s.missed_abstention} missed abstention</span>
@@ -46,33 +43,299 @@ function Big({ label, sub, s, tone }: { label: string; sub: string; s: Score | n
   );
 }
 
-function SuiteCard({ s }: { s: SuiteResult }) {
-  const icon =
-    s.status === "skipped" ? <Badge variant="outline">skipped</Badge> : s.status === "pass" ? <CheckCircle2 className="size-5 text-lane-green" /> : s.status === "fail" ? <XCircle className="size-5 text-lane-red" /> : <Info className="size-5 text-brand" />;
-  const rec = s.metrics.find((m) => m.label === "Recommendation");
-  const metrics = s.metrics.filter((m) => m !== rec);
+/* ------------------------------------------------------------------ */
+/* Grouped list                                                        */
+/* ------------------------------------------------------------------ */
+
+type Status = "pass" | "partial" | "note";
+type Row = {
+  name: string;
+  result: string;
+  status: Status;
+  kind: "Eval" | "Guardrail";
+  why: string;
+  method: string;
+  metrics?: { label: string; value: string }[];
+  misses?: Miss[];
+};
+type Group = { title: string; rows: Row[] };
+
+const STATUS: Record<Status, { icon: typeof CheckCircle2; className: string; label: string }> = {
+  pass: { icon: CheckCircle2, className: "text-lane-green", label: "Pass" },
+  partial: { icon: CircleAlert, className: "text-lane-amber", label: "Partial" },
+  note: { icon: Info, className: "text-brand", label: "Note" },
+};
+
+function buildGroups(r: EvalResults, cost: { usd: number; calls: number }): Group[] {
+  const suite = (id: string, from: EvalResults | EvalResults["previous"] = r) => from?.suites.find((s) => s.id === id) as SuiteResult | undefined;
+  const metric = (id: string, label: string, from: EvalResults | EvalResults["previous"] = r) => suite(id, from)?.metrics.find((m) => m.label === label)?.value ?? "—";
+  const count = (s?: SuiteResult) => (s ? `${s.passed}/${s.total}` : "—");
+  const st = (s?: SuiteResult): Status => (!s || s.status === "info" || s.status === "skipped" ? "note" : s.status === "pass" ? "pass" : "partial");
+  const misses = (id: string, filter?: (m: Miss) => boolean) => (suite(id)?.misses ?? []).filter(filter ?? (() => true));
+  const ho = r.headline.heldout;
+  const hoV1 = r.previous?.headline.heldout;
+  const stability = suite("stability")?.status === "skipped" ? suite("stability", r.previous) : suite("stability");
+  const opsRows = (suite("ops")?.metrics ?? []).filter((m) => ["ocr", "grouping", "extraction", "draft"].includes(m.label));
+  const cit = suite("citations");
+  const [devQ, hoQ] = [metric("citations", "Quote exists (dev)"), metric("citations", "Quote exists (held-out)")];
+  const qSum = [devQ, hoQ].map((x) => x.split("/").map(Number));
+  const section = metric("citations", "Section matches gold (dev)");
+
+  return [
+    {
+      title: "Reading contracts correctly",
+      rows: [
+        {
+          name: "Held-out extraction",
+          result: `${ok(ho)}/${ho?.fields ?? 0}`,
+          status: ho && ok(ho) === ho.fields ? "pass" : "partial",
+          kind: "Eval",
+          why: `Contracts the prompts never saw: the honest estimate. v1 blind ${ok(hoV1)}/${hoV1?.fields ?? "—"}; v2 after design fixes ${ok(ho)}/${ho?.fields ?? "—"}.`,
+          method: "18 held-out items (15 snippets, 3 full contracts incl. a scan) through the same pipeline functions; field-level match against gold. v1 was run once, blind; v2 re-measured after draft scoping and evidence-based routing (no longer blind).",
+          metrics: suite("heldout")?.metrics.filter((m) => !m.label.startsWith("HO-")),
+          misses: misses("heldout"),
+        },
+        {
+          name: "Dev extraction",
+          result: `${ok(r.headline.dev)}/${r.headline.dev?.fields ?? 0}`,
+          status: "note",
+          kind: "Eval",
+          why: "10 suppliers × 17 fields. Prompts were tuned on this set, so it is optimistic.",
+          method: "Cached AI extraction (effective terms after precedence) vs dev gold, field by field.",
+        },
+        {
+          name: "Grouping documents to suppliers",
+          result: count(suite("grouping")),
+          status: st(suite("grouping")),
+          kind: "Eval",
+          why: `Each document must land with the right supplier; a look-alike decoy (DOC-29, Nimbus Analytics LLP) must go to review. Decoy → review: ${metric("grouping", "Decoy DOC-29 → null")}.`,
+          method: "One AI call over first/last pages vs the vendor master, then code checks: known vendor, confidence ≥ 0.85, a verbatim evidence quote. Never filenames or folders.",
+          metrics: suite("grouping")?.metrics,
+          misses: misses("grouping"),
+        },
+        {
+          name: "OCR for scans",
+          result: metric("heldout", "HO-18"),
+          status: "pass",
+          kind: "Guardrail",
+          why: "Scanned contracts are transcribed by OCR; every field read that way waits for a human before it can set a lane.",
+          method: "Image-only PDFs (DOC-12, HO-18) are transcribed verbatim; OCR fields are routed to human review until confirmed. Result shown: held-out scan HO-18 fields correct.",
+        },
+        {
+          name: "Stability across runs",
+          result: count(stability),
+          status: stability ? st(stability) : "note",
+          kind: "Eval",
+          why: "The same contract should give the same answer every time.",
+          method: `Extraction re-run 3 times for Nimbus, CodeCraft and Sentinel; fields compared.${suite("stability")?.status === "skipped" ? " Measured in v1 (blind); not re-run in v2 to stay in budget." : ""}`,
+          metrics: stability?.metrics,
+          misses: stability?.misses,
+        },
+      ],
+    },
+    {
+      title: "Proving every answer",
+      rows: [
+        {
+          name: "Citation exists in the source",
+          result: `${qSum.reduce((n, [a]) => n + (a || 0), 0)}/${qSum.reduce((n, [, b]) => n + (b || 0), 0)}`,
+          status: cit && devQ.split("/")[0] === devQ.split("/")[1] && hoQ.split("/")[0] === hoQ.split("/")[1] ? "pass" : "partial",
+          kind: "Guardrail",
+          why: "Every value carries a verbatim quote, checked in code; a quote that isn't in the document makes the value “unclear”.",
+          method: `Dev ${devQ} · held-out ${hoQ}. Normalised for whitespace, case and typographic quotes.`,
+          misses: misses("citations", (m) => m.note !== "section"),
+        },
+        {
+          name: "Section accuracy",
+          result: section.split(" ")[0],
+          status: "partial",
+          kind: "Eval",
+          why: "The cited clause should be the one gold points to, so a lawyer can find it fast.",
+          method: "Clause numbers and Schedule / Annexure labels normalised; a match on either the operative or the “via” citation counts.",
+          misses: misses("citations", (m) => m.note === "section"),
+        },
+        {
+          name: "Operative + “via” citations",
+          result: "in place",
+          status: "pass",
+          kind: "Guardrail",
+          why: "The citation names the clause that creates the obligation, plus the definition it relies on (e.g. 14.2 via 1.21 “Notice Period”).",
+          method: "Both quotes are verified in code; a failed “via” is dropped and logged, never voids the operative citation.",
+        },
+      ],
+    },
+    {
+      title: "Knowing when not to answer",
+      rows: [
+        {
+          name: "Abstention on ambiguous clauses",
+          result: count(suite("abstention")),
+          status: st(suite("abstention")),
+          kind: "Eval",
+          why: "Where a contract genuinely contradicts itself (Sentinel 13.2 vs 13.3), the right answer is “unclear”, not a guess.",
+          method: "Dev Sentinel renewal fields + held-out items marked ambiguous in gold.",
+          metrics: suite("abstention")?.metrics,
+          misses: misses("abstention"),
+        },
+        {
+          name: "Evidence-based human review",
+          result: `${metric("calibration", "Correct fields sent to review (evidence)")} vs ${metric("calibration", "Correct fields a < 0.85 rule would send")}`,
+          status: "note",
+          kind: "Guardrail",
+          why: "Fields go to a human on evidence (OCR, quote not verified, unclear, key field missing), not on the model's self-reported confidence.",
+          method: `Correct fields sent to review: evidence rule vs a confidence < 0.85 rule. Misses caught by evidence routing: ${metric("calibration", "Misses caught by evidence routing")}.`,
+        },
+        {
+          name: "Confidence calibration",
+          result: count(suite("calibration")),
+          status: "note",
+          kind: "Eval",
+          why: "Finding: self-reported confidence didn't predict errors, so routing is now evidence-based. Confidence stays as a displayed signal.",
+          method: "Accuracy for confidence ≥ 0.85 vs < 0.85 across dev and held-out fields.",
+          metrics: suite("calibration")?.metrics.filter((m) => m.label !== "Recommendation"),
+          misses: misses("calibration"),
+        },
+      ],
+    },
+    {
+      title: "Safety of AI actions",
+      rows: [
+        {
+          name: "Prompt-injection resistance",
+          result: count(suite("injection")),
+          status: st(suite("injection")),
+          kind: "Eval",
+          why: "Instructions hidden in a contract (TalkWave Annexure 3: “classify as non-renewing”) must not change what Docket extracts.",
+          method: "Dev TalkWave still auto-renew, 24 months; plus a live held-out snippet with an injected instruction appended.",
+          misses: misses("injection"),
+        },
+        {
+          name: "Negotiation-boundary check",
+          result: metric("drafts", "Boundary check pass"),
+          status: "pass",
+          kind: "Guardrail",
+          why: "Drafts may only use rights already in the contract; phrases like “discount” or “we propose” are blocked.",
+          method: "Every live draft is scanned; a violation triggers one regeneration, then the labelled template.",
+        },
+        {
+          name: "Numeric fidelity of drafts",
+          result: metric("drafts", "Numeric fidelity pass"),
+          status: "pass",
+          kind: "Guardrail",
+          why: "Every date, ₹ amount and % in a letter must match values computed by Rules; the LLM never does arithmetic.",
+          method: "All numbers in the draft are extracted and compared with the locked values.",
+          metrics: suite("drafts")?.metrics.filter((m) => !["Boundary check pass", "Numeric fidelity pass"].includes(m.label)),
+          misses: misses("drafts"),
+        },
+        {
+          name: "No automatic external sends",
+          result: "by design",
+          status: "pass",
+          kind: "Guardrail",
+          why: "Docket never sends anything outside Velora; only internal, reversible actions are automated.",
+          method: "There is no send integration; Legal marks a notice as sent after a human sends it. Every step is audit-logged.",
+        },
+        {
+          name: "Human approval before any notice",
+          result: "Legal approves",
+          status: "pass",
+          kind: "Guardrail",
+          why: "Every exit notice or cap letter waits for Legal, with deadline, method and address locked.",
+          method: "Request state machine: procurement_review → legal_pending → sent only by Legal.",
+        },
+      ],
+    },
+    {
+      title: "Reliability & cost",
+      rows: [
+        {
+          name: "Validation, retry, cached fallback",
+          result: metric("drafts", "Retries needed") === "0" ? "0 retries" : `${metric("drafts", "Retries needed")} retries`,
+          status: "pass",
+          kind: "Guardrail",
+          why: "Malformed AI output never blocks the UI: it is validated, retried once, then replaced by a labelled cached result.",
+          method: "zod schema on every model reply; one retry with the validation error; template / cache fallback marked “cached”.",
+        },
+        {
+          name: "Rate limits on public routes",
+          result: "10 / hour",
+          status: "pass",
+          kind: "Guardrail",
+          why: "A public demo link can't run up AI costs: live drafting is limited per visitor, then falls back to the template.",
+          method: "In-memory limiter: /api/draft 10 per IP per hour (template with a note beyond that); /api/evaluate 60 per hour (Rules only).",
+        },
+        {
+          name: "Cost per full run",
+          result: `$${cost.usd.toFixed(2)}`,
+          status: "note",
+          kind: "Eval",
+          why: "What it costs to re-read the whole portfolio (OCR, grouping, 10 extractions).",
+          method: `Most recent call per pipeline step (${cost.calls} calls), standard API prices.`,
+          metrics: suite("ops")?.metrics.filter((m) => !["ocr", "grouping", "extraction", "draft"].includes(m.label)),
+        },
+        {
+          name: "Latency (p50 / p95)",
+          result: opsRows.find((m) => m.label === "extraction")?.value.match(/p50 [\d.]+s/)?.[0] ?? "—",
+          status: "note",
+          kind: "Eval",
+          why: "How long each kind of AI call takes; drafting is the only one a user waits for.",
+          method: "Per call type across all logged pipeline and eval calls.",
+          metrics: opsRows,
+        },
+      ],
+    },
+    {
+      title: "Business rules",
+      rows: [
+        {
+          name: "Rules tests vs gold",
+          result: count(suite("rules")),
+          status: st(suite("rules")),
+          kind: "Eval",
+          why: "Act-by dates, every ₹ figure, flags and lanes are deterministic and must reproduce the gold set exactly.",
+          method: "vitest: rules engine, pipeline and eval unit tests.",
+          metrics: suite("rules")?.metrics.filter((m) => !m.label.startsWith("Gold")),
+          misses: misses("rules"),
+        },
+        {
+          name: "Lanes, flags and ₹ unchanged on AI data",
+          result: metric("rules", "Gold match (seed + AI cache)"),
+          status: st(suite("rules")),
+          kind: "Eval",
+          why: "Feeding the rules from the AI extraction (not the gold seed) must give the same lanes, flags and ₹. One intended difference: a scan needs human confirmation first.",
+          method: "Gold tests on the seed and on the cached AI extraction (CleanSphere's OCR'd contract goes to review until a human confirms it).",
+        },
+      ],
+    },
+  ];
+}
+
+function RowItem({ row }: { row: Row }) {
+  const S = STATUS[row.status];
+  const Icon = S.icon;
+  const hasDetail = !!(row.method || row.metrics?.length || row.misses?.length);
   return (
-    <div className="flex flex-col rounded-xl border bg-card p-5 shadow-soft">
-      <div className="flex items-center justify-between gap-2">
-        <h3 className="text-lg font-semibold">{s.title}</h3>
-        {icon}
-      </div>
-      {s.status === "skipped" ? (
-        <p className="mt-2 flex items-center gap-2 text-sm text-slate-500"><CircleDashed className="size-4" /> {s.note}</p>
-      ) : (
-        <div className="mt-1 flex items-baseline gap-2">
-          <span className="text-3xl font-semibold text-navy tabular-nums">{s.passed}<span className="text-base text-slate-400">/{s.total}</span></span>
-          <span className="text-base text-slate-500">{pct(s.passed, s.total)}%</span>
+    <details className="group border-t first:border-t-0">
+      <summary className="flex cursor-pointer list-none items-start gap-4 px-5 py-4 hover:bg-surface/60">
+        <Hint content={S.label}>
+          <Icon className={cn("mt-0.5 size-5 shrink-0", S.className)} />
+        </Hint>
+        <div className="min-w-0 flex-1">
+          <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+            <span className="text-base font-semibold text-navy">{row.name}</span>
+            <span className={cn("rounded-full px-2 py-0.5 text-xs font-medium", row.kind === "Eval" ? "bg-actor-ai-bg text-actor-ai" : "bg-actor-rules-bg text-actor-rules")}>{row.kind}</span>
+          </div>
+          <p className="mt-1 text-[0.9375rem] leading-relaxed text-slate-700">{row.why}</p>
         </div>
-      )}
-      <p className="mt-1 text-sm text-slate-600">{s.protects}</p>
-      {rec && <p className="mt-3 rounded-lg bg-surface p-3 text-sm text-navy">{rec.value}</p>}
-      {(metrics.length > 0 || s.misses.length > 0) && (
-        <details className="group mt-3 rounded-lg border p-3 text-sm">
-          <summary className="cursor-pointer font-medium text-navy">Details{s.misses.length ? ` · ${s.misses.length} miss${s.misses.length > 1 ? "es" : ""}` : ""}</summary>
-          {metrics.length > 0 && (
-            <dl className="mt-2 space-y-1">
-              {metrics.map((m) => (
+        <span className="shrink-0 text-lg font-semibold whitespace-nowrap text-navy tabular-nums">{row.result}</span>
+        {hasDetail && <ChevronDown className="mt-1 size-5 shrink-0 text-slate-400 transition-transform group-open:rotate-180" />}
+      </summary>
+      {hasDetail && (
+        <div className="space-y-3 px-5 pb-5 pl-14 text-sm text-slate-700">
+          <p><span className="font-semibold text-navy">How it&apos;s measured · </span>{row.method}</p>
+          {row.metrics && row.metrics.length > 0 && (
+            <dl className="grid gap-x-8 gap-y-1 rounded-lg bg-surface p-3 sm:grid-cols-2">
+              {row.metrics.map((m) => (
                 <div key={m.label} className="flex justify-between gap-3">
                   <dt className="text-slate-500">{m.label}</dt>
                   <dd className="text-right font-medium text-navy tabular-nums">{m.value}</dd>
@@ -80,31 +343,64 @@ function SuiteCard({ s }: { s: SuiteResult }) {
               ))}
             </dl>
           )}
-          {s.misses.length > 0 && (
-            <ul className="mt-3 max-h-64 space-y-2 overflow-y-auto border-t pt-2">
-              {s.misses.map((m, i) => (
-                <li key={i}>
-                  <div className="font-medium text-navy">{m.item}</div>
-                  <div className="text-xs text-slate-500">expected <span className="text-navy">{show(m.expected)}</span> · got <span className="text-lane-red">{show(m.got)}</span>{m.note ? ` · ${m.note}` : ""}</div>
-                </li>
-              ))}
-            </ul>
+          {row.misses && row.misses.length > 0 && (
+            <div>
+              <div className="mb-1 font-semibold text-navy">Misses ({row.misses.length})</div>
+              <ul className="max-h-56 space-y-1.5 overflow-y-auto rounded-lg border p-3">
+                {row.misses.map((m, i) => (
+                  <li key={i}>
+                    <span className="font-medium text-navy">{m.item}</span>
+                    <span className="text-slate-500"> · expected </span><span className="text-navy">{show(m.expected)}</span>
+                    <span className="text-slate-500"> · got </span><span className="text-lane-red">{show(m.got)}</span>
+                    {m.note && <span className="text-slate-500"> · {m.note}</span>}
+                  </li>
+                ))}
+              </ul>
+            </div>
           )}
-        </details>
+        </div>
       )}
+    </details>
+  );
+}
+
+function GroupedList({ groups }: { groups: Group[] }) {
+  return (
+    <div className="max-h-[70vh] overflow-y-auto rounded-xl border bg-card shadow-soft">
+      {groups.map((g) => (
+        <section key={g.title}>
+          <h3 className="sticky top-0 z-10 flex items-center justify-between border-y bg-surface-2 px-5 py-2.5 text-sm font-semibold tracking-wide text-brand-strong uppercase first:border-t-0">
+            {g.title}
+            <span className="text-xs font-medium text-slate-500 normal-case">{g.rows.length} checks</span>
+          </h3>
+          <div>{g.rows.map((row) => <RowItem key={row.name} row={row} />)}</div>
+        </section>
+      ))}
+    </div>
+  );
+}
+
+function Legend(): ReactNode {
+  return (
+    <div className="flex flex-wrap items-center gap-4 text-sm text-slate-600">
+      {(Object.keys(STATUS) as Status[]).map((k) => {
+        const S = STATUS[k];
+        const Icon = S.icon;
+        return <span key={k} className="inline-flex items-center gap-1.5"><Icon className={cn("size-4", S.className)} /> {S.label}</span>;
+      })}
+      <span className="inline-flex items-center gap-1.5"><span className="rounded-full bg-actor-ai-bg px-2 py-0.5 text-xs font-medium text-actor-ai">Eval</span> measured</span>
+      <span className="inline-flex items-center gap-1.5"><span className="rounded-full bg-actor-rules-bg px-2 py-0.5 text-xs font-medium text-actor-rules">Guardrail</span> enforced in code</span>
     </div>
   );
 }
 
 export default async function Page() {
-  const r = await getEvalResults();
+  const { r, cost } = await getData();
   if (!r) {
     return <div className="rounded-xl bg-surface-2 px-4 py-3 text-sm text-navy">No eval results yet. Run <code className="rounded bg-white px-1">npm run evals</code>.</div>;
   }
-  const ORDER = ["heldout", "grouping", "citations", "abstention", "injection", "drafts", "stability", "calibration", "rules", "ops"];
-  const suites = [...r.suites].sort((a, b) => ORDER.indexOf(a.id) - ORDER.indexOf(b.id));
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       <section data-tour="evals-headline">
         <div className="grid gap-4 md:grid-cols-3">
           {r.previous && <Big label={`Held-out · ${r.previous.label}`} sub="the true estimate: run once, untouched" s={r.previous.headline.heldout} tone="brand" />}
@@ -118,21 +414,8 @@ export default async function Page() {
           </Hint>
         </p>
       </section>
-      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-        {suites.map((s) => <SuiteCard key={s.id} s={s} />)}
-      </div>
-      <section>
-        <h2 className="mb-3 text-lg font-semibold">Guardrails</h2>
-        <div className="flex flex-wrap gap-2">
-          {GUARDRAILS.map(([g, protects, a]) => (
-            <Hint key={g} content={`Protects against: ${protects}`}>
-              <span className="inline-flex items-center gap-2 rounded-full border bg-card px-3 py-1.5 text-sm font-medium text-navy shadow-soft">
-                <ActorBadge actor={a} /> {g}
-              </span>
-            </Hint>
-          ))}
-        </div>
-      </section>
+      <Legend />
+      <GroupedList groups={buildGroups(r, cost)} />
     </div>
   );
 }

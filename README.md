@@ -12,7 +12,7 @@ Docket is an AI-assisted contract **intake** prototype for Velora Consumer Pvt L
    - **Rahul**, Budget Owner: answers 2 questions per renewal, then chooses.
    - **Meera**, Legal Counsel: approves notices before a human sends them.
    - **Akshat**, Finance / AP: checks invoices against the contract.
-3. **For evaluators** (sidebar, highlighted): **Prototype Guide & Case Brief** (the case write-up) and **Evals & Guardrails** (the measured results).
+3. **For evaluators** (sidebar, highlighted): **Prototype Guide & Case Brief** (the case write-up, incl. why intervening at renewal stops the problem at its source, and where Docket's data comes from) and **Evals & Guardrails** (headline scores, then one grouped list of every eval and guardrail: reading contracts, proving answers, knowing when not to answer, safety of AI actions, reliability & cost, business rules).
 
 ## 6-step manual demo
 

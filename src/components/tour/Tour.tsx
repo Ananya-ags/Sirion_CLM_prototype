@@ -42,14 +42,17 @@ export function Tour() {
             <DialogTitle className="mt-2 text-2xl leading-snug font-semibold text-white">Every renewal caught. Only the risky ones need you.</DialogTitle>
           </div>
           <div className="space-y-5 px-6 pt-2 pb-6">
-            <DialogDescription className="text-base leading-relaxed text-slate-700">
-              Velora Consumer has about 2,500 supplier contracts and no CLM. Docket finds renewals before they roll over and routes them to the right people, with AI reading the contracts and rules doing the maths.
+            <DialogDescription asChild>
+              <div className="space-y-2 text-base leading-relaxed text-slate-700">
+                <p>Velora Consumer has about 2,500 supplier contracts and no CLM. Docket catches renewals before they roll over and routes them to the right people.</p>
+                <p>Docket scans contracts and renewal data across shared drives, shared mailboxes, DocuSign, Excel trackers and the AP ledger, then brings every upcoming renewal to one place.</p>
+              </div>
             </DialogDescription>
             <div className="flex flex-col gap-2 sm:flex-row">
               <Button size="lg" className="flex-1" onClick={start}><Compass /> Take the 3-minute tour</Button>
               <Button size="lg" variant="outline" className="flex-1" onClick={closeWelcome}>Skip, explore on my own</Button>
             </div>
-            <p className="text-xs text-slate-500">The tour starts from a fresh demo state. Reopen it any time from “Tour” in the top bar.</p>
+            <p className="text-xs text-slate-500">Starts from a fresh demo state · reopen via “Tour” in the top bar.</p>
           </div>
         </DialogContent>
       </Dialog>
