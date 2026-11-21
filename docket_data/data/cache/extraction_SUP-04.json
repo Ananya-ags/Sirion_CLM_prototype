@@ -1,16 +1,17 @@
 {
   "supplier_id": "SUP-04",
+  "proposed_terms": [],
   "family": [
     {
       "doc_id": "DOC-12",
-      "doc_role": "msa",
+      "doc_role": "other",
       "executed": true,
       "execution_evidence": [
-        "Signature blocks for Joseph D'Souza and Sanjay Hegde with [signature] marks",
-        "Company rubber stamps and company seal",
         "Karnataka e-stamp certificate No. IN-KA41772093518842V",
-        "Two witnesses signed",
-        "Agreement made and executed on 22nd day of December 2023"
+        "signature blocks for Joseph D'Souza and Sanjay Hegde with signatures",
+        "company rubber stamps and CleanSphere company seal",
+        "two witnesses signed",
+        "made and executed at Bengaluru on 22nd day of December 2023"
       ],
       "references": []
     },
@@ -19,7 +20,7 @@
       "doc_role": "email",
       "executed": false,
       "execution_evidence": [
-        "Supplier email confirming continuation; no countersigned agreement text"
+        "supplier email, not a countersigned agreement"
       ],
       "references": [
         "DOC-12"
@@ -33,7 +34,7 @@
       "citation": {
         "doc_id": "DOC-12",
         "section": "2.2",
-        "quote": "this Agreement shall continue on a month-to-month basis on the same terms and conditions until terminated by either party"
+        "quote": "this Agreement shall continue on a month-to-month basis on the same terms and conditions until terminated"
       },
       "verified": true,
       "ocr": true
@@ -55,7 +56,7 @@
       "citation": {
         "doc_id": "DOC-12",
         "section": "2.2",
-        "quote": "shall continue on a month-to-month basis"
+        "quote": "continue on a month-to-month basis"
       },
       "verified": true,
       "ocr": true
@@ -88,7 +89,7 @@
       "citation": {
         "doc_id": "DOC-12",
         "section": "13.1",
-        "quote": "shall be sent by Registered Post with Acknowledgement Due to the registered office of the other party stated above, and shall not be valid if sent by email alone."
+        "quote": "shall be sent by Registered Post with Acknowledgement Due to the registered office of the other party stated above"
       },
       "verified": true,
       "ocr": true
@@ -98,12 +99,16 @@
       "confidence": 0.8,
       "citation": {
         "doc_id": "DOC-12",
+        "section": "13.1",
+        "quote": "to the registered office of the other party stated above"
+      },
+      "via": {
+        "doc_id": "DOC-12",
         "section": "Parties",
         "quote": "having its registered office at No. 221, 5th Main, HSR Layout Sector 6, Bengaluru 560102"
       },
       "verified": true,
-      "ocr": true,
-      "note": "Registered office of Service Provider per clause 13.1"
+      "ocr": true
     },
     "uplift": {
       "type": {
@@ -119,7 +124,7 @@
       },
       "value_pct": {
         "value": null,
-        "confidence": 0.85,
+        "confidence": 0.8,
         "citation": null
       },
       "cap_pct": {
@@ -167,7 +172,7 @@
       "citation": {
         "doc_id": "DOC-12",
         "section": "5.2",
-        "quote": "the Company shall be entitled to deduct two per cent (2%) of the monthly charges, subject to a maximum of ten per cent (10%) in any month."
+        "quote": "the Company shall be entitled to deduct two per cent (2%) of the monthly charges"
       },
       "verified": true,
       "ocr": true
@@ -178,7 +183,7 @@
       "citation": {
         "doc_id": "DOC-12",
         "section": "3.1",
-        "quote": "The Company shall pay the Service Provider a sum of Rs. 22,00,000/-"
+        "quote": "a sum of Rs. 22,00,000/- (Rupees Twenty Two Lakhs only) per annum"
       },
       "verified": true,
       "ocr": true
@@ -200,14 +205,14 @@
       "citation": {
         "doc_id": "DOC-12",
         "section": "3.1",
-        "quote": "Rs. 22,00,000/- (Rupees Twenty Two Lakhs only) per annum"
+        "quote": "a sum of Rs. 22,00,000/- (Rupees Twenty Two Lakhs only) per annum"
       },
       "verified": true,
       "ocr": true
     }
   },
   "sla_terms": {
-    "metric": "personnel_deployment_and_weekly_audit",
+    "metric": "personnel_deployment_coverage",
     "target": 100,
     "currency": "INR",
     "credit_rule": "For every shortfall in deployment of personnel on any day, and for every failed weekly audit, the Company shall be entitled to deduct two per cent (2%) of the monthly charges, subject to a maximum of ten per cent (10%) in any month.",
@@ -223,9 +228,9 @@
   "pipeline": {
     "source": "ai",
     "model": "claude-sonnet-5-5",
-    "prompt_version": "extraction-3",
-    "generated_at": "2026-11-24T06:37:25.470Z",
-    "input_key": "c54f3a37ec3f2216ec0795b3ec9971f1fe0289c8794761b86dccae870fd52a30",
+    "prompt_version": "extraction-4",
+    "generated_at": "2026-11-24T09:30:32.608Z",
+    "input_key": "c57c710ff3911ee47a7d3f1859e946fb5e2d51fb5d45bb98fe59bab96dc26b92",
     "docs": [
       {
         "doc_id": "DOC-12",
@@ -260,7 +265,7 @@
         "key": "renewal_type",
         "doc_id": "DOC-12",
         "section": "2.2",
-        "quote": "this Agreement shall continue on a month-to-month basis on the same terms and conditions until terminated by either party",
+        "quote": "this Agreement shall continue on a month-to-month basis on the same terms and conditions until terminated",
         "ok": true
       },
       {
@@ -274,7 +279,7 @@
         "key": "renewal_term_months",
         "doc_id": "DOC-12",
         "section": "2.2",
-        "quote": "shall continue on a month-to-month basis",
+        "quote": "continue on a month-to-month basis",
         "ok": true
       },
       {
@@ -295,11 +300,18 @@
         "key": "notice_method",
         "doc_id": "DOC-12",
         "section": "13.1",
-        "quote": "shall be sent by Registered Post with Acknowledgement Due to the registered office of the other party stated above, and shall not be valid if sent by email alone.",
+        "quote": "shall be sent by Registered Post with Acknowledgement Due to the registered office of the other party stated above",
         "ok": true
       },
       {
         "key": "notice_address",
+        "doc_id": "DOC-12",
+        "section": "13.1",
+        "quote": "to the registered office of the other party stated above",
+        "ok": true
+      },
+      {
+        "key": "notice_address (via)",
         "doc_id": "DOC-12",
         "section": "Parties",
         "quote": "having its registered office at No. 221, 5th Main, HSR Layout Sector 6, Bengaluru 560102",
@@ -337,14 +349,14 @@
         "key": "sla_credits",
         "doc_id": "DOC-12",
         "section": "5.2",
-        "quote": "the Company shall be entitled to deduct two per cent (2%) of the monthly charges, subject to a maximum of ten per cent (10%) in any month.",
+        "quote": "the Company shall be entitled to deduct two per cent (2%) of the monthly charges",
         "ok": true
       },
       {
         "key": "currency",
         "doc_id": "DOC-12",
         "section": "3.1",
-        "quote": "The Company shall pay the Service Provider a sum of Rs. 22,00,000/-",
+        "quote": "a sum of Rs. 22,00,000/- (Rupees Twenty Two Lakhs only) per annum",
         "ok": true
       },
       {
@@ -358,7 +370,7 @@
         "key": "annual_value",
         "doc_id": "DOC-12",
         "section": "3.1",
-        "quote": "Rs. 22,00,000/- (Rupees Twenty Two Lakhs only) per annum",
+        "quote": "a sum of Rs. 22,00,000/- (Rupees Twenty Two Lakhs only) per annum",
         "ok": true
       },
       {
@@ -390,14 +402,14 @@
       "family": [
         {
           "doc_id": "DOC-12",
-          "doc_role": "msa",
+          "doc_role": "other",
           "executed": true,
           "execution_evidence": [
-            "Signature blocks for Joseph D'Souza and Sanjay Hegde with [signature] marks",
-            "Company rubber stamps and company seal",
             "Karnataka e-stamp certificate No. IN-KA41772093518842V",
-            "Two witnesses signed",
-            "Agreement made and executed on 22nd day of December 2023"
+            "signature blocks for Joseph D'Souza and Sanjay Hegde with signatures",
+            "company rubber stamps and CleanSphere company seal",
+            "two witnesses signed",
+            "made and executed at Bengaluru on 22nd day of December 2023"
           ],
           "references": [],
           "signed_date": "2023-12-22"
@@ -407,7 +419,7 @@
           "doc_role": "email",
           "executed": false,
           "execution_evidence": [
-            "Supplier email confirming continuation; no countersigned agreement text"
+            "supplier email, not a countersigned agreement"
           ],
           "references": [
             "DOC-12"
@@ -426,8 +438,9 @@
               "citation": {
                 "doc_id": "DOC-12",
                 "section": "2.2",
-                "quote": "this Agreement shall continue on a month-to-month basis on the same terms and conditions until terminated by either party"
+                "quote": "this Agreement shall continue on a month-to-month basis on the same terms and conditions until terminated"
               },
+              "via": null,
               "note": null
             },
             {
@@ -439,6 +452,7 @@
                 "section": "2.1",
                 "quote": "This Agreement shall be in force from 01.01.2024 to 31.12.2025."
               },
+              "via": null,
               "note": null
             },
             {
@@ -448,8 +462,9 @@
               "citation": {
                 "doc_id": "DOC-12",
                 "section": "2.2",
-                "quote": "shall continue on a month-to-month basis"
+                "quote": "continue on a month-to-month basis"
               },
+              "via": null,
               "note": null
             },
             {
@@ -461,6 +476,7 @@
                 "section": "2.2",
                 "quote": "by giving not less than thirty (30) days prior written notice to the other party"
               },
+              "via": null,
               "note": null
             },
             {
@@ -472,6 +488,7 @@
                 "section": "2.2",
                 "quote": "by giving not less than thirty (30) days prior written notice to the other party"
               },
+              "via": null,
               "note": null
             },
             {
@@ -481,8 +498,9 @@
               "citation": {
                 "doc_id": "DOC-12",
                 "section": "13.1",
-                "quote": "shall be sent by Registered Post with Acknowledgement Due to the registered office of the other party stated above, and shall not be valid if sent by email alone."
+                "quote": "shall be sent by Registered Post with Acknowledgement Due to the registered office of the other party stated above"
               },
+              "via": null,
               "note": null
             },
             {
@@ -491,20 +509,26 @@
               "confidence": 0.85,
               "citation": {
                 "doc_id": "DOC-12",
+                "section": "13.1",
+                "quote": "to the registered office of the other party stated above"
+              },
+              "via": {
+                "doc_id": "DOC-12",
                 "section": "Parties",
                 "quote": "having its registered office at No. 221, 5th Main, HSR Layout Sector 6, Bengaluru 560102"
               },
-              "note": "Registered office of Service Provider per clause 13.1"
+              "note": null
             },
             {
               "key": "uplift.type",
               "value": "none",
-              "confidence": 0.8,
+              "confidence": 0.85,
               "citation": {
                 "doc_id": "DOC-12",
                 "section": "3.2",
                 "quote": "The monthly charges are fixed for the period of this Agreement including any continuation under Clause 2.2."
               },
+              "via": null,
               "note": null
             },
             {
@@ -516,6 +540,7 @@
                 "section": "11.2",
                 "quote": "Either party may terminate this Agreement at any time without assigning any reason by giving thirty (30) days written notice to the other party."
               },
+              "via": null,
               "note": null
             },
             {
@@ -527,6 +552,7 @@
                 "section": "11.2",
                 "quote": "by giving thirty (30) days written notice to the other party"
               },
+              "via": null,
               "note": null
             },
             {
@@ -538,17 +564,19 @@
                 "section": "4.1",
                 "quote": "The Company shall release payment within forty-five (45) days from receipt of a correct invoice."
               },
+              "via": null,
               "note": null
             },
             {
               "key": "sla_credits",
               "value": true,
-              "confidence": 0.85,
+              "confidence": 0.9,
               "citation": {
                 "doc_id": "DOC-12",
                 "section": "5.2",
-                "quote": "the Company shall be entitled to deduct two per cent (2%) of the monthly charges, subject to a maximum of ten per cent (10%) in any month."
+                "quote": "the Company shall be entitled to deduct two per cent (2%) of the monthly charges"
               },
+              "via": null,
               "note": null
             },
             {
@@ -558,8 +586,9 @@
               "citation": {
                 "doc_id": "DOC-12",
                 "section": "3.1",
-                "quote": "The Company shall pay the Service Provider a sum of Rs. 22,00,000/-"
+                "quote": "a sum of Rs. 22,00,000/- (Rupees Twenty Two Lakhs only) per annum"
               },
+              "via": null,
               "note": null
             },
             {
@@ -571,6 +600,7 @@
                 "section": "14.1",
                 "quote": "This Agreement shall be governed by the laws of India"
               },
+              "via": null,
               "note": null
             },
             {
@@ -580,8 +610,9 @@
               "citation": {
                 "doc_id": "DOC-12",
                 "section": "3.1",
-                "quote": "Rs. 22,00,000/- (Rupees Twenty Two Lakhs only) per annum"
+                "quote": "a sum of Rs. 22,00,000/- (Rupees Twenty Two Lakhs only) per annum"
               },
+              "via": null,
               "note": null
             }
           ],
@@ -596,18 +627,18 @@
       "not_stated": [
         {
           "key": "uplift.value_pct",
-          "confidence": 0.85,
-          "reason": "Charges fixed; no uplift percentage"
+          "confidence": 0.8,
+          "reason": "No uplift; charges fixed"
         },
         {
           "key": "uplift.cap_pct",
           "confidence": 0.85,
-          "reason": "No uplift, no cap"
+          "reason": "No uplift cap stated"
         }
       ],
       "quote": null,
       "sla_terms": {
-        "metric": "personnel_deployment_and_weekly_audit",
+        "metric": "personnel_deployment_coverage",
         "target": 100,
         "currency": "INR",
         "credit_rule": "For every shortfall in deployment of personnel on any day, and for every failed weekly audit, the Company shall be entitled to deduct two per cent (2%) of the monthly charges, subject to a maximum of ten per cent (10%) in any month.",

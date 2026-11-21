@@ -27,6 +27,7 @@ import { evaluateSupplier, type RulesContext, type SupplierEvaluation } from "./
 import { isCreditNote, rowsForVendor } from "./rules/ledger";
 import { withFeeBasis } from "./rules/performance";
 import {
+  CitationSchema,
   ExtractionOutputSchema,
   RateLineSchema,
   SlaTermsSchema,
@@ -42,6 +43,7 @@ import {
   type Request,
 } from "./types";
 import { coerceValue, FIELD_KEYS, type FieldKey } from "./ai/precedence";
+import { reviewReasons, type ReviewReason } from "./ai/routing";
 
 export const SEED_CONFIDENCE = 0.95;
 
@@ -53,6 +55,10 @@ export const SupplierExtractionSchema = ExtractionOutputSchema.extend({
   sla_terms: SlaTermsSchema.nullable().optional(),
   /** v3: licensed units per line from the order form. */
   licensed_units: z.array(z.object({ metric: z.string(), licensed_units: z.number(), doc_id: z.string().optional() })).optional(),
+  /** Terms stated by non-executed documents (drafts, redlines): non-binding, never fed to the rules. */
+  proposed_terms: z
+    .array(z.object({ doc_id: z.string(), doc_role: z.string(), executed: z.union([z.boolean(), z.literal("unknown")]), fields: z.record(z.string(), z.looseObject({ value: z.unknown(), confidence: z.number(), citation: CitationSchema.nullable() })) }))
+    .optional(),
   /** AI pipeline metadata (model, verification log, OCR docs). Absent for the gold seed. */
   pipeline: z
     .looseObject({
@@ -198,25 +204,29 @@ export type SupplierView = SupplierMeta & {
   pipeline: { model: string; generatedAt: string; quotesChecked: number; quotesFailed: number; ocrDocs: string[] } | null;
   /** Fields a human must look at: "unclear" or confidence below policy (cited quote included). */
   reviewFields: ReviewField[];
+  /** Draft / redline terms (non-binding) with differences from the executed terms. */
+  proposed: ProposedView[];
 };
 
-export type ReviewField = { key: string; value: unknown; confidence: number; citation: Field<unknown>["citation"]; note?: string; ocr?: boolean; reason: string };
+export type ProposedView = {
+  docId: string;
+  role: string;
+  fields: { key: string; value: unknown; effective: unknown; differs: boolean; citation: Field<unknown>["citation"] }[];
+};
 
-export function reviewFieldsOf(terms: ExtractionOutput["effective_terms"], minConfidence: number): ReviewField[] {
+export type ReviewField = { key: string; value: unknown; confidence: number; citation: Field<unknown>["citation"]; note?: string; ocr?: boolean; reason: string; reasons: ReviewReason[] };
+
+/** Fields a human must look at, by EVIDENCE (see ai/routing.ts); confidence is displayed, not used to route. */
+export function reviewFieldsOf(terms: ExtractionOutput["effective_terms"]): ReviewField[] {
   const leaves = Object.entries(terms).flatMap(([k, v]) =>
     k === "uplift" ? Object.entries(v as Record<string, Field<unknown>>).map(([kk, vv]) => [`uplift.${kk}`, vv] as const) : [[k, v as Field<unknown>] as const],
   );
-  return leaves
-    .filter(([, f]) => f.value === "unclear" || f.confidence < minConfidence)
-    .map(([key, f]) => ({
-      key,
-      value: f.value,
-      confidence: f.confidence,
-      citation: f.citation,
-      ...(f.note ? { note: f.note } : {}),
-      ...(f.ocr ? { ocr: true } : {}),
-      reason: f.value === "unclear" ? (f.verified === false ? "Quote not found in the document" : "Unclear in the contract") : f.ocr ? "From OCR (scan): confidence capped at 0.8" : `Confidence ${f.confidence.toFixed(2)} below ${minConfidence}`,
-    }));
+  return leaves.flatMap(([key, f]) => {
+    const reasons = reviewReasons(key, f, terms as never);
+    return reasons.length
+      ? [{ key, value: f.value, confidence: f.confidence, citation: f.citation, ...(f.note ? { note: f.note } : {}), ...(f.ocr ? { ocr: true } : {}), reasons, reason: reasons.map((x) => x[0].toUpperCase() + x.slice(1)).join(" · ") }]
+      : [];
+  });
 }
 
 /** Applies human overrides (confirm keeps the value, correct replaces it) as source:"human", confidence 1.0. */
@@ -285,7 +295,15 @@ export async function getSupplierView(supplierId: string, overrides: HumanOverri
           ocrDocs: ex.pipeline.docs.filter((d) => d.text_source === "ocr").map((d) => d.doc_id),
         }
       : null,
-    reviewFields: ex.source === "cache" ? reviewFieldsOf(ex.effective_terms, ctx.policy.global.confidence_min) : [],
+    reviewFields: ex.source === "cache" ? reviewFieldsOf(ex.effective_terms) : [],
+    proposed: (ex.proposed_terms ?? []).map((p) => ({
+      docId: p.doc_id,
+      role: p.doc_role,
+      fields: Object.entries(p.fields).map(([key, f]) => {
+        const eff = key.split(".").reduce<unknown>((o, k) => (o as Record<string, unknown> | undefined)?.[k], ex.effective_terms) as Field<unknown> | undefined;
+        return { key, value: f.value, effective: eff?.value ?? null, differs: JSON.stringify(f.value) !== JSON.stringify(eff?.value ?? null), citation: f.citation };
+      }),
+    })),
   };
 }
 

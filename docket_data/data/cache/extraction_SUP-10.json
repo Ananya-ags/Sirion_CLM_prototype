@@ -1,12 +1,13 @@
 {
   "supplier_id": "SUP-10",
+  "proposed_terms": [],
   "family": [
     {
       "doc_id": "DOC-26",
-      "doc_role": "msa",
+      "doc_role": "other",
       "executed": true,
       "execution_evidence": [
-        "Signature blocks with names and dates: Shweta Rao 18/06/2025; Ritu Malhotra 19/06/2025"
+        "Signature lines for both parties with names and dates: Shweta Rao 18/06/2025; Ritu Malhotra 19/06/2025"
       ],
       "references": []
     },
@@ -26,7 +27,7 @@
       "doc_role": "email",
       "executed": false,
       "execution_evidence": [
-        "Vendor invoice email; not a contract document"
+        "Supplier invoice email; not a contract document"
       ],
       "references": [
         "DOC-26"
@@ -46,7 +47,7 @@
     },
     "initial_term_end": {
       "value": "2026-06-30",
-      "confidence": 0.95,
+      "confidence": 0.97,
       "citation": {
         "doc_id": "DOC-26",
         "section": "2.1",
@@ -71,7 +72,7 @@
     },
     "notice_method": {
       "value": "email",
-      "confidence": 0.9,
+      "confidence": 0.8,
       "citation": {
         "doc_id": "DOC-26",
         "section": "7.1",
@@ -81,7 +82,7 @@
     },
     "notice_address": {
       "value": "partnerships@learnleap.in",
-      "confidence": 0.92,
+      "confidence": 0.95,
       "citation": {
         "doc_id": "DOC-26",
         "section": "7.1",
@@ -98,12 +99,11 @@
           "section": "3.2",
           "quote": "The fee is fixed for the term."
         },
-        "verified": true,
-        "note": "Fee fixed for the term; no uplift."
+        "verified": true
       },
       "value_pct": {
         "value": null,
-        "confidence": 0.9,
+        "confidence": 0.85,
         "citation": null
       },
       "cap_pct": {
@@ -144,18 +144,17 @@
     },
     "sla_credits": {
       "value": true,
-      "confidence": 0.8,
+      "confidence": 0.85,
       "citation": {
         "doc_id": "DOC-26",
         "section": "5.1",
         "quote": "Velora shall receive a credit of ₹40,000 per cancelled session against the next invoice."
       },
-      "verified": true,
-      "note": "Credit for late-cancelled sessions; no % service level."
+      "verified": true
     },
     "currency": {
       "value": "INR",
-      "confidence": 0.9,
+      "confidence": 0.95,
       "citation": {
         "doc_id": "DOC-26",
         "section": "3.1",
@@ -165,7 +164,7 @@
     },
     "governing_law": {
       "value": "India",
-      "confidence": 0.95,
+      "confidence": 0.97,
       "citation": {
         "doc_id": "DOC-26",
         "section": "8.1",
@@ -175,13 +174,14 @@
     },
     "annual_value": {
       "value": 3000000,
-      "confidence": 0.9,
+      "confidence": 0.93,
       "citation": {
         "doc_id": "DOC-26",
         "section": "3.1",
-        "quote": "total contract value ₹30,00,000 for the fixed term"
+        "quote": "Velora shall pay a fee of ₹2,50,000 per month, exclusive of GST"
       },
-      "verified": true
+      "verified": true,
+      "note": "Rules: monthly 250000 × 12 (annual not stated)"
     }
   },
   "sla_terms": null,
@@ -189,9 +189,9 @@
   "pipeline": {
     "source": "ai",
     "model": "claude-sonnet-5-5",
-    "prompt_version": "extraction-1",
-    "generated_at": "2026-11-24T06:34:34.646Z",
-    "input_key": "0ad1e6db7efd4e971e9d421b809eb2a6fbd9d797c14a4e21d5ab8f5b5d39bcae",
+    "prompt_version": "extraction-4",
+    "generated_at": "2026-11-24T09:30:56.677Z",
+    "input_key": "cbc622ec557f5566f4ef7f8d7a65aa5efa8421e0068c8853b62c44949daf2ae8",
     "docs": [
       {
         "doc_id": "DOC-26",
@@ -289,10 +289,10 @@
         "ok": true
       },
       {
-        "key": "annual_value",
+        "key": "monthly_value",
         "doc_id": "DOC-26",
         "section": "3.1",
-        "quote": "total contract value ₹30,00,000 for the fixed term",
+        "quote": "Velora shall pay a fee of ₹2,50,000 per month, exclusive of GST",
         "ok": true
       }
     ],
@@ -309,14 +309,14 @@
         "doc_id": "DOC-27",
         "confidence": 0.9,
         "evidence": [
-          "Email thread with LearnLeap Training Academy, learnleap.in domain matching notice email in DOC-26; sender Shweta Rao is signatory of DOC-26"
+          "Email from Shweta Rao, LearnLeap Training Academy; domain learnleap.in matches partnerships@learnleap.in in DOC-26"
         ]
       },
       {
         "doc_id": "DOC-28",
         "confidence": 0.97,
         "evidence": [
-          "Supplier GSTIN 29AAKCL5870P1ZI = vendor master V-10077"
+          "GSTIN 29AAKCL5870P1ZI = vendor master V-10077"
         ]
       }
     ],
@@ -324,10 +324,10 @@
       "family": [
         {
           "doc_id": "DOC-26",
-          "doc_role": "msa",
+          "doc_role": "other",
           "executed": true,
           "execution_evidence": [
-            "Signature blocks with names and dates: Shweta Rao 18/06/2025; Ritu Malhotra 19/06/2025"
+            "Signature lines for both parties with names and dates: Shweta Rao 18/06/2025; Ritu Malhotra 19/06/2025"
           ],
           "references": [],
           "signed_date": "2025-06-19"
@@ -349,7 +349,7 @@
           "doc_role": "email",
           "executed": false,
           "execution_evidence": [
-            "Vendor invoice email; not a contract document"
+            "Supplier invoice email; not a contract document"
           ],
           "references": [
             "DOC-26"
@@ -370,39 +370,43 @@
                 "section": "2.2",
                 "quote": "There is no renewal or extension, and any further engagement shall require a fresh written agreement and purchase order."
               },
+              "via": null,
               "note": null
             },
             {
               "key": "initial_term_end",
               "value": "2026-06-30",
-              "confidence": 0.95,
+              "confidence": 0.97,
               "citation": {
                 "doc_id": "DOC-26",
                 "section": "2.1",
                 "quote": "is for a fixed term ending on 30 June 2026"
               },
+              "via": null,
               "note": null
             },
             {
               "key": "notice_method",
               "value": "email",
-              "confidence": 0.9,
+              "confidence": 0.8,
               "citation": {
                 "doc_id": "DOC-26",
                 "section": "7.1",
                 "quote": "Notices shall be in writing by email"
               },
+              "via": null,
               "note": null
             },
             {
               "key": "notice_address",
               "value": "partnerships@learnleap.in",
-              "confidence": 0.92,
+              "confidence": 0.95,
               "citation": {
                 "doc_id": "DOC-26",
                 "section": "7.1",
                 "quote": "LearnLeap — partnerships@learnleap.in"
               },
+              "via": null,
               "note": null
             },
             {
@@ -414,7 +418,8 @@
                 "section": "3.2",
                 "quote": "The fee is fixed for the term."
               },
-              "note": "Fee fixed for the term; no uplift."
+              "via": null,
+              "note": null
             },
             {
               "key": "tfc",
@@ -425,6 +430,7 @@
                 "section": "6.1",
                 "quote": "Velora may terminate this Agreement for convenience by giving thirty (30) days' written notice."
               },
+              "via": null,
               "note": null
             },
             {
@@ -436,6 +442,7 @@
                 "section": "6.1",
                 "quote": "Velora may terminate this Agreement for convenience by giving thirty (30) days' written notice."
               },
+              "via": null,
               "note": null
             },
             {
@@ -447,50 +454,55 @@
                 "section": "4.1",
                 "quote": "Velora shall pay within forty-five (45) days of receipt of invoice."
               },
+              "via": null,
               "note": null
             },
             {
               "key": "sla_credits",
               "value": true,
-              "confidence": 0.8,
+              "confidence": 0.85,
               "citation": {
                 "doc_id": "DOC-26",
                 "section": "5.1",
                 "quote": "Velora shall receive a credit of ₹40,000 per cancelled session against the next invoice."
               },
-              "note": "Credit for late-cancelled sessions; no % service level."
+              "via": null,
+              "note": null
             },
             {
               "key": "currency",
               "value": "INR",
-              "confidence": 0.9,
+              "confidence": 0.95,
               "citation": {
                 "doc_id": "DOC-26",
                 "section": "3.1",
                 "quote": "Velora shall pay a fee of ₹2,50,000 per month, exclusive of GST"
               },
+              "via": null,
               "note": null
             },
             {
               "key": "governing_law",
               "value": "India",
-              "confidence": 0.95,
+              "confidence": 0.97,
               "citation": {
                 "doc_id": "DOC-26",
                 "section": "8.1",
                 "quote": "This Agreement is governed by the laws of India"
               },
+              "via": null,
               "note": null
             },
             {
-              "key": "annual_value",
-              "value": 3000000,
-              "confidence": 0.9,
+              "key": "monthly_value",
+              "value": 250000,
+              "confidence": 0.93,
               "citation": {
                 "doc_id": "DOC-26",
                 "section": "3.1",
-                "quote": "total contract value ₹30,00,000 for the fixed term"
+                "quote": "Velora shall pay a fee of ₹2,50,000 per month, exclusive of GST"
               },
+              "via": null,
               "note": null
             }
           ],
@@ -509,29 +521,34 @@
       ],
       "not_stated": [
         {
-          "key": "renewal_term_months",
-          "confidence": 0.9,
-          "reason": "Contract does not renew."
-        },
-        {
           "key": "notice_days",
           "confidence": 0.9,
-          "reason": "No renewal, so no non-renewal notice period."
+          "reason": "Contract expires with no renewal, so no non-renewal notice period."
         },
         {
           "key": "notice_day_type",
           "confidence": 0.85,
-          "reason": "No non-renewal notice period stated."
+          "reason": "No non-renewal notice stated."
+        },
+        {
+          "key": "renewal_term_months",
+          "confidence": 0.9,
+          "reason": "No renewal."
         },
         {
           "key": "uplift.value_pct",
-          "confidence": 0.9,
-          "reason": "Fee fixed; no uplift."
+          "confidence": 0.85,
+          "reason": "No uplift; fee fixed."
         },
         {
           "key": "uplift.cap_pct",
           "confidence": 0.9,
           "reason": "No uplift or cap."
+        },
+        {
+          "key": "annual_value",
+          "confidence": 0.8,
+          "reason": "Only a monthly fee and total contract value are written, no annual amount."
         }
       ],
       "quote": null,

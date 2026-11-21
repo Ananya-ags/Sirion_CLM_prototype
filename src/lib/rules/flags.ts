@@ -6,6 +6,7 @@ import { DEMO_TODAY } from "../config";
 import { FLAGS } from "../flags";
 import { formatINR } from "../format";
 import { metricLabel, monthList } from "../labels";
+import { reviewReasons } from "../ai/routing";
 import type {
   Benchmark,
   Category,
@@ -131,8 +132,12 @@ export function evaluateSupplier(s: SupplierFacts, ctx: RulesContext): SupplierE
   const noticeDays = known(t.notice_days);
   const exit = rtype === "evergreen" && noticeDays != null ? earliestExit(noticeDays, today) : null;
 
-  // X1: unclear / low-confidence key fields
-  const unclear = KEY_FIELDS.filter((k) => usable(t[k] as Field<unknown>) === "unclear" || t[k].confidence < g.confidence_min);
+  // X1: key fields with EVIDENCE of a problem (unclear, quote not verified, OCR not yet confirmed by a human,
+  // or not stated where it applies). Self-reported confidence is displayed only; it did not predict errors (Step 3 evals).
+  const unclear = KEY_FIELDS.filter((k) => {
+    const f = t[k] as Field<unknown>;
+    return usable(f) === "unclear" || reviewReasons(k, f, t as never, KEY_FIELDS).length > 0;
+  });
   if (unclear.length) add("X1", `Unclear: ${unclear.join(", ")}`, { fields: unclear });
 
   // Uplift (F2)

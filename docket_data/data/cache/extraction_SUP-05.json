@@ -1,5 +1,6 @@
 {
   "supplier_id": "SUP-05",
+  "proposed_terms": [],
   "family": [
     {
       "doc_id": "DOC-14",
@@ -7,8 +8,7 @@
       "executed": true,
       "execution_evidence": [
         "DocuSign Certificate of Completion, Status: Completed",
-        "Harish Gowda (DocuSigned) — Chief Operating Officer — 11-Mar-2025",
-        "Kavita Deshpande (DocuSigned) — CFO — 12-Mar-2025"
+        "Harish Gowda (DocuSigned) — 11-Mar-2025; Kavita Deshpande (DocuSigned) — 12-Mar-2025"
       ],
       "references": [
         "DOC-15"
@@ -62,6 +62,11 @@
       "confidence": 0.95,
       "citation": {
         "doc_id": "DOC-14",
+        "section": "12.2",
+        "quote": "at least the Non-renewal Notice Period stated in Annexure C"
+      },
+      "via": {
+        "doc_id": "DOC-14",
         "section": "Annexure C",
         "quote": "forty-five (45) days before the date of expiry"
       },
@@ -69,11 +74,11 @@
     },
     "notice_day_type": {
       "value": "calendar",
-      "confidence": 0.9,
+      "confidence": 0.92,
       "citation": {
         "doc_id": "DOC-14",
         "section": "1.32",
-        "quote": "References to a number of days are to calendar days unless Business Days are"
+        "quote": "References to a number of days are to calendar days unless Business Days are expressly specified."
       },
       "verified": true
     },
@@ -107,16 +112,16 @@
           "quote": "No other price escalation shall apply during the Initial Term or any renewal."
         },
         "verified": true,
-        "note": "Only fuel index adjustment; no fixed uplift."
+        "note": "Only fuel index adjustment applies."
       },
       "value_pct": {
         "value": null,
-        "confidence": 0.85,
+        "confidence": 0.8,
         "citation": null
       },
       "cap_pct": {
         "value": null,
-        "confidence": 0.9,
+        "confidence": 0.85,
         "citation": null
       }
     },
@@ -126,7 +131,7 @@
       "citation": {
         "doc_id": "DOC-14",
         "section": "16.1",
-        "quote": "The Customer may terminate this Agreement for convenience by giving sixty (60)"
+        "quote": "The Customer may terminate this Agreement for convenience by giving sixty (60) days' written notice."
       },
       "verified": true
     },
@@ -136,7 +141,7 @@
       "citation": {
         "doc_id": "DOC-14",
         "section": "16.1",
-        "quote": "for convenience by giving sixty (60)"
+        "quote": "for convenience by giving sixty (60) days' written notice"
       },
       "verified": true
     },
@@ -146,7 +151,7 @@
       "citation": {
         "doc_id": "DOC-14",
         "section": "14.2",
-        "quote": "Payment shall be made within forty-five (45) days from the date of receipt"
+        "quote": "Payment shall be made within forty-five (45) days from the date of receipt of a valid"
       },
       "verified": true
     },
@@ -162,7 +167,7 @@
     },
     "currency": {
       "value": "INR",
-      "confidence": 0.95,
+      "confidence": 0.9,
       "citation": {
         "doc_id": "DOC-14",
         "section": "13.1",
@@ -182,7 +187,7 @@
     },
     "annual_value": {
       "value": 4100000,
-      "confidence": 0.9,
+      "confidence": 0.85,
       "citation": {
         "doc_id": "DOC-14",
         "section": "13.1",
@@ -208,9 +213,9 @@
   "pipeline": {
     "source": "ai",
     "model": "claude-sonnet-5-5",
-    "prompt_version": "extraction-2",
-    "generated_at": "2026-11-24T06:36:23.613Z",
-    "input_key": "27844de7d9e7e2725baa6e955c3a936ebadf7465c09aaf822f6f66fd831ba960",
+    "prompt_version": "extraction-4",
+    "generated_at": "2026-11-24T09:30:35.416Z",
+    "input_key": "5c08f6649d02fea073aebdb9a5d59679fab238d84a3c5dba615a3c856d2bb6f1",
     "docs": [
       {
         "doc_id": "DOC-14",
@@ -249,6 +254,13 @@
       {
         "key": "notice_days",
         "doc_id": "DOC-14",
+        "section": "12.2",
+        "quote": "at least the Non-renewal Notice Period stated in Annexure C",
+        "ok": true
+      },
+      {
+        "key": "notice_days (via)",
+        "doc_id": "DOC-14",
         "section": "Annexure C",
         "quote": "forty-five (45) days before the date of expiry",
         "ok": true
@@ -257,7 +269,7 @@
         "key": "notice_day_type",
         "doc_id": "DOC-14",
         "section": "1.32",
-        "quote": "References to a number of days are to calendar days unless Business Days are",
+        "quote": "References to a number of days are to calendar days unless Business Days are expressly specified.",
         "ok": true
       },
       {
@@ -285,21 +297,21 @@
         "key": "tfc",
         "doc_id": "DOC-14",
         "section": "16.1",
-        "quote": "The Customer may terminate this Agreement for convenience by giving sixty (60)",
+        "quote": "The Customer may terminate this Agreement for convenience by giving sixty (60) days' written notice.",
         "ok": true
       },
       {
         "key": "tfc_notice_days",
         "doc_id": "DOC-14",
         "section": "16.1",
-        "quote": "for convenience by giving sixty (60)",
+        "quote": "for convenience by giving sixty (60) days' written notice",
         "ok": true
       },
       {
         "key": "payment_terms_days",
         "doc_id": "DOC-14",
         "section": "14.2",
-        "quote": "Payment shall be made within forty-five (45) days from the date of receipt",
+        "quote": "Payment shall be made within forty-five (45) days from the date of receipt of a valid",
         "ok": true
       },
       {
@@ -358,7 +370,7 @@
         "doc_id": "DOC-15",
         "confidence": 0.95,
         "evidence": [
-          "Annexure to Logistics Services Master Agreement dated 11 March 2025 between SwiftMove Logistics Private Limited and Velora (DOC-14)"
+          "References Logistics Services Master Agreement dated 11 March 2025 (DOC-14) between SwiftMove Logistics Private Limited and Velora"
         ]
       }
     ],
@@ -370,8 +382,7 @@
           "executed": true,
           "execution_evidence": [
             "DocuSign Certificate of Completion, Status: Completed",
-            "Harish Gowda (DocuSigned) — Chief Operating Officer — 11-Mar-2025",
-            "Kavita Deshpande (DocuSigned) — CFO — 12-Mar-2025"
+            "Harish Gowda (DocuSigned) — 11-Mar-2025; Kavita Deshpande (DocuSigned) — 12-Mar-2025"
           ],
           "references": [
             "DOC-15"
@@ -403,8 +414,7 @@
                 "doc_id": "DOC-14",
                 "section": "12.2",
                 "quote": "this Agreement shall renew automatically for a further period of one (1) year"
-              },
-              "note": null
+              }
             },
             {
               "key": "initial_term_end",
@@ -414,8 +424,7 @@
                 "doc_id": "DOC-14",
                 "section": "12.1",
                 "quote": "continues until 15 March 2027 (the \"Initial Term\")"
-              },
-              "note": null
+              }
             },
             {
               "key": "renewal_term_months",
@@ -425,8 +434,7 @@
                 "doc_id": "DOC-14",
                 "section": "12.2",
                 "quote": "renew automatically for a further period of one (1) year"
-              },
-              "note": null
+              }
             },
             {
               "key": "notice_days",
@@ -434,21 +442,24 @@
               "confidence": 0.95,
               "citation": {
                 "doc_id": "DOC-14",
+                "section": "12.2",
+                "quote": "at least the Non-renewal Notice Period stated in Annexure C"
+              },
+              "via": {
+                "doc_id": "DOC-14",
                 "section": "Annexure C",
                 "quote": "forty-five (45) days before the date of expiry"
-              },
-              "note": null
+              }
             },
             {
               "key": "notice_day_type",
               "value": "calendar",
-              "confidence": 0.9,
+              "confidence": 0.92,
               "citation": {
                 "doc_id": "DOC-14",
                 "section": "1.32",
-                "quote": "References to a number of days are to calendar days unless Business Days are"
-              },
-              "note": null
+                "quote": "References to a number of days are to calendar days unless Business Days are expressly specified."
+              }
             },
             {
               "key": "notice_method",
@@ -458,8 +469,7 @@
                 "doc_id": "DOC-14",
                 "section": "18.1",
                 "quote": "Notices under this Agreement shall be in writing and delivered by email to"
-              },
-              "note": null
+              }
             },
             {
               "key": "notice_address",
@@ -469,8 +479,7 @@
                 "doc_id": "DOC-14",
                 "section": "18.1",
                 "quote": "Provider — legal@swiftmove.in"
-              },
-              "note": null
+              }
             },
             {
               "key": "uplift.type",
@@ -481,7 +490,7 @@
                 "section": "13.2",
                 "quote": "No other price escalation shall apply during the Initial Term or any renewal."
               },
-              "note": "Only fuel index adjustment; no fixed uplift."
+              "note": "Only fuel index adjustment applies."
             },
             {
               "key": "tfc",
@@ -490,9 +499,8 @@
               "citation": {
                 "doc_id": "DOC-14",
                 "section": "16.1",
-                "quote": "The Customer may terminate this Agreement for convenience by giving sixty (60)"
-              },
-              "note": null
+                "quote": "The Customer may terminate this Agreement for convenience by giving sixty (60) days' written notice."
+              }
             },
             {
               "key": "tfc_notice_days",
@@ -501,9 +509,8 @@
               "citation": {
                 "doc_id": "DOC-14",
                 "section": "16.1",
-                "quote": "for convenience by giving sixty (60)"
-              },
-              "note": null
+                "quote": "for convenience by giving sixty (60) days' written notice"
+              }
             },
             {
               "key": "payment_terms_days",
@@ -512,9 +519,8 @@
               "citation": {
                 "doc_id": "DOC-14",
                 "section": "14.2",
-                "quote": "Payment shall be made within forty-five (45) days from the date of receipt"
-              },
-              "note": null
+                "quote": "Payment shall be made within forty-five (45) days from the date of receipt of a valid"
+              }
             },
             {
               "key": "sla_credits",
@@ -524,19 +530,17 @@
                 "doc_id": "DOC-14",
                 "section": "15.2",
                 "quote": "the Customer shall receive a credit of two per cent (2%) of that month's fixed charges"
-              },
-              "note": null
+              }
             },
             {
               "key": "currency",
               "value": "INR",
-              "confidence": 0.95,
+              "confidence": 0.9,
               "citation": {
                 "doc_id": "DOC-14",
                 "section": "13.1",
                 "quote": "The estimated annual value of this Agreement is ₹41,00,000, exclusive of GST."
-              },
-              "note": null
+              }
             },
             {
               "key": "governing_law",
@@ -546,19 +550,17 @@
                 "doc_id": "DOC-14",
                 "section": "19.1",
                 "quote": "This Agreement is governed by the laws of India"
-              },
-              "note": null
+              }
             },
             {
               "key": "annual_value",
               "value": 4100000,
-              "confidence": 0.9,
+              "confidence": 0.85,
               "citation": {
                 "doc_id": "DOC-14",
                 "section": "13.1",
                 "quote": "The estimated annual value of this Agreement is ₹41,00,000, exclusive of GST."
-              },
-              "note": null
+              }
             }
           ],
           "rate_lines": []
@@ -574,8 +576,7 @@
                 "doc_id": "DOC-15",
                 "section": "B1",
                 "quote": "Monthly charge (₹, excl. GST)"
-              },
-              "note": null
+              }
             }
           ],
           "rate_lines": []
@@ -584,12 +585,12 @@
       "not_stated": [
         {
           "key": "uplift.value_pct",
-          "confidence": 0.85,
-          "reason": "No fixed uplift percentage; only fuel index adjustment."
+          "confidence": 0.8,
+          "reason": "No percentage uplift; only fuel index adjustment."
         },
         {
           "key": "uplift.cap_pct",
-          "confidence": 0.9,
+          "confidence": 0.85,
           "reason": "No cap stated."
         }
       ],

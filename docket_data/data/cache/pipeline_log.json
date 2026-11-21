@@ -339,6 +339,134 @@
         "output_tokens": 11074,
         "est_cost_usd": 0.422
       }
+    },
+    {
+      "started_at": "2026-11-24T09:30:08.482Z",
+      "finished_at": "2026-11-24T09:30:57.210Z",
+      "model": "claude-sonnet-5-5",
+      "args": [
+        "--budget",
+        "1.35"
+      ],
+      "calls": [
+        {
+          "scope": "extract:SUP-02",
+          "model": "claude-sonnet-5-5",
+          "input_tokens": 50150,
+          "output_tokens": 2280,
+          "latency_ms": 12376,
+          "attempts": 1,
+          "retries": 0,
+          "ok": true,
+          "errors": []
+        },
+        {
+          "scope": "extract:SUP-01",
+          "model": "claude-sonnet-5-5",
+          "input_tokens": 72177,
+          "output_tokens": 2454,
+          "latency_ms": 14679,
+          "attempts": 1,
+          "retries": 0,
+          "ok": true,
+          "errors": []
+        },
+        {
+          "scope": "extract:SUP-03",
+          "model": "claude-sonnet-5-5",
+          "input_tokens": 79961,
+          "output_tokens": 4273,
+          "latency_ms": 21827,
+          "attempts": 1,
+          "retries": 0,
+          "ok": true,
+          "errors": []
+        },
+        {
+          "scope": "extract:SUP-04",
+          "model": "claude-sonnet-5-5",
+          "input_tokens": 12666,
+          "output_tokens": 2109,
+          "latency_ms": 11105,
+          "attempts": 1,
+          "retries": 0,
+          "ok": true,
+          "errors": []
+        },
+        {
+          "scope": "extract:SUP-05",
+          "model": "claude-sonnet-5-5",
+          "input_tokens": 47434,
+          "output_tokens": 1948,
+          "latency_ms": 11619,
+          "attempts": 1,
+          "retries": 0,
+          "ok": true,
+          "errors": []
+        },
+        {
+          "scope": "extract:SUP-07",
+          "model": "claude-sonnet-5-5",
+          "input_tokens": 52756,
+          "output_tokens": 2494,
+          "latency_ms": 13275,
+          "attempts": 1,
+          "retries": 0,
+          "ok": true,
+          "errors": []
+        },
+        {
+          "scope": "extract:SUP-08",
+          "model": "claude-sonnet-5-5",
+          "input_tokens": 42670,
+          "output_tokens": 2123,
+          "latency_ms": 11093,
+          "attempts": 1,
+          "retries": 0,
+          "ok": true,
+          "errors": []
+        },
+        {
+          "scope": "extract:SUP-06",
+          "model": "claude-sonnet-5-5",
+          "input_tokens": 67359,
+          "output_tokens": 3117,
+          "latency_ms": 16242,
+          "attempts": 1,
+          "retries": 0,
+          "ok": true,
+          "errors": []
+        },
+        {
+          "scope": "extract:SUP-10",
+          "model": "claude-sonnet-5-5",
+          "input_tokens": 15681,
+          "output_tokens": 1689,
+          "latency_ms": 10145,
+          "attempts": 1,
+          "retries": 0,
+          "ok": true,
+          "errors": []
+        },
+        {
+          "scope": "extract:SUP-09",
+          "model": "claude-sonnet-5-5",
+          "input_tokens": 43158,
+          "output_tokens": 2113,
+          "latency_ms": 11277,
+          "attempts": 1,
+          "retries": 0,
+          "ok": true,
+          "errors": []
+        }
+      ],
+      "verification_failures": [],
+      "totals": {
+        "calls": 10,
+        "input_tokens": 484012,
+        "output_tokens": 24600,
+        "est_cost_usd": 1.214
+      }
     }
   ]
 }

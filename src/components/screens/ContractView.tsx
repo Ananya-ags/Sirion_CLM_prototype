@@ -119,7 +119,7 @@ export function ContractView({ view: serverView }: { view: SupplierView }) {
                     <div className="mt-1 truncate text-sm font-semibold text-navy">{fmtValue(l.key.split(".").pop()!, l.field.value, view.money.currency)}</div>
                     <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
                       {d?.meta && <SourceChip source={d.meta.source} detail={`${d.doc_id} · ${d.meta.filename}`} />}
-                      {l.field.citation && <span className="text-[11px] text-muted-foreground">{l.field.citation.doc_id} §{l.field.citation.section}</span>}
+                      {l.field.citation && <span className="text-[11px] text-muted-foreground">{l.field.citation.doc_id} §{l.field.citation.section}{l.field.via ? ` via ${l.field.via.section}` : ""}</span>}
                       {l.field.overridden_by && <span className="text-[11px] font-medium text-src-docusign">overridden by {l.field.overridden_by}</span>}
                       {l.field.ocr && l.field.source !== "human" && <OcrChip />}
                       {l.field.source === "human" && <Hint content={l.field.note}><span className="inline-flex h-5 items-center gap-1 rounded-full bg-lane-green-bg px-1.5 text-[10px] font-medium text-lane-green"><CheckCircle2 className="size-3" /> Human</span></Hint>}
@@ -129,6 +129,44 @@ export function ContractView({ view: serverView }: { view: SupplierView }) {
               })}
             </div>
           </Section>
+
+          {/* Draft / redline terms: non-binding, never used by the rules */}
+          {view.proposed.length > 0 && (
+            <details className="group rounded-xl border bg-card shadow-soft">
+              <summary className="flex cursor-pointer items-center justify-between gap-2 px-6 py-4 text-sm font-semibold text-navy">
+                <span>Draft / redline (non-binding)</span>
+                <span className="text-xs font-normal text-muted-foreground">
+                  {view.proposed.map((p) => p.docId).join(", ")} · {view.proposed.reduce((n, p) => n + p.fields.filter((f) => f.differs).length, 0)} differ from executed
+                </span>
+              </summary>
+              <div className="space-y-4 px-6 pb-5">
+                <p className="text-xs text-muted-foreground">Stated in documents that are not executed. Shown for comparison only; only executed documents feed the rules.</p>
+                {view.proposed.map((p) => (
+                  <div key={p.docId}>
+                    <div className="mb-1.5 text-xs font-medium text-navy">{p.docId} · {ROLE_LABEL[p.role] ?? p.role}</div>
+                    <Table>
+                      <TableHeader>
+                        <TableRow><TableHead>Field</TableHead><TableHead>Draft says</TableHead><TableHead>Executed</TableHead></TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {p.fields.map((f) => (
+                          <TableRow key={f.key} className={cn(f.differs && "bg-lane-amber-bg/60")}>
+                            <TableCell className="text-muted-foreground">{FIELD_LABEL[f.key] ?? f.key}</TableCell>
+                            <TableCell className={cn("font-medium", f.differs ? "text-lane-amber" : "text-navy")}>
+                              <Hint content={f.citation ? `${f.citation.doc_id} §${f.citation.section}: “${f.citation.quote}”` : undefined}>
+                                <span>{fmtValue(f.key.split(".").pop()!, f.value, view.money.currency)}</span>
+                              </Hint>
+                            </TableCell>
+                            <TableCell className="text-navy">{fmtValue(f.key.split(".").pop()!, f.effective, view.money.currency)}</TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </div>
+                ))}
+              </div>
+            </details>
+          )}
 
           {/* Tracker */}
           <Section title="Tracker vs contract" actors={["Rules"]} hint="T1: the Excel tracker compared field by field against the effective terms.">
@@ -315,6 +353,12 @@ export function ContractView({ view: serverView }: { view: SupplierView }) {
                       {open.field.citation.doc_id} · §{open.field.citation.section}
                       {docOf(open.field.citation.doc_id)?.meta && ` · ${docOf(open.field.citation.doc_id)!.meta!.filename}`}
                     </div>
+                    {open.field.via && (
+                      <div className="rounded-lg border border-dashed p-2.5 text-xs">
+                        <div className="font-medium text-navy">via {open.field.via.doc_id} §{open.field.via.section}</div>
+                        <div className="mt-0.5 text-muted-foreground italic">“{open.field.via.quote}”</div>
+                      </div>
+                    )}
                     {open.field.verified && <p className="flex items-center gap-1 text-xs font-medium text-lane-green"><CheckCircle2 className="size-3.5" /> Quote found verbatim in {open.field.citation.doc_id}{open.field.ocr ? " (OCR text)" : ""}</p>}
                     {open.field.note && <p className="text-xs text-muted-foreground">{open.field.note}</p>}
                     {open.field.overridden_by && <p className="text-xs font-medium text-src-docusign">Overridden by {open.field.overridden_by} (latest executed amendment wins).</p>}

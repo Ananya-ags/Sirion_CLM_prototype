@@ -24,7 +24,7 @@ async function getEvalResults() {
 const pct = (a: number, b: number) => (b ? Math.round((a / b) * 100) : 0);
 const show = (v: unknown) => (v === null || v === undefined ? "null" : typeof v === "string" ? v : JSON.stringify(v));
 
-function Headline({ title, sub, s }: { title: string; sub: string; s: Score | null }) {
+function Headline({ title, sub, s, before }: { title: string; sub: string; s: Score | null; before?: { label: string; s: Score | null; why: string } }) {
   if (!s) return <Card className="rounded-xl shadow-soft"><CardContent className="py-6 text-sm text-muted-foreground">{title}: not run</CardContent></Card>;
   const ok = s.correct + s.correct_abstention;
   return (
@@ -47,6 +47,15 @@ function Headline({ title, sub, s }: { title: string; sub: string; s: Score | nu
           <span><b className="text-navy">{s.wrong_abstention}</b> over-abstained</span>
           <span><b className={cn(s.missed_abstention ? "text-lane-amber" : "text-navy")}>{s.missed_abstention}</b> missed abstention</span>
         </div>
+        {before?.s && (
+          <div className="rounded-lg bg-surface p-2.5 text-xs text-navy">
+            <div className="flex flex-wrap gap-x-4 gap-y-1 font-medium">
+              <span>{before.label}: {before.s.correct + before.s.correct_abstention}/{before.s.fields}</span>
+              <span>v2 after design fixes: {ok}/{s.fields}</span>
+            </div>
+            <p className="mt-1 text-muted-foreground">{before.why}</p>
+          </div>
+        )}
       </CardContent>
     </Card>
   );
@@ -112,7 +121,7 @@ export default async function Page() {
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-2 rounded-xl bg-surface-2 px-4 py-3 text-sm text-navy">
-        <span className="flex items-center gap-2"><FlaskConical className="size-4 text-brand" /> Dev scores reflect prompt tuning; held-out is the true estimate. Small sets; counts shown.</span>
+        <span className="flex items-center gap-2"><FlaskConical className="size-4 text-brand" /> Dev scores reflect prompt tuning; held-out is the true estimate (v1 was the blind run). Small sets; counts shown.</span>
         <span className="text-xs text-muted-foreground">
           {r.models.extract} · drafts {r.models.draft} · run cost ${r.budget.spent_usd.toFixed(2)} of ${r.budget.limit_usd.toFixed(2)}
           {r.budget.skipped.length ? ` · skipped: ${r.budget.skipped.join("; ")}` : ""} · {r.generated_at.slice(0, 10)}
@@ -120,7 +129,16 @@ export default async function Page() {
       </div>
       <div className="grid gap-4 md:grid-cols-2">
         <Headline title="Dev (prompts tuned on this)" sub="10 suppliers × 17 fields, AI cache vs dev gold" s={r.headline.dev} />
-        <Headline title="Held-out (untouched)" sub="HO-01…HO-18, run once with the current prompts" s={r.headline.heldout} />
+        {r.previous ? (
+          <Headline
+            title="Held-out"
+            sub="HO-01…HO-18 · v1 was blind; v2 re-measured after design fixes (no longer blind)"
+            s={r.headline.heldout}
+            before={{ label: r.previous.label, s: r.previous.headline.heldout, why: "What changed: drafts' terms are now extracted as non-binding proposed terms (HO-17 scored on them), review routing is evidence-based, and citations name the operative clause + “via”. No other tuning." }}
+          />
+        ) : (
+          <Headline title="Held-out (untouched)" sub="HO-01…HO-18, run once with the current prompts" s={r.headline.heldout} />
+        )}
       </div>
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
         {suites.map((s) => <SuiteCard key={s.id} s={s} />)}

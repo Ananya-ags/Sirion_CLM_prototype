@@ -25,6 +25,9 @@ const OFFLINE = args.includes("--offline");
 const SMOKE = args.includes("--smoke");
 const bi = args.indexOf("--budget");
 const LIMIT = bi >= 0 ? Number(args[bi + 1]) : 3.0;
+const li = args.indexOf("--label");
+const LABEL = li >= 0 ? args[li + 1] : "v1 (blind)";
+const SKIP = new Set(args.flatMap((a, i) => (args[i - 1] === "--skip" ? a.split(",") : [])));
 
 async function main() {
   // Dynamic imports: config reads env at import time.
@@ -41,6 +44,7 @@ async function main() {
   const { estimateCostUsd } = await import("../src/lib/ai/pricing");
   const { generateDraft } = await import("../src/lib/drafting");
   const { outcome, score, sectionMatches, percentile } = await import("../src/lib/evals");
+  const { reviewReasons } = await import("../src/lib/ai/routing");
   type CallMeta = import("../src/lib/ai/claude").CallMeta;
   type PipelineDoc = import("../src/lib/ai/documents").PipelineDoc;
   type SuiteResult = import("../src/lib/evals").SuiteResult;
@@ -73,11 +77,14 @@ async function main() {
   const suites: SuiteResult[] = [];
   const headline: { dev: Score | null; heldout: Score | null } = { dev: null, heldout: null };
   const OUT = path.join(CACHE_DIR, "eval_results.json");
+  // Keep the earlier run (e.g. "v1 (blind)") for comparison; re-running the same label keeps its own previous.
+  const existing = existsSync(OUT) ? JSON.parse(await readFile(OUT, "utf8")) : null;
+  const previous = existing && !Array.isArray(existing) ? ((existing.label ?? "v1 (blind)") === LABEL ? existing.previous : { label: existing.label ?? "v1 (blind)", generated_at: existing.generated_at, budget: existing.budget, headline: existing.headline, suites: existing.suites }) : undefined;
   const save = async () => {
     await mkdir(CACHE_DIR, { recursive: true });
     await writeFile(
       OUT,
-      JSON.stringify({ generated_at: new Date().toISOString(), models: { extract: model, draft: MODELS.draft }, budget: { limit_usd: LIMIT, spent_usd: Math.round(spent * 1000) / 1000, skipped }, headline, suites }, null, 2) + "\n",
+      JSON.stringify({ label: LABEL, ...(previous ? { previous } : {}), generated_at: new Date().toISOString(), models: { extract: model, draft: MODELS.draft }, budget: { limit_usd: LIMIT, spent_usd: Math.round(spent * 1000) / 1000, skipped }, headline, suites }, null, 2) + "\n",
     );
   };
   const push = async (s: SuiteResult) => {
@@ -100,7 +107,7 @@ async function main() {
   for (const id of IDS) if (existsSync(path.join(CACHE_DIR, `extraction_${id}.json`))) cacheOf.set(id, await readCache(`extraction_${id}.json`));
 
   /** Calibration records collected from dev + held-out. */
-  const calib: { set: "dev" | "heldout"; confidence: number; ok: boolean; item: string }[] = [];
+  const calib: { set: "dev" | "heldout"; confidence: number; ok: boolean; item: string; routed: boolean }[] = [];
 
   /* ---------- dev headline (cache vs dev gold; prompts were tuned on this) ---------- */
   {
@@ -110,14 +117,14 @@ async function main() {
         const e = leafOf(c.effective_terms, k);
         const o = outcome(e?.value, leafOf(G.get(id)!.effective_terms, k).value);
         outs.push(o);
-        calib.push({ set: "dev", confidence: e?.confidence ?? 0, ok: o === "correct" || o === "correct_abstention", item: `${id} ${k}` });
+        calib.push({ set: "dev", confidence: e?.confidence ?? 0, ok: o === "correct" || o === "correct_abstention", item: `${id} ${k}`, routed: !!e && reviewReasons(k, e, c.effective_terms).length > 0 });
       }
     }
     headline.dev = outs.length ? score(outs) : null;
   }
 
   /* ---------- runner shared by held-out + injection + smoke: SAME pipeline functions ---------- */
-  type RunResult = { values: Record<string, any>; executed: unknown; doc: PipelineDoc };
+  type RunResult = { values: Record<string, any>; proposed: Record<string, any>; terms: any; executed: unknown; doc: PipelineDoc };
   async function runDoc(doc: PipelineDoc, label: string, suite: string): Promise<RunResult> {
     if (doc.textSource === "none" && doc.base64) {
       guard(`${label} OCR`, estimate(model, 2000, doc.pdf.pages.length, 3000));
@@ -137,8 +144,12 @@ async function main() {
     const fam = llm.family.some((f) => f.doc_id === doc.meta.doc_id)
       ? llm.family.map((f) => ({ ...f, executed: true as const }))
       : [...llm.family, { doc_id: doc.meta.doc_id, doc_role: "other" as const, executed: true as const, execution_evidence: [], references: [], signed_date: null }];
-    const m = mergeExtraction({ ...llm, family: fam }, new Map([[doc.meta.doc_id, { text: doc.text, ocr: doc.textSource === "ocr" }]]), [doc.meta.doc_id]);
-    return { values: Object.fromEntries(FIELD_KEYS.map((k) => [k, leafOf(m.effective_terms, k)])), executed: verdict, doc };
+    const texts = new Map([[doc.meta.doc_id, { text: doc.text, ocr: doc.textSource === "ocr" }]]);
+    const m = mergeExtraction({ ...llm, family: fam }, texts, [doc.meta.doc_id]);
+    // As the pipeline runs it (no forcing): a non-executed document's terms land in proposed_terms (non-binding).
+    const asIs = mergeExtraction(llm, texts, [doc.meta.doc_id]);
+    const prop = asIs.proposed_terms.find((p) => p.doc_id === doc.meta.doc_id)?.fields ?? {};
+    return { values: Object.fromEntries(FIELD_KEYS.map((k) => [k, leafOf(m.effective_terms, k)])), proposed: prop, terms: m.effective_terms, executed: verdict, doc };
   }
 
   /* ================= 1. Held-out extraction ================= */
@@ -162,12 +173,14 @@ async function main() {
         else doc = pipelineDocFromText(item.ho_id, (await loadHeldoutDoc(path.basename(item.file))) ?? "");
         const r = await runDoc(doc, `heldout ${item.ho_id}`, "heldout");
         if ((item as any).executed !== undefined) execChecks.push({ item: item.ho_id, expected: (item as any).executed, got: r.executed });
+        // Gold describes a draft (executed: false) → score the draft's proposed (non-binding) terms.
+        const isDraft = (item as any).executed === false && LABEL !== "v1 (blind)";
         for (const [field, expected] of Object.entries(item.fields)) {
-          const f = r.values[field];
+          const f = isDraft ? (r.proposed[field] ?? { value: null, confidence: 0, citation: null }) : r.values[field];
           const o = outcome(f?.value, expected);
           const quoteOk = f?.citation ? verifyQuote(r.doc.text, f.citation.quote) : undefined;
           heldoutRecords.push({ item: item.ho_id, field, expected, got: f?.value, confidence: f?.confidence ?? 0, outcome: o, quote: f?.citation?.quote, quoteOk });
-          calib.push({ set: "heldout", confidence: f?.confidence ?? 0, ok: o === "correct" || o === "correct_abstention", item: `${item.ho_id} ${field}` });
+          calib.push({ set: "heldout", confidence: f?.confidence ?? 0, ok: o === "correct" || o === "correct_abstention", item: `${item.ho_id} ${field}`, routed: !!f && reviewReasons(field, f, r.terms).length > 0 });
         }
         console.log(`  ${item.ho_id}: ${heldoutRecords.filter((x) => x.item === item.ho_id && (x.outcome === "correct" || x.outcome === "correct_abstention")).length}/${Object.keys(item.fields).length}`);
       } catch (e) {
@@ -245,9 +258,10 @@ async function main() {
         const gc = leafOf(G.get(id)!.effective_terms, k)?.citation;
         if (!gc) continue;
         secTotal++;
-        const ok = gc.doc_id === e.citation.doc_id && sectionMatches(e.citation.section, gc.section);
+        // Either the operative citation or its "via" (definition / schedule) may match gold's section.
+        const ok = (gc.doc_id === e.citation.doc_id && sectionMatches(e.citation.section, gc.section)) || (!!e.via && gc.doc_id === e.via.doc_id && sectionMatches(e.via.section, gc.section));
         if (ok) sec++;
-        else misses.push({ item: `${id} ${k}`, expected: `${gc.doc_id} §${gc.section}`, got: `${e.citation.doc_id} §${e.citation.section}`, note: "section" });
+        else misses.push({ item: `${id} ${k}`, expected: `${gc.doc_id} §${gc.section}`, got: `${e.citation.doc_id} §${e.citation.section}${e.via ? ` via ${e.via.section}` : ""}`, note: "section" });
       }
     }
     const ho = heldoutRecords.filter((r) => r.quoteOk !== undefined);
@@ -404,6 +418,10 @@ async function main() {
         : loAcc >= hiAcc - 0.02
           ? `Below-0.85 fields are about as accurate as the rest (${Math.round(loAcc * 100)}% vs ${Math.round(hiAcc * 100)}%): model confidence does not separate right from wrong here. Keep 0.85 for OCR / unclear, but route mainly on quote-verified + Rules checks rather than self-reported confidence.`
           : `Below-0.85 fields are less accurate (${Math.round(loAcc * 100)}% vs ${Math.round(hiAcc * 100)}%): the threshold is doing useful work; keep 0.85.`;
+    const wrongs = calib.filter((c) => !c.ok);
+    const caught = wrongs.filter((c) => c.routed).length;
+    const routedOk = calib.filter((c) => c.ok && c.routed).length;
+    const lowConfOk = calib.filter((c) => c.ok && c.confidence < 0.85).length;
     await push({
       id: "calibration",
       title: "Confidence calibration",
@@ -416,7 +434,10 @@ async function main() {
         { label: "Dev < 0.85", value: fmt(bucket("dev", false)) },
         { label: "Held-out ≥ 0.85", value: fmt(bucket("heldout", true)) },
         { label: "Held-out < 0.85", value: fmt(bucket("heldout", false)) },
-        { label: "Recommendation", value: rec },
+        { label: "Misses caught by evidence routing", value: `${caught}/${wrongs.length}` },
+        { label: "Correct fields sent to review (evidence)", value: String(routedOk) },
+        { label: "Correct fields a < 0.85 rule would send", value: String(lowConfOk) },
+        { label: "Recommendation", value: LABEL === "v1 (blind)" ? rec : "Finding: self-reported confidence didn't predict errors, so routing is now evidence-based (OCR, quote not verified, unclear, key field not stated). Confidence stays as a displayed signal." },
       ],
       misses: calib.filter((c) => !c.ok && c.confidence >= 0.85).map((c) => ({ item: c.item, expected: "correct", got: "wrong", note: `confident miss · conf ${c.confidence}` })),
     });
@@ -444,7 +465,8 @@ async function main() {
   {
     const P = "Run-to-run drift: the same contract giving different answers on different days.";
     const TARGETS = ["SUP-01", "SUP-03", "SUP-08"];
-    if (!live || SMOKE) await push(skippedSuite("stability", "Stability (3 runs)", P, "live suites not run"));
+    if (SKIP.has("stability")) await push(skippedSuite("stability", "Stability (3 runs)", P, `not re-run (budget)${previous ? `; ${previous.label}: ${previous.suites.find((x: any) => x.id === "stability")?.passed}/${previous.suites.find((x: any) => x.id === "stability")?.total}` : ""}`));
+    else if (!live || SMOKE) await push(skippedSuite("stability", "Stability (3 runs)", P, "live suites not run"));
     else {
       const grouping = await readCache("grouping.json");
       const runs = new Map<string, Record<string, unknown>[]>();

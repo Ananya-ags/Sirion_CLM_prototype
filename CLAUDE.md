@@ -27,7 +27,7 @@ Every transition appends an audit entry {ts, actor: "AI"|"Rules"|personaId, acti
 Green: no material flags AND annual value ≤ the category's green_max_annual_value_inr AND every key field confidence ≥ 0.85 → auto-log the renewal.
 Amber: minor flags only (policy.global.minor_flags: F5, F7, X2, T1, S1, U1) → owner confirms with one click and a reason.
 Red: F2 above threshold, F3, F4, F6 above threshold, any of L1–L4, S1 escalated (≥ sla_breach_months_red breach months in 12 on a high-criticality vendor), or ≤14 days to act-by → owner decides first, then the Procurement decision card; auto-renewal not allowed.
-Needs review: any key field "unclear" or confidence < 0.85.
+Needs review: any key field with evidence of a problem: "unclear", quote not verified, read from OCR (until a human confirms), or not stated where it applies. Confidence is displayed only.
 
 ## Flag codes
 F1 AUTO_RENEW_NOTICE, F2 UPLIFT_EXPOSURE, F3 QUOTE_EXCEEDS_CAP, F4 RATE_ABOVE_BENCHMARK, F5 NO_SLA_CREDITS, F6 NO_TERMINATION_FOR_CONVENIENCE, F7 PAYMENT_TERMS_BELOW_POLICY, L1 SPEND_ABOVE_CONTRACT_VALUE, L2 PAID_AFTER_EXPIRY, L3 BILLING_DRIFT_ABOVE_CONTRACT, L4 UNTRACKED_RECURRING_SPEND, T1 TRACKER_CONFLICT, X1 UNCLEAR_CLAUSE, X2 SPECIAL_NOTICE_METHOD, S1 SLA_CREDIT_UNCLAIMED (minor), U1 LOW_UTILISATION (minor).
@@ -80,6 +80,7 @@ Step 2 (branch v2): AI pipeline, `npm run precompute [-- --only SUP-01,SUP-03] [
   Outputs: cache/grouping.json, cache/extraction_SUP-xx.json, cache/ocr_*.txt, cache/pipeline_log.json, cache/pipeline_manifest.json (input hashes; unchanged inputs are skipped). `npm run sanity` = dev-only diff vs dev_gold (never used by the pipeline).
   App: getSupplierView reads cache/extraction_* first (badge "AI-extracted · quote-verified"), seed fallback ("Seed · fallback"); fields < 0.85 / unclear / OCR and grouping nulls appear in Priya's Human review queue (Confirm / Correct, audited).
 Step 3 (branch v2): supplier names/IDs from vendor_master.csv + src/lib/suppliers.ts (gold only for the "seed" fallback). Human overrides: Confirm / Correct in the review queue stores source:"human", confidence 1.0 (audited) → /api/evaluate re-runs the Rules → lane, flags and request state update live (useLiveViews). Evals: `npm run evals` (scripts/evals.ts, $3 budget guard; --offline, --smoke) → cache/eval_results.json → /evals. Only scripts/evals.ts and scripts/sanity-diff.ts may read dev_gold.json / heldout_gold.json. The held-out set is run once per prompt version; never tune prompts on it.
+Step 3b: drafts/redlines → proposed_terms (non-binding; never fed to Rules; "Draft / redline" panel on the contract page). Review routing is evidence-based (src/lib/ai/routing.ts: OCR, quote not verified, unclear, key field not stated); X1 uses the same evidence, not confidence. Citations: operative clause + optional "via" (definition / schedule row). eval_results.json keeps "v1 (blind)" as previous; current run "v2 (after review; no longer blind)".
 Not built yet: /add-contract (placeholder).
 
 ## Design system

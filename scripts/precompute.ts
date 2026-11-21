@@ -34,6 +34,9 @@ async function main() {
 
   const args = process.argv.slice(2);
   const force = args.includes("--force");
+  const bIdx = args.indexOf("--budget");
+  const budget = bIdx >= 0 ? Number(args[bIdx + 1]) : Infinity;
+  let spentUsd = 0;
   const onlyIdx = args.indexOf("--only");
   const only = onlyIdx >= 0 ? new Set((args[onlyIdx + 1] ?? "").split(",").map((s) => s.trim()).filter(Boolean)) : null;
   if (!hasClaudeKey()) throw new Error("ANTHROPIC_API_KEY is not set (.env.local)");
@@ -47,6 +50,7 @@ async function main() {
   const calls: (CallMeta & { scope: string })[] = [];
   const meta = (scope: string) => (m: CallMeta) => {
     calls.push({ ...m, scope });
+    spentUsd += estimateCostUsd(m.model, m.inputTokens, m.outputTokens) ?? 0;
     console.log(`  ${m.ok ? "✓" : "✗"} ${m.label}: ${m.inputTokens.toLocaleString()} in / ${m.outputTokens.toLocaleString()} out · ${(m.latencyMs / 1000).toFixed(1)}s · attempts ${m.attempts}${m.errors.length ? ` · ${m.errors.join(" | ").slice(0, 200)}` : ""}`);
   };
   /** Runs jobs with at most n in flight. */
@@ -128,6 +132,11 @@ async function main() {
     const file = `extraction_${s.supplier_id}.json`;
     if (!force && manifest.extraction[s.supplier_id] === key && existsSync(path.join(CACHE, file))) {
       console.log(`4. ${s.supplier_id}: cached (${fam.map((d) => d.meta.doc_id).join(", ")})`);
+      return;
+    }
+    // Budget guard: ~$0.20 per family extraction (PDF blocks + text) as a pre-call estimate.
+    if (spentUsd + 0.2 > budget) {
+      console.log(`4. ${s.supplier_id}: SKIPPED (budget $${budget.toFixed(2)}, spent $${spentUsd.toFixed(3)})`);
       return;
     }
     try {

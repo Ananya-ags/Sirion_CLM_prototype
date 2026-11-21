@@ -33,7 +33,20 @@ export const SuiteResultSchema = z.object({
 });
 export type SuiteResult = z.infer<typeof SuiteResultSchema>;
 
+export const EvalRunSchema = z.object({
+  label: z.string(),
+  generated_at: z.string(),
+  budget: z.object({ limit_usd: z.number(), spent_usd: z.number(), skipped: z.array(z.string()) }),
+  headline: z.object({ dev: ScoreSchema.nullable(), heldout: ScoreSchema.nullable() }),
+  suites: z.array(SuiteResultSchema),
+});
+export type EvalRun = z.infer<typeof EvalRunSchema>;
+
 export const EvalResultsSchema = z.object({
+  /** e.g. "v2 (after review; no longer blind)". */
+  label: z.string().default("v1 (blind)"),
+  /** The earlier run kept for comparison, e.g. "v1 (blind)". */
+  previous: EvalRunSchema.optional(),
   generated_at: z.string(),
   models: z.object({ extract: z.string(), draft: z.string() }),
   budget: z.object({ limit_usd: z.number(), spent_usd: z.number(), skipped: z.array(z.string()) }),

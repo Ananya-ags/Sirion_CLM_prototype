@@ -1,5 +1,6 @@
 {
   "supplier_id": "SUP-01",
+  "proposed_terms": [],
   "family": [
     {
       "doc_id": "DOC-01",
@@ -7,8 +8,7 @@
       "executed": true,
       "execution_evidence": [
         "DocuSign Certificate of Completion, Status: Completed",
-        "Signed by: Arvind Rao (DocuSigned) and Kavita Deshpande (DocuSigned)",
-        "Envelope Completed: 27-Mar-2024 10:47 IST"
+        "Signed by Arvind Rao and Kavita Deshpande (DocuSigned), 26-Mar-2024 and 27-Mar-2024"
       ],
       "references": []
     },
@@ -17,7 +17,7 @@
       "doc_role": "order_form",
       "executed": true,
       "execution_evidence": [
-        "Signature: [signed] by both parties with names, titles and dates 21.03.2025 and 24.03.2025",
+        "Signature blocks signed by Arvind Rao (21.03.2025) and Arjun Menon (24.03.2025)",
         "Company seal: Nimbus CRM Pvt Ltd, Bengaluru"
       ],
       "references": [
@@ -29,9 +29,12 @@
       "doc_role": "email",
       "executed": false,
       "execution_evidence": [
-        "System-generated vendor billing email; no signature blocks"
+        "System-generated vendor pricing notice email; no signatures"
       ],
-      "references": []
+      "references": [
+        "DOC-01",
+        "DOC-02"
+      ]
     }
   ],
   "effective_terms": {
@@ -51,7 +54,7 @@
       "citation": {
         "doc_id": "DOC-02",
         "section": "3.1",
-        "quote": "Subscription Term: 1 April 2025 to 31 March 2027"
+        "quote": "Subscription Term: 1 April 2025 to 31 March 2027 (twenty-four (24) months)"
       },
       "verified": true
     },
@@ -70,6 +73,11 @@
       "confidence": 0.95,
       "citation": {
         "doc_id": "DOC-01",
+        "section": "14.2",
+        "quote": "unless either Party gives the other written notice of non-renewal at least the Notice Period before the end of the then-current Subscription Term"
+      },
+      "via": {
+        "doc_id": "DOC-01",
         "section": "1.21",
         "quote": "\"Notice Period\" means, in relation to any Subscription Term, ninety (90) days."
       },
@@ -77,8 +85,13 @@
     },
     "notice_day_type": {
       "value": "calendar",
-      "confidence": 0.93,
+      "confidence": 0.9,
       "citation": {
+        "doc_id": "DOC-01",
+        "section": "14.2",
+        "quote": "unless either Party gives the other written notice of non-renewal at least the Notice Period before the end of the then-current Subscription Term"
+      },
+      "via": {
         "doc_id": "DOC-01",
         "section": "1.33",
         "quote": "References to a number of days are to calendar days unless Business Days are expressly specified."
@@ -112,7 +125,7 @@
         "citation": {
           "doc_id": "DOC-01",
           "section": "15.3",
-          "quote": "the Fees for the Renewal Term shall increase by the greater of (a) seven per cent (7%) and (b)"
+          "quote": "the Fees for the Renewal Term shall increase by the greater of (a) seven per cent (7%) and (b) the year-on-year percentage increase in the Consumer Price"
         },
         "verified": true
       },
@@ -122,7 +135,7 @@
         "citation": {
           "doc_id": "DOC-01",
           "section": "15.3",
-          "quote": "the Fees for the Renewal Term shall increase by the greater of (a) seven per cent (7%) and (b)"
+          "quote": "the Fees for the Renewal Term shall increase by the greater of (a) seven per cent (7%) and (b) the year-on-year percentage increase in the Consumer Price"
         },
         "verified": true
       },
@@ -164,7 +177,7 @@
     },
     "sla_credits": {
       "value": true,
-      "confidence": 0.97,
+      "confidence": 0.95,
       "citation": {
         "doc_id": "DOC-01",
         "section": "17.2",
@@ -174,7 +187,7 @@
     },
     "currency": {
       "value": "INR",
-      "confidence": 0.95,
+      "confidence": 0.9,
       "citation": {
         "doc_id": "DOC-02",
         "section": "4.1",
@@ -184,7 +197,7 @@
     },
     "governing_law": {
       "value": "India",
-      "confidence": 0.97,
+      "confidence": 0.95,
       "citation": {
         "doc_id": "DOC-01",
         "section": "31.1",
@@ -209,9 +222,9 @@
     "currency": "INR",
     "credit_rule": [
       {
-        "from_incl": 0,
-        "to_excl": 98,
-        "credit_pct": 20
+        "from_incl": 99,
+        "to_excl": 99.5,
+        "credit_pct": 5
       },
       {
         "from_incl": 98,
@@ -219,9 +232,9 @@
         "credit_pct": 10
       },
       {
-        "from_incl": 99,
-        "to_excl": 99.5,
-        "credit_pct": 5
+        "from_incl": 0,
+        "to_excl": 98,
+        "credit_pct": 20
       }
     ],
     "credit_basis": "monthly_fees",
@@ -247,9 +260,9 @@
   "pipeline": {
     "source": "ai",
     "model": "claude-sonnet-5-5",
-    "prompt_version": "extraction-3",
-    "generated_at": "2026-11-24T06:37:29.532Z",
-    "input_key": "90b6b583746b85eb0b3391bdc35c772cad5403a70c07e84b7137adf463c9cbe8",
+    "prompt_version": "extraction-4",
+    "generated_at": "2026-11-24T09:30:23.782Z",
+    "input_key": "d5d44818ab355592550f3f2799153fb5027c3a9e7b7f707d2d4d35241ee4e199",
     "docs": [
       {
         "doc_id": "DOC-01",
@@ -286,12 +299,26 @@
       {
         "key": "notice_days",
         "doc_id": "DOC-01",
+        "section": "14.2",
+        "quote": "unless either Party gives the other written notice of non-renewal at least the Notice Period before the end of the then-current Subscription Term",
+        "ok": true
+      },
+      {
+        "key": "notice_days (via)",
+        "doc_id": "DOC-01",
         "section": "1.21",
         "quote": "\"Notice Period\" means, in relation to any Subscription Term, ninety (90) days.",
         "ok": true
       },
       {
         "key": "notice_day_type",
+        "doc_id": "DOC-01",
+        "section": "14.2",
+        "quote": "unless either Party gives the other written notice of non-renewal at least the Notice Period before the end of the then-current Subscription Term",
+        "ok": true
+      },
+      {
+        "key": "notice_day_type (via)",
         "doc_id": "DOC-01",
         "section": "1.33",
         "quote": "References to a number of days are to calendar days unless Business Days are expressly specified.",
@@ -315,14 +342,14 @@
         "key": "uplift.type",
         "doc_id": "DOC-01",
         "section": "15.3",
-        "quote": "the Fees for the Renewal Term shall increase by the greater of (a) seven per cent (7%) and (b)",
+        "quote": "the Fees for the Renewal Term shall increase by the greater of (a) seven per cent (7%) and (b) the year-on-year percentage increase in the Consumer Price",
         "ok": true
       },
       {
         "key": "uplift.value_pct",
         "doc_id": "DOC-01",
         "section": "15.3",
-        "quote": "the Fees for the Renewal Term shall increase by the greater of (a) seven per cent (7%) and (b)",
+        "quote": "the Fees for the Renewal Term shall increase by the greater of (a) seven per cent (7%) and (b) the year-on-year percentage increase in the Consumer Price",
         "ok": true
       },
       {
@@ -364,7 +391,7 @@
         "key": "initial_term_end",
         "doc_id": "DOC-02",
         "section": "3.1",
-        "quote": "Subscription Term: 1 April 2025 to 31 March 2027",
+        "quote": "Subscription Term: 1 April 2025 to 31 March 2027 (twenty-four (24) months)",
         "ok": true
       },
       {
@@ -436,8 +463,7 @@
           "executed": true,
           "execution_evidence": [
             "DocuSign Certificate of Completion, Status: Completed",
-            "Signed by: Arvind Rao (DocuSigned) and Kavita Deshpande (DocuSigned)",
-            "Envelope Completed: 27-Mar-2024 10:47 IST"
+            "Signed by Arvind Rao and Kavita Deshpande (DocuSigned), 26-Mar-2024 and 27-Mar-2024"
           ],
           "references": [],
           "signed_date": "2024-03-27"
@@ -447,7 +473,7 @@
           "doc_role": "order_form",
           "executed": true,
           "execution_evidence": [
-            "Signature: [signed] by both parties with names, titles and dates 21.03.2025 and 24.03.2025",
+            "Signature blocks signed by Arvind Rao (21.03.2025) and Arjun Menon (24.03.2025)",
             "Company seal: Nimbus CRM Pvt Ltd, Bengaluru"
           ],
           "references": [
@@ -460,9 +486,12 @@
           "doc_role": "email",
           "executed": false,
           "execution_evidence": [
-            "System-generated vendor billing email; no signature blocks"
+            "System-generated vendor pricing notice email; no signatures"
           ],
-          "references": [],
+          "references": [
+            "DOC-01",
+            "DOC-02"
+          ],
           "signed_date": null
         }
       ],
@@ -478,8 +507,7 @@
                 "doc_id": "DOC-01",
                 "section": "14.2",
                 "quote": "each Subscription Term shall automatically renew for successive periods of twelve (12) months"
-              },
-              "note": null
+              }
             },
             {
               "key": "renewal_term_months",
@@ -489,8 +517,7 @@
                 "doc_id": "DOC-01",
                 "section": "14.2",
                 "quote": "each Subscription Term shall automatically renew for successive periods of twelve (12) months"
-              },
-              "note": null
+              }
             },
             {
               "key": "notice_days",
@@ -498,21 +525,29 @@
               "confidence": 0.95,
               "citation": {
                 "doc_id": "DOC-01",
+                "section": "14.2",
+                "quote": "unless either Party gives the other written notice of non-renewal at least the Notice Period before the end of the then-current Subscription Term"
+              },
+              "via": {
+                "doc_id": "DOC-01",
                 "section": "1.21",
                 "quote": "\"Notice Period\" means, in relation to any Subscription Term, ninety (90) days."
-              },
-              "note": null
+              }
             },
             {
               "key": "notice_day_type",
               "value": "calendar",
-              "confidence": 0.93,
+              "confidence": 0.9,
               "citation": {
+                "doc_id": "DOC-01",
+                "section": "14.2",
+                "quote": "unless either Party gives the other written notice of non-renewal at least the Notice Period before the end of the then-current Subscription Term"
+              },
+              "via": {
                 "doc_id": "DOC-01",
                 "section": "1.33",
                 "quote": "References to a number of days are to calendar days unless Business Days are expressly specified."
-              },
-              "note": null
+              }
             },
             {
               "key": "notice_method",
@@ -522,8 +557,7 @@
                 "doc_id": "DOC-01",
                 "section": "29.1",
                 "quote": "All notices under this Agreement shall be in writing and given by email to the notice address of the receiving Party"
-              },
-              "note": null
+              }
             },
             {
               "key": "notice_address",
@@ -533,8 +567,7 @@
                 "doc_id": "DOC-01",
                 "section": "29.2",
                 "quote": "Notice addresses: Nimbus: legal@nimbuscrm.in;"
-              },
-              "note": null
+              }
             },
             {
               "key": "uplift.type",
@@ -543,9 +576,8 @@
               "citation": {
                 "doc_id": "DOC-01",
                 "section": "15.3",
-                "quote": "the Fees for the Renewal Term shall increase by the greater of (a) seven per cent (7%) and (b)"
-              },
-              "note": null
+                "quote": "the Fees for the Renewal Term shall increase by the greater of (a) seven per cent (7%) and (b) the year-on-year percentage increase in the Consumer Price"
+              }
             },
             {
               "key": "uplift.value_pct",
@@ -554,9 +586,8 @@
               "citation": {
                 "doc_id": "DOC-01",
                 "section": "15.3",
-                "quote": "the Fees for the Renewal Term shall increase by the greater of (a) seven per cent (7%) and (b)"
-              },
-              "note": null
+                "quote": "the Fees for the Renewal Term shall increase by the greater of (a) seven per cent (7%) and (b) the year-on-year percentage increase in the Consumer Price"
+              }
             },
             {
               "key": "tfc",
@@ -566,8 +597,7 @@
                 "doc_id": "DOC-01",
                 "section": "19.2",
                 "quote": "Customer may terminate any Order Form for convenience by giving not less than ninety (90) days' prior written notice to Nimbus."
-              },
-              "note": null
+              }
             },
             {
               "key": "tfc_notice_days",
@@ -577,8 +607,7 @@
                 "doc_id": "DOC-01",
                 "section": "19.2",
                 "quote": "Customer may terminate any Order Form for convenience by giving not less than ninety (90) days' prior written notice to Nimbus."
-              },
-              "note": null
+              }
             },
             {
               "key": "payment_terms_days",
@@ -588,30 +617,27 @@
                 "doc_id": "DOC-01",
                 "section": "16.2",
                 "quote": "Undisputed invoices are payable within forty-five (45) days of the date of invoice."
-              },
-              "note": null
+              }
             },
             {
               "key": "sla_credits",
               "value": true,
-              "confidence": 0.97,
+              "confidence": 0.95,
               "citation": {
                 "doc_id": "DOC-01",
                 "section": "17.2",
                 "quote": "Customer shall be entitled to Service Credits as set out in Schedule 1."
-              },
-              "note": null
+              }
             },
             {
               "key": "governing_law",
               "value": "India",
-              "confidence": 0.97,
+              "confidence": 0.95,
               "citation": {
                 "doc_id": "DOC-01",
                 "section": "31.1",
                 "quote": "This Agreement shall be governed by and construed in accordance with the laws of India."
-              },
-              "note": null
+              }
             }
           ],
           "rate_lines": []
@@ -626,9 +652,8 @@
               "citation": {
                 "doc_id": "DOC-02",
                 "section": "3.1",
-                "quote": "Subscription Term: 1 April 2025 to 31 March 2027"
-              },
-              "note": null
+                "quote": "Subscription Term: 1 April 2025 to 31 March 2027 (twenty-four (24) months)"
+              }
             },
             {
               "key": "annual_value",
@@ -638,19 +663,17 @@
                 "doc_id": "DOC-02",
                 "section": "4.1",
                 "quote": "Annual Subscription Fee: ₹62,00,000 (Rupees Sixty-Two Lakh only) per annum"
-              },
-              "note": null
+              }
             },
             {
               "key": "currency",
               "value": "INR",
-              "confidence": 0.95,
+              "confidence": 0.9,
               "citation": {
                 "doc_id": "DOC-02",
                 "section": "4.1",
                 "quote": "Annual Subscription Fee: ₹62,00,000 (Rupees Sixty-Two Lakh only) per annum"
-              },
-              "note": null
+              }
             }
           ],
           "rate_lines": []
@@ -665,7 +688,7 @@
         {
           "key": "uplift.cap_pct",
           "confidence": 0.9,
-          "reason": "No cap on the renewal price increase in any executed document."
+          "reason": "No cap on the renewal uplift is stated."
         }
       ],
       "quote": null,
@@ -675,9 +698,9 @@
         "currency": "INR",
         "credit_rule": [
           {
-            "from_incl": 0,
-            "to_excl": 98,
-            "credit_pct": 20
+            "from_incl": 99,
+            "to_excl": 99.5,
+            "credit_pct": 5
           },
           {
             "from_incl": 98,
@@ -685,9 +708,9 @@
             "credit_pct": 10
           },
           {
-            "from_incl": 99,
-            "to_excl": 99.5,
-            "credit_pct": 5
+            "from_incl": 0,
+            "to_excl": 98,
+            "credit_pct": 20
           }
         ],
         "credit_basis": "monthly_fees",

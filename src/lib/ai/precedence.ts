@@ -59,6 +59,8 @@ const LlmFieldSchema = z.object({
   value: z.union([z.string(), z.number(), z.boolean(), z.null()]),
   confidence: z.number().min(0).max(1),
   citation: LlmCitationSchema.nullable(),
+  /** Definition / schedule row the operative clause relies on (optional). */
+  via: LlmCitationSchema.nullable().optional(),
   note: z.string().nullable().optional(),
 });
 
@@ -196,7 +198,11 @@ export type MergeResult = {
   verification: VerificationRecord[];
   /** Field keys sourced from OCR text. */
   ocrFields: string[];
+  /** Terms stated by NON-executed documents (drafts, redlines, notices): non-binding, never fed to the rules. */
+  proposed_terms: ProposedTerms[];
 };
+
+export type ProposedTerms = { doc_id: string; doc_role: string; executed: boolean | "unknown"; fields: Record<string, AnyField> };
 
 export function mergeExtraction(llm: ExtractionLlm, docs: ReadonlyMap<string, DocText>, familyIds: string[]): MergeResult {
   const verification: VerificationRecord[] = [];
@@ -232,8 +238,14 @@ export function mergeExtraction(llm: ExtractionLlm, docs: ReadonlyMap<string, Do
         confidence = 0;
         note = "No citation given";
       }
+      let via: Citation | undefined;
+      if (f.via) {
+        const v = verifyCitation(f.via, docs);
+        verification.push({ key: `${f.key} (via)`, doc_id: f.via.doc_id, section: f.via.section, quote: f.via.quote, ok: v.ok, reason: v.reason });
+        if (v.ok) via = f.via; // a failed secondary citation is dropped (logged); the operative one decides
+      }
       if (ocr) confidence = Math.min(confidence, OCR_CONFIDENCE_CAP);
-      const field: AnyField = { value, confidence, citation: f.citation, ...(verified !== undefined ? { verified } : {}), ...(ocr ? { ocr: true } : {}), ...(note ? { note } : {}) };
+      const field: AnyField = { value, confidence, citation: f.citation, ...(via ? { via } : {}), ...(verified !== undefined ? { verified } : {}), ...(ocr ? { ocr: true } : {}), ...(note ? { note } : {}) };
       byKey.set(f.key, [...(byKey.get(f.key) ?? []), { docId: d.doc_id, field }]);
     }
   }
@@ -327,7 +339,24 @@ export function mergeExtraction(llm: ExtractionLlm, docs: ReadonlyMap<string, Do
     return v.ok ? [{ metric: l.metric, licensed_units: l.licensed_units, doc_id: l.citation.doc_id }] : [];
   });
 
+  // 6. Proposed (non-binding) terms from non-executed documents, per document, verified like the rest.
+  const proposed_terms: ProposedTerms[] = family
+    .filter((f) => f.executed !== true) // superseded-but-executed SOWs are not "proposed"
+    .map((f) => ({
+      doc_id: f.doc_id,
+      doc_role: f.doc_role,
+      executed: f.executed,
+      fields: Object.fromEntries(
+        FIELD_KEYS.flatMap((k) => {
+          const c = (byKey.get(k) ?? []).find((x) => x.docId === f.doc_id && x.field.value !== null);
+          return c ? [[k, c.field]] : [];
+        }),
+      ),
+    }))
+    .filter((p) => Object.keys(p.fields).length > 0);
+
   return {
+    proposed_terms,
     family: family.map((f) => ({ doc_id: f.doc_id, doc_role: f.doc_role, executed: f.executed, execution_evidence: f.execution_evidence, references: f.references })),
     effective_terms,
     ...(quote ? { quote } : {}),

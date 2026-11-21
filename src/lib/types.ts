@@ -245,6 +245,8 @@ export function fieldSchema<T extends z.ZodType>(value: T) {
     note: z.string().optional(),
     /** Set when a human confirmed or corrected the value (confidence 1.0; audited). */
     source: z.literal("human").optional(),
+    /** Secondary citation: the definition / schedule row the operative clause relies on ("19.2 via 1.21"). */
+    via: CitationSchema.optional(),
   });
 }
 export type Field<T> = {
@@ -256,6 +258,7 @@ export type Field<T> = {
   ocr?: boolean;
   note?: string;
   source?: "human";
+  via?: Citation;
 };
 
 /** A human decision on an extracted field (Priya's review queue). */

@@ -1,15 +1,115 @@
 {
   "supplier_id": "SUP-03",
+  "proposed_terms": [
+    {
+      "doc_id": "DOC-07",
+      "doc_role": "msa",
+      "executed": false,
+      "fields": {
+        "renewal_type": {
+          "value": "auto",
+          "confidence": 0.85,
+          "citation": {
+            "doc_id": "DOC-07",
+            "section": "4.3",
+            "quote": "each SOW shall automatically renew for successive periods of twelve (12) months"
+          },
+          "verified": true,
+          "note": "Draft; proposed only."
+        },
+        "renewal_term_months": {
+          "value": 12,
+          "confidence": 0.85,
+          "citation": {
+            "doc_id": "DOC-07",
+            "section": "4.3",
+            "quote": "each SOW shall automatically renew for successive periods of twelve (12) months"
+          },
+          "verified": true
+        },
+        "notice_days": {
+          "value": 45,
+          "confidence": 0.85,
+          "citation": {
+            "doc_id": "DOC-07",
+            "section": "4.3",
+            "quote": "not less than forty-five (45) days before the expiry of the then-current SOW Term"
+          },
+          "verified": true
+        },
+        "notice_day_type": {
+          "value": "calendar",
+          "confidence": 0.7,
+          "citation": {
+            "doc_id": "DOC-07",
+            "section": "4.3",
+            "quote": "not less than forty-five (45) days before the expiry of the then-current SOW Term"
+          },
+          "verified": true
+        },
+        "notice_method": {
+          "value": "email_or_physical",
+          "confidence": 0.7,
+          "citation": {
+            "doc_id": "DOC-07",
+            "section": "6.1",
+            "quote": "Notices shall be in writing and sent by email or by courier to the addresses notified by each Party."
+          },
+          "verified": true
+        },
+        "uplift.type": {
+          "value": "fixed",
+          "confidence": 0.8,
+          "citation": {
+            "doc_id": "DOC-07",
+            "section": "3.2",
+            "quote": "The Supplier may increase the rates by eight per cent (8%) on each anniversary of the"
+          },
+          "verified": true
+        },
+        "uplift.value_pct": {
+          "value": 8,
+          "confidence": 0.8,
+          "citation": {
+            "doc_id": "DOC-07",
+            "section": "3.2",
+            "quote": "The Supplier may increase the rates by eight per cent (8%) on each anniversary of the"
+          },
+          "verified": true
+        },
+        "payment_terms_days": {
+          "value": 30,
+          "confidence": 0.85,
+          "citation": {
+            "doc_id": "DOC-07",
+            "section": "3.3",
+            "quote": "are payable within thirty (30) days."
+          },
+          "verified": true
+        },
+        "governing_law": {
+          "value": "India",
+          "confidence": 0.9,
+          "citation": {
+            "doc_id": "DOC-07",
+            "section": "7.1",
+            "quote": "This Agreement is governed by the laws of India."
+          },
+          "verified": true
+        }
+      }
+    }
+  ],
   "family": [
     {
       "doc_id": "DOC-07",
       "doc_role": "msa",
       "executed": false,
       "execution_evidence": [
-        "Header and footer read 'DRAFT — NOT FOR SIGNATURE'",
-        "Signature blocks blank",
-        "Date placeholder '[●] January 2024'",
-        "Track changes ON, 3 open comments"
+        "DRAFT — NOT FOR SIGNATURE watermark and footer",
+        "blank signature blocks",
+        "[●] January 2024 placeholder date",
+        "Track changes: ON · 3 open comments"
       ],
       "references": []
     },
@@ -18,7 +118,7 @@
       "doc_role": "msa",
       "executed": true,
       "execution_evidence": [
-        "DocuSign Certificate of Completion, status Completed",
+        "DocuSign Certificate of Completion Status: Completed",
         "Signed by Rohan Kulkarni and Kavita Deshpande 29-Jan-2024"
       ],
       "references": []
@@ -28,7 +128,8 @@
       "doc_role": "sow",
       "executed": true,
       "execution_evidence": [
-        "Signed by Rohan Kulkarni and Arjun Menon, both dated 30-01-2024"
+        "[signed] Rohan Kulkarni 30-01-2024",
+        "[signed] Arjun Menon 30-01-2024"
       ],
       "references": [
         "DOC-08"
@@ -39,7 +140,8 @@
       "doc_role": "sow",
       "executed": true,
       "execution_evidence": [
-        "Signed by Rohan Kulkarni 24-01-2025 and Arjun Menon 27-01-2025"
+        "[signed] Rohan Kulkarni 24-01-2025",
+        "[signed] Arjun Menon 27-01-2025"
       ],
       "references": [
         "DOC-08",
@@ -51,7 +153,8 @@
       "doc_role": "amendment",
       "executed": true,
       "execution_evidence": [
-        "Countersigned Amendment No. 1 attached to email; signed by Rohan Kulkarni 08-04-2026 and Kavita Deshpande 10-04-2026"
+        "Countersigned Amendment No. 1 attached to email",
+        "Supplier signed 08-04-2026, Client signed 10-04-2026"
       ],
       "references": [
         "DOC-08",
@@ -62,13 +165,14 @@
   "effective_terms": {
     "renewal_type": {
       "value": "auto",
-      "confidence": 0.9,
+      "confidence": 0.8,
       "citation": {
         "doc_id": "DOC-08",
         "section": "19.3",
         "quote": "each SOW shall automatically renew for successive periods of twelve (12) months"
       },
-      "verified": true
+      "verified": true,
+      "note": "MSA default for SOWs; SOW-1 opts out."
     },
     "initial_term_end": {
       "value": "2027-01-31",
@@ -82,7 +186,7 @@
     },
     "renewal_term_months": {
       "value": 12,
-      "confidence": 0.92,
+      "confidence": 0.9,
       "citation": {
         "doc_id": "DOC-08",
         "section": "19.3",
@@ -92,23 +196,22 @@
     },
     "notice_days": {
       "value": 60,
-      "confidence": 0.93,
+      "confidence": 0.95,
       "citation": {
         "doc_id": "DOC-11",
         "section": "1",
         "quote": "the words \"thirty (30) calendar days\" are deleted and replaced with \"sixty (60) calendar days\""
       },
       "verified": true,
-      "note": "Amends MSA clause 19.3.",
       "overridden_by": "DOC-11"
     },
     "notice_day_type": {
       "value": "calendar",
-      "confidence": 0.92,
+      "confidence": 0.95,
       "citation": {
         "doc_id": "DOC-11",
         "section": "1",
-        "quote": "the words \"thirty (30) calendar days\" are deleted and replaced with \"sixty (60) calendar days\""
+        "quote": "are deleted and replaced with \"sixty (60) calendar days\""
       },
       "verified": true,
       "overridden_by": "DOC-11"
@@ -125,7 +228,7 @@
     },
     "notice_address": {
       "value": "contracts@codecraftstaffing.in",
-      "confidence": 0.93,
+      "confidence": 0.95,
       "citation": {
         "doc_id": "DOC-08",
         "section": "29.1",
@@ -136,23 +239,22 @@
     "uplift": {
       "type": {
         "value": "none",
-        "confidence": 0.8,
+        "confidence": 0.85,
         "citation": {
           "doc_id": "DOC-08",
           "section": "18.2",
           "quote": "The rates in each SOW shall remain fixed for the SOW Term and for any Renewal Term"
         },
-        "verified": true,
-        "note": "Rates fixed through renewal terms unless amended."
+        "verified": true
       },
       "value_pct": {
         "value": null,
-        "confidence": 0.8,
+        "confidence": 0.6,
         "citation": null
       },
       "cap_pct": {
         "value": null,
-        "confidence": 0.85,
+        "confidence": 0.9,
         "citation": null
       }
     },
@@ -162,7 +264,7 @@
       "citation": {
         "doc_id": "DOC-08",
         "section": "20.2",
-        "quote": "The Client may terminate this Agreement or any SOW for convenience upon thirty (30) days' written notice to the Supplier"
+        "quote": "The Client may terminate this Agreement or any SOW for convenience upon thirty (30)"
       },
       "verified": true
     },
@@ -172,7 +274,7 @@
       "citation": {
         "doc_id": "DOC-08",
         "section": "20.2",
-        "quote": "The Client may terminate this Agreement or any SOW for convenience upon thirty (30) days' written notice to the Supplier"
+        "quote": "for convenience upon thirty (30) days' written notice to the Supplier"
       },
       "verified": true
     },
@@ -188,14 +290,14 @@
     },
     "sla_credits": {
       "value": true,
-      "confidence": 0.7,
+      "confidence": 0.6,
       "citation": {
         "doc_id": "DOC-08",
         "section": "17.2",
         "quote": "the Client shall be entitled to a service credit equal to five per cent (5%) of the monthly fees attributable to the affected Resource for each week of delay"
       },
       "verified": true,
-      "note": "Credit for late resource replacement; no percentage service level."
+      "note": "Credit for late resource replacement only."
     },
     "currency": {
       "value": "INR",
@@ -203,7 +305,7 @@
       "citation": {
         "doc_id": "DOC-10",
         "section": "2.2",
-        "quote": "₹1,80,00,000 (Rupees One Crore Eighty Lakh), exclusive of GST"
+        "quote": "₹1,80,00,000 (Rupees One Crore Eighty Lakh), exclusive of"
       },
       "verified": true
     },
@@ -223,10 +325,10 @@
       "citation": {
         "doc_id": "DOC-10",
         "section": "2.2",
-        "quote": "₹1,80,00,000 (Rupees One Crore Eighty Lakh), exclusive of GST"
+        "quote": "Estimated Annual Fees (based on a planned 150 hours per Resource per month and 40"
       },
       "verified": true,
-      "note": "Estimated Annual Fees."
+      "note": "Estimated annual fees, ₹1,80,00,000 exclusive of GST."
     }
   },
   "rate_card": [
@@ -238,7 +340,7 @@
       "citation": {
         "doc_id": "DOC-11",
         "section": "2",
-        "quote": "the hourly rate for \"Sr. React.js Developer\" is revised from ₹2,400 to ₹2,250"
+        "quote": "is revised from ₹2,400 to ₹2,250 with effect from timesheets for May 2026 onwards"
       }
     },
     {
@@ -280,9 +382,9 @@
   "pipeline": {
     "source": "ai",
     "model": "claude-sonnet-5-5",
-    "prompt_version": "extraction-2",
-    "generated_at": "2026-11-24T06:36:20.949Z",
-    "input_key": "23e9f38769c5b717b0dadfa173780a495e790474f67e7ff231e67d3578b6fc98",
+    "prompt_version": "extraction-4",
+    "generated_at": "2026-11-24T09:30:30.946Z",
+    "input_key": "a56b259a93732b065bb266fe04481f02b44a39663530e357afe0d2d346d40a88",
     "docs": [
       {
         "doc_id": "DOC-07",
@@ -312,6 +414,69 @@
     ],
     "ocr_fields": [],
     "verification": [
+      {
+        "key": "renewal_type",
+        "doc_id": "DOC-07",
+        "section": "4.3",
+        "quote": "each SOW shall automatically renew for successive periods of twelve (12) months",
+        "ok": true
+      },
+      {
+        "key": "renewal_term_months",
+        "doc_id": "DOC-07",
+        "section": "4.3",
+        "quote": "each SOW shall automatically renew for successive periods of twelve (12) months",
+        "ok": true
+      },
+      {
+        "key": "notice_days",
+        "doc_id": "DOC-07",
+        "section": "4.3",
+        "quote": "not less than forty-five (45) days before the expiry of the then-current SOW Term",
+        "ok": true
+      },
+      {
+        "key": "notice_day_type",
+        "doc_id": "DOC-07",
+        "section": "4.3",
+        "quote": "not less than forty-five (45) days before the expiry of the then-current SOW Term",
+        "ok": true
+      },
+      {
+        "key": "notice_method",
+        "doc_id": "DOC-07",
+        "section": "6.1",
+        "quote": "Notices shall be in writing and sent by email or by courier to the addresses notified by each Party.",
+        "ok": true
+      },
+      {
+        "key": "uplift.type",
+        "doc_id": "DOC-07",
+        "section": "3.2",
+        "quote": "The Supplier may increase the rates by eight per cent (8%) on each anniversary of the",
+        "ok": true
+      },
+      {
+        "key": "uplift.value_pct",
+        "doc_id": "DOC-07",
+        "section": "3.2",
+        "quote": "The Supplier may increase the rates by eight per cent (8%) on each anniversary of the",
+        "ok": true
+      },
+      {
+        "key": "payment_terms_days",
+        "doc_id": "DOC-07",
+        "section": "3.3",
+        "quote": "are payable within thirty (30) days.",
+        "ok": true
+      },
+      {
+        "key": "governing_law",
+        "doc_id": "DOC-07",
+        "section": "7.1",
+        "quote": "This Agreement is governed by the laws of India.",
+        "ok": true
+      },
       {
         "key": "renewal_type",
         "doc_id": "DOC-08",
@@ -365,14 +530,14 @@
         "key": "tfc",
         "doc_id": "DOC-08",
         "section": "20.2",
-        "quote": "The Client may terminate this Agreement or any SOW for convenience upon thirty (30) days' written notice to the Supplier",
+        "quote": "The Client may terminate this Agreement or any SOW for convenience upon thirty (30)",
         "ok": true
       },
       {
         "key": "tfc_notice_days",
         "doc_id": "DOC-08",
         "section": "20.2",
-        "quote": "The Client may terminate this Agreement or any SOW for convenience upon thirty (30) days' written notice to the Supplier",
+        "quote": "for convenience upon thirty (30) days' written notice to the Supplier",
         "ok": true
       },
       {
@@ -387,6 +552,13 @@
         "doc_id": "DOC-08",
         "section": "17.2",
         "quote": "the Client shall be entitled to a service credit equal to five per cent (5%) of the monthly fees attributable to the affected Resource for each week of delay",
+        "ok": true
+      },
+      {
+        "key": "currency",
+        "doc_id": "DOC-08",
+        "section": "13.2",
+        "quote": "₹5,00,00,000 (Rupees Five Crore)",
         "ok": true
       },
       {
@@ -428,14 +600,14 @@
         "key": "annual_value",
         "doc_id": "DOC-10",
         "section": "2.2",
-        "quote": "₹1,80,00,000 (Rupees One Crore Eighty Lakh), exclusive of GST",
+        "quote": "Estimated Annual Fees (based on a planned 150 hours per Resource per month and 40",
         "ok": true
       },
       {
         "key": "currency",
         "doc_id": "DOC-10",
         "section": "2.2",
-        "quote": "₹1,80,00,000 (Rupees One Crore Eighty Lakh), exclusive of GST",
+        "quote": "₹1,80,00,000 (Rupees One Crore Eighty Lakh), exclusive of",
         "ok": true
       },
       {
@@ -449,7 +621,7 @@
         "key": "notice_day_type",
         "doc_id": "DOC-11",
         "section": "1",
-        "quote": "the words \"thirty (30) calendar days\" are deleted and replaced with \"sixty (60) calendar days\"",
+        "quote": "are deleted and replaced with \"sixty (60) calendar days\"",
         "ok": true
       },
       {
@@ -484,7 +656,7 @@
         "key": "rate:Sr. React.js Developer",
         "doc_id": "DOC-11",
         "section": "2",
-        "quote": "the hourly rate for \"Sr. React.js Developer\" is revised from ₹2,400 to ₹2,250",
+        "quote": "is revised from ₹2,400 to ₹2,250 with effect from timesheets for May 2026 onwards",
         "ok": true
       }
     ],
@@ -494,7 +666,7 @@
         "doc_id": "DOC-07",
         "confidence": 0.9,
         "evidence": [
-          "Exact legal name CodeCraft Staffing Solutions Private Limited as Supplier; CIN U74140KA2014PTC077310 matches DOC-08 (V-10012); unsigned draft"
+          "Exact legal name CODECRAFT STAFFING SOLUTIONS PRIVATE LIMITED, CIN U74140KA2014PTC077310 (same CIN as DOC-08, GSTIN = V-10012)"
         ]
       },
       {
@@ -508,21 +680,21 @@
         "doc_id": "DOC-09",
         "confidence": 0.95,
         "evidence": [
-          "Refers to Master Services Agreement dated 29 January 2024 between CodeCraft Staffing Solutions Private Limited and Velora, i.e. executed DOC-08"
+          "Refers to Master Services Agreement dated 29 January 2024 (DOC-08, executed) between CodeCraft Staffing Solutions Private Limited and Velora"
         ]
       },
       {
         "doc_id": "DOC-10",
         "confidence": 0.95,
         "evidence": [
-          "References MSA dated 29 January 2024 (executed DOC-08) with CodeCraft"
+          "Parent reference: Master Services Agreement dated 29 January 2024 with CodeCraft (executed DOC-08)"
         ]
       },
       {
         "doc_id": "DOC-11",
         "confidence": 0.95,
         "evidence": [
-          "Amendment refers to MSA dated 29 January 2024 (DOC-08); sender domain codecraftstaffing.in matches DOC-08 signer"
+          "Amendment refers to MSA dated 29 January 2024 (DOC-08) and SOW-2; sender domain codecraftstaffing.in matches rohan.k@codecraftstaffing.in in DOC-08"
         ]
       }
     ],
@@ -533,10 +705,10 @@
           "doc_role": "msa",
           "executed": false,
           "execution_evidence": [
-            "Header and footer read 'DRAFT — NOT FOR SIGNATURE'",
-            "Signature blocks blank",
-            "Date placeholder '[●] January 2024'",
-            "Track changes ON, 3 open comments"
+            "DRAFT — NOT FOR SIGNATURE watermark and footer",
+            "blank signature blocks",
+            "[●] January 2024 placeholder date",
+            "Track changes: ON · 3 open comments"
           ],
           "references": [],
           "signed_date": null
@@ -546,7 +718,7 @@
           "doc_role": "msa",
           "executed": true,
           "execution_evidence": [
-            "DocuSign Certificate of Completion, status Completed",
+            "DocuSign Certificate of Completion Status: Completed",
             "Signed by Rohan Kulkarni and Kavita Deshpande 29-Jan-2024"
           ],
           "references": [],
@@ -557,7 +729,8 @@
           "doc_role": "sow",
           "executed": true,
           "execution_evidence": [
-            "Signed by Rohan Kulkarni and Arjun Menon, both dated 30-01-2024"
+            "[signed] Rohan Kulkarni 30-01-2024",
+            "[signed] Arjun Menon 30-01-2024"
           ],
           "references": [
             "DOC-08"
@@ -569,7 +742,8 @@
           "doc_role": "sow",
           "executed": true,
           "execution_evidence": [
-            "Signed by Rohan Kulkarni 24-01-2025 and Arjun Menon 27-01-2025"
+            "[signed] Rohan Kulkarni 24-01-2025",
+            "[signed] Arjun Menon 27-01-2025"
           ],
           "references": [
             "DOC-08",
@@ -582,7 +756,8 @@
           "doc_role": "amendment",
           "executed": true,
           "execution_evidence": [
-            "Countersigned Amendment No. 1 attached to email; signed by Rohan Kulkarni 08-04-2026 and Kavita Deshpande 10-04-2026"
+            "Countersigned Amendment No. 1 attached to email",
+            "Supplier signed 08-04-2026, Client signed 10-04-2026"
           ],
           "references": [
             "DOC-08",
@@ -594,7 +769,99 @@
       "documents": [
         {
           "doc_id": "DOC-07",
-          "fields": [],
+          "fields": [
+            {
+              "key": "renewal_type",
+              "value": "auto",
+              "confidence": 0.85,
+              "citation": {
+                "doc_id": "DOC-07",
+                "section": "4.3",
+                "quote": "each SOW shall automatically renew for successive periods of twelve (12) months"
+              },
+              "note": "Draft; proposed only."
+            },
+            {
+              "key": "renewal_term_months",
+              "value": 12,
+              "confidence": 0.85,
+              "citation": {
+                "doc_id": "DOC-07",
+                "section": "4.3",
+                "quote": "each SOW shall automatically renew for successive periods of twelve (12) months"
+              }
+            },
+            {
+              "key": "notice_days",
+              "value": 45,
+              "confidence": 0.85,
+              "citation": {
+                "doc_id": "DOC-07",
+                "section": "4.3",
+                "quote": "not less than forty-five (45) days before the expiry of the then-current SOW Term"
+              }
+            },
+            {
+              "key": "notice_day_type",
+              "value": "calendar",
+              "confidence": 0.7,
+              "citation": {
+                "doc_id": "DOC-07",
+                "section": "4.3",
+                "quote": "not less than forty-five (45) days before the expiry of the then-current SOW Term"
+              }
+            },
+            {
+              "key": "notice_method",
+              "value": "email_or_physical",
+              "confidence": 0.7,
+              "citation": {
+                "doc_id": "DOC-07",
+                "section": "6.1",
+                "quote": "Notices shall be in writing and sent by email or by courier to the addresses notified by each Party."
+              }
+            },
+            {
+              "key": "uplift.type",
+              "value": "fixed",
+              "confidence": 0.8,
+              "citation": {
+                "doc_id": "DOC-07",
+                "section": "3.2",
+                "quote": "The Supplier may increase the rates by eight per cent (8%) on each anniversary of the"
+              }
+            },
+            {
+              "key": "uplift.value_pct",
+              "value": 8,
+              "confidence": 0.8,
+              "citation": {
+                "doc_id": "DOC-07",
+                "section": "3.2",
+                "quote": "The Supplier may increase the rates by eight per cent (8%) on each anniversary of the"
+              }
+            },
+            {
+              "key": "payment_terms_days",
+              "value": 30,
+              "confidence": 0.85,
+              "citation": {
+                "doc_id": "DOC-07",
+                "section": "3.3",
+                "quote": "are payable within thirty (30) days."
+              }
+            },
+            {
+              "key": "governing_law",
+              "value": "India",
+              "confidence": 0.9,
+              "citation": {
+                "doc_id": "DOC-07",
+                "section": "7.1",
+                "quote": "This Agreement is governed by the laws of India."
+              }
+            }
+          ],
           "rate_lines": []
         },
         {
@@ -603,24 +870,23 @@
             {
               "key": "renewal_type",
               "value": "auto",
+              "confidence": 0.8,
+              "citation": {
+                "doc_id": "DOC-08",
+                "section": "19.3",
+                "quote": "each SOW shall automatically renew for successive periods of twelve (12) months"
+              },
+              "note": "MSA default for SOWs; SOW-1 opts out."
+            },
+            {
+              "key": "renewal_term_months",
+              "value": 12,
               "confidence": 0.9,
               "citation": {
                 "doc_id": "DOC-08",
                 "section": "19.3",
                 "quote": "each SOW shall automatically renew for successive periods of twelve (12) months"
-              },
-              "note": null
-            },
-            {
-              "key": "renewal_term_months",
-              "value": 12,
-              "confidence": 0.92,
-              "citation": {
-                "doc_id": "DOC-08",
-                "section": "19.3",
-                "quote": "each SOW shall automatically renew for successive periods of twelve (12) months"
-              },
-              "note": null
+              }
             },
             {
               "key": "notice_days",
@@ -630,19 +896,17 @@
                 "doc_id": "DOC-08",
                 "section": "19.3",
                 "quote": "not less than thirty (30) calendar days before the expiry of the then-current SOW Term"
-              },
-              "note": null
+              }
             },
             {
               "key": "notice_day_type",
               "value": "calendar",
-              "confidence": 0.92,
+              "confidence": 0.95,
               "citation": {
                 "doc_id": "DOC-08",
                 "section": "19.3",
                 "quote": "not less than thirty (30) calendar days before the expiry of the then-current SOW Term"
-              },
-              "note": null
+              }
             },
             {
               "key": "notice_method",
@@ -652,30 +916,27 @@
                 "doc_id": "DOC-08",
                 "section": "29.1",
                 "quote": "All notices shall be in writing and sent by email to the address of the other Party below"
-              },
-              "note": null
+              }
             },
             {
               "key": "notice_address",
               "value": "contracts@codecraftstaffing.in",
-              "confidence": 0.93,
+              "confidence": 0.95,
               "citation": {
                 "doc_id": "DOC-08",
                 "section": "29.1",
                 "quote": "Supplier: contracts@codecraftstaffing.in; Client: legal@velora.in."
-              },
-              "note": null
+              }
             },
             {
               "key": "uplift.type",
               "value": "none",
-              "confidence": 0.8,
+              "confidence": 0.85,
               "citation": {
                 "doc_id": "DOC-08",
                 "section": "18.2",
                 "quote": "The rates in each SOW shall remain fixed for the SOW Term and for any Renewal Term"
-              },
-              "note": "Rates fixed through renewal terms unless amended."
+              }
             },
             {
               "key": "tfc",
@@ -684,9 +945,8 @@
               "citation": {
                 "doc_id": "DOC-08",
                 "section": "20.2",
-                "quote": "The Client may terminate this Agreement or any SOW for convenience upon thirty (30) days' written notice to the Supplier"
-              },
-              "note": null
+                "quote": "The Client may terminate this Agreement or any SOW for convenience upon thirty (30)"
+              }
             },
             {
               "key": "tfc_notice_days",
@@ -695,9 +955,8 @@
               "citation": {
                 "doc_id": "DOC-08",
                 "section": "20.2",
-                "quote": "The Client may terminate this Agreement or any SOW for convenience upon thirty (30) days' written notice to the Supplier"
-              },
-              "note": null
+                "quote": "for convenience upon thirty (30) days' written notice to the Supplier"
+              }
             },
             {
               "key": "payment_terms_days",
@@ -707,19 +966,28 @@
                 "doc_id": "DOC-08",
                 "section": "18.3",
                 "quote": "are payable within sixty (60) days of receipt of a valid tax invoice"
-              },
-              "note": null
+              }
             },
             {
               "key": "sla_credits",
               "value": true,
-              "confidence": 0.7,
+              "confidence": 0.6,
               "citation": {
                 "doc_id": "DOC-08",
                 "section": "17.2",
                 "quote": "the Client shall be entitled to a service credit equal to five per cent (5%) of the monthly fees attributable to the affected Resource for each week of delay"
               },
-              "note": "Credit for late resource replacement; no percentage service level."
+              "note": "Credit for late resource replacement only."
+            },
+            {
+              "key": "currency",
+              "value": "INR",
+              "confidence": 0.7,
+              "citation": {
+                "doc_id": "DOC-08",
+                "section": "13.2",
+                "quote": "₹5,00,00,000 (Rupees Five Crore)"
+              }
             },
             {
               "key": "governing_law",
@@ -729,8 +997,7 @@
                 "doc_id": "DOC-08",
                 "section": "31.1",
                 "quote": "This Agreement is governed by the laws of India."
-              },
-              "note": null
+              }
             }
           ],
           "rate_lines": []
@@ -746,8 +1013,7 @@
                 "doc_id": "DOC-09",
                 "section": "1.3",
                 "quote": "Clause 19.3 of the MSA shall not apply to this SOW-1, which shall expire at the end of the SOW Term without renewal."
-              },
-              "note": null
+              }
             },
             {
               "key": "initial_term_end",
@@ -757,19 +1023,17 @@
                 "doc_id": "DOC-09",
                 "section": "1.2",
                 "quote": "SOW Term: 1 February 2024 to 31 January 2025."
-              },
-              "note": null
+              }
             },
             {
               "key": "currency",
               "value": "INR",
-              "confidence": 0.8,
+              "confidence": 0.85,
               "citation": {
                 "doc_id": "DOC-09",
                 "section": "2",
                 "quote": "Rate (₹ per hour)"
-              },
-              "note": null
+              }
             }
           ],
           "rate_lines": [
@@ -819,8 +1083,7 @@
                 "doc_id": "DOC-10",
                 "section": "1.2",
                 "quote": "SOW Term: 1 February 2025 to 31 January 2027."
-              },
-              "note": null
+              }
             },
             {
               "key": "annual_value",
@@ -829,9 +1092,9 @@
               "citation": {
                 "doc_id": "DOC-10",
                 "section": "2.2",
-                "quote": "₹1,80,00,000 (Rupees One Crore Eighty Lakh), exclusive of GST"
+                "quote": "Estimated Annual Fees (based on a planned 150 hours per Resource per month and 40"
               },
-              "note": "Estimated Annual Fees."
+              "note": "Estimated annual fees, ₹1,80,00,000 exclusive of GST."
             },
             {
               "key": "currency",
@@ -840,9 +1103,8 @@
               "citation": {
                 "doc_id": "DOC-10",
                 "section": "2.2",
-                "quote": "₹1,80,00,000 (Rupees One Crore Eighty Lakh), exclusive of GST"
-              },
-              "note": null
+                "quote": "₹1,80,00,000 (Rupees One Crore Eighty Lakh), exclusive of"
+              }
             }
           ],
           "rate_lines": [
@@ -898,24 +1160,22 @@
             {
               "key": "notice_days",
               "value": 60,
-              "confidence": 0.93,
+              "confidence": 0.95,
               "citation": {
                 "doc_id": "DOC-11",
                 "section": "1",
                 "quote": "the words \"thirty (30) calendar days\" are deleted and replaced with \"sixty (60) calendar days\""
-              },
-              "note": "Amends MSA clause 19.3."
+              }
             },
             {
               "key": "notice_day_type",
               "value": "calendar",
-              "confidence": 0.92,
+              "confidence": 0.95,
               "citation": {
                 "doc_id": "DOC-11",
                 "section": "1",
-                "quote": "the words \"thirty (30) calendar days\" are deleted and replaced with \"sixty (60) calendar days\""
-              },
-              "note": null
+                "quote": "are deleted and replaced with \"sixty (60) calendar days\""
+              }
             }
           ],
           "rate_lines": [
@@ -927,7 +1187,7 @@
               "citation": {
                 "doc_id": "DOC-11",
                 "section": "2",
-                "quote": "the hourly rate for \"Sr. React.js Developer\" is revised from ₹2,400 to ₹2,250"
+                "quote": "is revised from ₹2,400 to ₹2,250 with effect from timesheets for May 2026 onwards"
               }
             }
           ]
@@ -936,12 +1196,12 @@
       "not_stated": [
         {
           "key": "uplift.value_pct",
-          "confidence": 0.8,
-          "reason": "Rates fixed; no uplift percentage in executed documents."
+          "confidence": 0.6,
+          "reason": "Executed documents fix rates; no uplift percentage."
         },
         {
           "key": "uplift.cap_pct",
-          "confidence": 0.85,
+          "confidence": 0.9,
           "reason": "No cap stated."
         }
       ],

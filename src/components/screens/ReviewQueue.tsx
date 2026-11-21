@@ -80,7 +80,7 @@ function SupplierReview({ v }: { v: SupplierView }) {
       <SheetHeader>
         <SheetTitle>{v.name}</SheetTitle>
         <SheetDescription>
-          {v.reviewFields.length} field{v.reviewFields.length === 1 ? "" : "s"} below 0.85 confidence or unclear.{" "}
+          {v.reviewFields.length} field{v.reviewFields.length === 1 ? "" : "s"} to check: OCR, quote not verified, unclear, or key field not stated.{" "}
           <Link href={`/contracts/${v.supplierId}`} className="text-brand underline-offset-2 hover:underline">Open contract file</Link>
         </SheetDescription>
       </SheetHeader>

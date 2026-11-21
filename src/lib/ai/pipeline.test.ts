@@ -4,6 +4,7 @@ import { postCheckGrouping } from "./grouping";
 import { cleanPages, stripFooter } from "./pdfText";
 import { coerceValue, ExtractionLlmSchema, mergeExtraction, OCR_CONFIDENCE_CAP, precedenceOrder, type DocText, type ExtractionLlm } from "./precedence";
 import { ocrTextForVerification, formatOcr } from "./ocr";
+import { reviewReasons } from "./routing";
 
 describe("pdfText cleaning", () => {
   it("strips the running footer (envelope, title + marker, page x of y) and keeps metadata", () => {
@@ -148,5 +149,47 @@ describe("grouping post-check", () => {
     expect(one({ evidence_quotes: ["GSTIN 29AADCN4417K1Z8"] }).review_reason).toMatch(/verbatim/);
     expect(one({ vendor_id: "V-99999" }).review_reason).toMatch(/Unknown vendor/);
     expect(postCheckGrouping({ assignments: [] }, [docsG[0]], vendors)[0].status).toBe("review");
+  });
+});
+
+describe("Step 3b: proposed (draft) terms, via citations, evidence routing", () => {
+  it("draft terms are kept as proposed_terms and never become effective terms", () => {
+    const m = mergeExtraction(base(), docs, ["MSA", "AMD", "DRAFT"]);
+    expect(m.proposed_terms).toEqual([expect.objectContaining({ doc_id: "DRAFT", executed: false, fields: { notice_days: expect.objectContaining({ value: 15, verified: true }) } })]);
+    expect(m.effective_terms.notice_days.value).toBe(60);
+  });
+  it("superseded-but-executed documents are not 'proposed'", () => {
+    const llm = base();
+    llm.family.push({ doc_id: "SOW1", doc_role: "sow", executed: true, execution_evidence: [], references: [], signed_date: "2024-01-30" });
+    llm.family.push({ doc_id: "SOW2", doc_role: "sow", executed: true, execution_evidence: [], references: [], signed_date: "2025-01-30" });
+    expect(mergeExtraction(llm, docs, ["MSA", "AMD", "DRAFT", "SOW1", "SOW2"]).proposed_terms.map((p) => p.doc_id)).toEqual(["DRAFT"]);
+  });
+  it("a verified via citation is kept; an unverifiable one is dropped and logged", () => {
+    const llm = base();
+    llm.documents[0].fields[0].via = cite("MSA", "renew automatically");
+    llm.documents[0].fields[1].via = cite("MSA", "not in the text");
+    const m = mergeExtraction(llm, docs, ["MSA"]); // family = MSA only, so the MSA's notice_days wins
+    expect(m.effective_terms.notice_days.via).toMatchObject({ quote: "renew automatically" });
+    expect(m.effective_terms.governing_law.via).toBeUndefined();
+    expect(m.effective_terms.governing_law.value).toBe("India"); // a failed via never voids the operative citation
+    expect(m.verification.find((v) => v.key === "governing_law (via)")).toMatchObject({ ok: false });
+  });
+});
+
+describe("evidence-based review routing", () => {
+  const f = (o: object) => ({ value: "auto", confidence: 0.5, citation: null, ...o });
+  const terms = { renewal_type: { value: "auto", confidence: 1, citation: null } };
+  it("routes on evidence, not on confidence", () => {
+    expect(reviewReasons("renewal_type", f({}), terms)).toEqual([]); // low confidence alone: no review
+    expect(reviewReasons("renewal_type", f({ verified: false }), terms)).toEqual(["quote not verified"]);
+    expect(reviewReasons("renewal_type", f({ value: "unclear" }), terms)).toEqual(["unclear"]);
+    expect(reviewReasons("renewal_type", f({ ocr: true }), terms)).toEqual(["OCR"]);
+    expect(reviewReasons("notice_days", f({ value: null }), terms)).toEqual(["key field not stated"]);
+    expect(reviewReasons("uplift.cap_pct", f({ value: null }), terms)).toEqual([]); // not a key field
+  });
+  it("notice fields don't apply when the contract doesn't renew; human-confirmed fields never route", () => {
+    const none = { renewal_type: { value: "none", confidence: 1, citation: null } };
+    expect(reviewReasons("notice_days", f({ value: null }), none)).toEqual([]);
+    expect(reviewReasons("renewal_type", f({ ocr: true, source: "human" }), terms)).toEqual([]);
   });
 });

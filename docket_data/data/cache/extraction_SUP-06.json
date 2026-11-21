@@ -1,14 +1,142 @@
 {
   "supplier_id": "SUP-06",
+  "proposed_terms": [
+    {
+      "doc_id": "DOC-17",
+      "doc_role": "email",
+      "executed": false,
+      "fields": {
+        "renewal_type": {
+          "value": "auto",
+          "confidence": 0.9,
+          "citation": {
+            "doc_id": "DOC-17",
+            "section": "18.2",
+            "quote": "this Agreement shall automatically renew for successive twelve (12) month periods"
+          },
+          "verified": true
+        },
+        "initial_term_end": {
+          "value": "2027-02-26",
+          "confidence": 0.9,
+          "citation": {
+            "doc_id": "DOC-17",
+            "section": "18.1",
+            "quote": "shall continue until 26 February 2027 (the \"Initial Term\")"
+          },
+          "verified": true
+        },
+        "renewal_term_months": {
+          "value": 12,
+          "confidence": 0.9,
+          "citation": {
+            "doc_id": "DOC-17",
+            "section": "18.2",
+            "quote": "automatically renew for successive twelve (12) month periods"
+          },
+          "verified": true
+        },
+        "notice_days": {
+          "value": 60,
+          "confidence": 0.85,
+          "citation": {
+            "doc_id": "DOC-17",
+            "section": "18.2",
+            "quote": "intention not to renew no later than the Renewal Notice Deadline"
+          },
+          "via": {
+            "doc_id": "DOC-17",
+            "section": "Schedule 1",
+            "quote": "sixty (60) calendar days"
+          },
+          "verified": true
+        },
+        "notice_day_type": {
+          "value": "calendar",
+          "confidence": 0.85,
+          "citation": {
+            "doc_id": "DOC-17",
+            "section": "18.2",
+            "quote": "intention not to renew no later than the Renewal Notice Deadline"
+          },
+          "via": {
+            "doc_id": "DOC-17",
+            "section": "Schedule 1",
+            "quote": "sixty (60) calendar days"
+          },
+          "verified": true
+        },
+        "uplift.type": {
+          "value": "fixed",
+          "confidence": 0.85,
+          "citation": {
+            "doc_id": "DOC-17",
+            "section": "19.3",
+            "quote": "seven per cent (7%) at the"
+          },
+          "verified": true
+        },
+        "uplift.value_pct": {
+          "value": 7,
+          "confidence": 0.85,
+          "citation": {
+            "doc_id": "DOC-17",
+            "section": "19.3",
+            "quote": "seven per cent (7%) at the"
+          },
+          "verified": true
+        },
+        "tfc": {
+          "value": true,
+          "confidence": 0.85,
+          "citation": {
+            "doc_id": "DOC-17",
+            "section": "22.2",
+            "quote": "Either Party may terminate this Agreement for convenience by giving sixty (60)"
+          },
+          "verified": true
+        },
+        "tfc_notice_days": {
+          "value": 60,
+          "confidence": 0.85,
+          "citation": {
+            "doc_id": "DOC-17",
+            "section": "22.2",
+            "quote": "Either Party may terminate this Agreement for convenience by giving sixty (60)"
+          },
+          "verified": true
+        },
+        "currency": {
+          "value": "INR",
+          "confidence": 0.9,
+          "citation": {
+            "doc_id": "DOC-17",
+            "section": "19.1",
+            "quote": "a monthly retainer fee of ₹3,00,000 (Rupees Three"
+          },
+          "verified": true
+        },
+        "annual_value": {
+          "value": 3600000,
+          "confidence": 0.9,
+          "citation": {
+            "doc_id": "DOC-17",
+            "section": "19.1",
+            "quote": "exclusive of GST (₹36,00,000 per annum)"
+          },
+          "verified": true
+        }
+      }
+    }
+  ],
   "family": [
     {
       "doc_id": "DOC-16",
       "doc_role": "msa",
       "executed": true,
       "execution_evidence": [
-        "Signature blocks for Neha Bhat (Designated Partner) and Rahul Iyer (Head of Marketing), both dated 24/02/2025",
-        "CFO approval signature Kavita Deshpande 24/02/2025",
-        "Agreement stated as executed on 24 February 2025"
+        "Signature blocks with names and dates 24/02/2025 for Neha Bhat (Designated Partner) and Rahul Iyer (Head of Marketing)",
+        "Approved for Velora: [signature] Kavita Deshpande, CFO — 24/02/2025"
       ],
       "references": []
     },
@@ -17,9 +145,9 @@
       "doc_role": "email",
       "executed": false,
       "execution_evidence": [
-        "Email with attached redline marked DRAFT — NOT FOR SIGNATURE",
-        "Blank signature blocks",
-        "Track changes and open agency comments"
+        "DRAFT — NOT FOR SIGNATURE footer",
+        "Track changes and open agency comments",
+        "Blank signature blocks"
       ],
       "references": [
         "DOC-16"
@@ -30,8 +158,7 @@
       "doc_role": "other",
       "executed": true,
       "execution_evidence": [
-        "Signatures of Neha Bhat and Rahul Iyer dated 08/01/2025",
-        "Mutual NDA only"
+        "Signature blocks with names and dates 08/01/2025 for both parties"
       ],
       "references": []
     }
@@ -39,7 +166,7 @@
   "effective_terms": {
     "renewal_type": {
       "value": "auto",
-      "confidence": 0.93,
+      "confidence": 0.95,
       "citation": {
         "doc_id": "DOC-16",
         "section": "18.2",
@@ -72,16 +199,25 @@
       "confidence": 0.93,
       "citation": {
         "doc_id": "DOC-16",
+        "section": "18.2",
+        "quote": "intention not to renew no later than the Renewal Notice Deadline"
+      },
+      "via": {
+        "doc_id": "DOC-16",
         "section": "Schedule 1",
         "quote": "sixty (60) Business Days prior to the expiry of the Initial Term or the then-current Renewal Term"
       },
-      "verified": true,
-      "note": "Renewal Notice Deadline defined in Schedule 1 via clause 1.23"
+      "verified": true
     },
     "notice_day_type": {
       "value": "business",
       "confidence": 0.93,
       "citation": {
+        "doc_id": "DOC-16",
+        "section": "18.2",
+        "quote": "intention not to renew no later than the Renewal Notice Deadline"
+      },
+      "via": {
         "doc_id": "DOC-16",
         "section": "Schedule 1",
         "quote": "sixty (60) Business Days prior to the expiry of the Initial Term or the then-current Renewal Term"
@@ -90,7 +226,7 @@
     },
     "notice_method": {
       "value": "email",
-      "confidence": 0.85,
+      "confidence": 0.9,
       "citation": {
         "doc_id": "DOC-16",
         "section": "32.1",
@@ -100,7 +236,7 @@
     },
     "notice_address": {
       "value": "accounts@brightloop.in",
-      "confidence": 0.93,
+      "confidence": 0.92,
       "citation": {
         "doc_id": "DOC-16",
         "section": "32.1",
@@ -111,7 +247,7 @@
     "uplift": {
       "type": {
         "value": "fixed",
-        "confidence": 0.93,
+        "confidence": 0.95,
         "citation": {
           "doc_id": "DOC-16",
           "section": "19.3",
@@ -121,7 +257,7 @@
       },
       "value_pct": {
         "value": 5,
-        "confidence": 0.95,
+        "confidence": 0.97,
         "citation": {
           "doc_id": "DOC-16",
           "section": "19.3",
@@ -131,7 +267,7 @@
       },
       "cap_pct": {
         "value": null,
-        "confidence": 0.85,
+        "confidence": 0.9,
         "citation": null
       }
     },
@@ -152,7 +288,7 @@
     },
     "payment_terms_days": {
       "value": 45,
-      "confidence": 0.95,
+      "confidence": 0.97,
       "citation": {
         "doc_id": "DOC-16",
         "section": "20.1",
@@ -162,22 +298,21 @@
     },
     "sla_credits": {
       "value": true,
-      "confidence": 0.8,
+      "confidence": 0.9,
       "citation": {
         "doc_id": "DOC-16",
         "section": "21.1",
         "quote": "the Client shall receive a fee credit of ₹15,000 per missed Deliverable"
       },
-      "verified": true,
-      "note": "Fee credits for missed deliverables"
+      "verified": true
     },
     "currency": {
       "value": "INR",
-      "confidence": 0.95,
+      "confidence": 0.97,
       "citation": {
         "doc_id": "DOC-16",
         "section": "19.1",
-        "quote": "monthly retainer fee of ₹3,00,000 (Rupees Three Lakh only)"
+        "quote": "a monthly retainer fee of ₹3,00,000 (Rupees Three Lakh only)"
       },
       "verified": true
     },
@@ -202,14 +337,26 @@
       "verified": true
     }
   },
-  "sla_terms": null,
+  "sla_terms": {
+    "metric": "deliverables_on_time",
+    "target": 100,
+    "currency": "INR",
+    "credit_rule": "the Client shall receive a fee credit of ₹15,000 per missed Deliverable, up to a maximum of ten per cent (10%) of the monthly retainer fee",
+    "credit_basis": "other",
+    "citation": {
+      "doc_id": "DOC-16",
+      "section": "21.1",
+      "quote": "the Client shall receive a fee credit of ₹15,000 per missed Deliverable, up to a maximum of ten per cent (10%) of the monthly retainer fee"
+    },
+    "fee_basis_monthly": null
+  },
   "licensed_units": [],
   "pipeline": {
     "source": "ai",
     "model": "claude-sonnet-5-5",
-    "prompt_version": "extraction-1",
-    "generated_at": "2026-11-24T06:34:19.859Z",
-    "input_key": "cc92ebfb2d127251232dc68f3f472bf630c3b20a699ae65d50339e052070d818",
+    "prompt_version": "extraction-4",
+    "generated_at": "2026-11-24T09:30:47.219Z",
+    "input_key": "a4f2344d66fe33588abbef4b59253420a15cb45047d7aff8fae02fc88638d5f9",
     "docs": [
       {
         "doc_id": "DOC-16",
@@ -253,12 +400,26 @@
       {
         "key": "notice_days",
         "doc_id": "DOC-16",
+        "section": "18.2",
+        "quote": "intention not to renew no later than the Renewal Notice Deadline",
+        "ok": true
+      },
+      {
+        "key": "notice_days (via)",
+        "doc_id": "DOC-16",
         "section": "Schedule 1",
         "quote": "sixty (60) Business Days prior to the expiry of the Initial Term or the then-current Renewal Term",
         "ok": true
       },
       {
         "key": "notice_day_type",
+        "doc_id": "DOC-16",
+        "section": "18.2",
+        "quote": "intention not to renew no later than the Renewal Notice Deadline",
+        "ok": true
+      },
+      {
+        "key": "notice_day_type (via)",
         "doc_id": "DOC-16",
         "section": "Schedule 1",
         "quote": "sixty (60) Business Days prior to the expiry of the Initial Term or the then-current Renewal Term",
@@ -317,7 +478,7 @@
         "key": "currency",
         "doc_id": "DOC-16",
         "section": "19.1",
-        "quote": "monthly retainer fee of ₹3,00,000 (Rupees Three Lakh only)",
+        "quote": "a monthly retainer fee of ₹3,00,000 (Rupees Three Lakh only)",
         "ok": true
       },
       {
@@ -335,10 +496,108 @@
         "ok": true
       },
       {
+        "key": "renewal_type",
+        "doc_id": "DOC-17",
+        "section": "18.2",
+        "quote": "this Agreement shall automatically renew for successive twelve (12) month periods",
+        "ok": true
+      },
+      {
+        "key": "initial_term_end",
+        "doc_id": "DOC-17",
+        "section": "18.1",
+        "quote": "shall continue until 26 February 2027 (the \"Initial Term\")",
+        "ok": true
+      },
+      {
+        "key": "renewal_term_months",
+        "doc_id": "DOC-17",
+        "section": "18.2",
+        "quote": "automatically renew for successive twelve (12) month periods",
+        "ok": true
+      },
+      {
+        "key": "notice_days",
+        "doc_id": "DOC-17",
+        "section": "18.2",
+        "quote": "intention not to renew no later than the Renewal Notice Deadline",
+        "ok": true
+      },
+      {
+        "key": "notice_days (via)",
+        "doc_id": "DOC-17",
+        "section": "Schedule 1",
+        "quote": "sixty (60) calendar days",
+        "ok": true
+      },
+      {
+        "key": "notice_day_type",
+        "doc_id": "DOC-17",
+        "section": "18.2",
+        "quote": "intention not to renew no later than the Renewal Notice Deadline",
+        "ok": true
+      },
+      {
+        "key": "notice_day_type (via)",
+        "doc_id": "DOC-17",
+        "section": "Schedule 1",
+        "quote": "sixty (60) calendar days",
+        "ok": true
+      },
+      {
+        "key": "uplift.type",
+        "doc_id": "DOC-17",
+        "section": "19.3",
+        "quote": "seven per cent (7%) at the",
+        "ok": true
+      },
+      {
+        "key": "uplift.value_pct",
+        "doc_id": "DOC-17",
+        "section": "19.3",
+        "quote": "seven per cent (7%) at the",
+        "ok": true
+      },
+      {
+        "key": "tfc",
+        "doc_id": "DOC-17",
+        "section": "22.2",
+        "quote": "Either Party may terminate this Agreement for convenience by giving sixty (60)",
+        "ok": true
+      },
+      {
+        "key": "tfc_notice_days",
+        "doc_id": "DOC-17",
+        "section": "22.2",
+        "quote": "Either Party may terminate this Agreement for convenience by giving sixty (60)",
+        "ok": true
+      },
+      {
+        "key": "currency",
+        "doc_id": "DOC-17",
+        "section": "19.1",
+        "quote": "a monthly retainer fee of ₹3,00,000 (Rupees Three",
+        "ok": true
+      },
+      {
+        "key": "annual_value",
+        "doc_id": "DOC-17",
+        "section": "19.1",
+        "quote": "exclusive of GST (₹36,00,000 per annum)",
+        "ok": true
+      },
+      {
         "key": "governing_law",
         "doc_id": "DOC-18",
         "section": "5",
-        "quote": "Laws of India; courts at Bengaluru.",
+        "quote": "Governing law. Laws of India; courts at Bengaluru.",
+        "ok": true
+      },
+      {
+        "key": "sla_terms",
+        "doc_id": "DOC-16",
+        "section": "21.1",
+        "quote": "the Client shall receive a fee credit of ₹15,000 per missed Deliverable, up to a maximum of ten per cent (10%) of the monthly retainer fee",
         "ok": true
       }
     ],
@@ -348,21 +607,21 @@
         "doc_id": "DOC-16",
         "confidence": 0.9,
         "evidence": [
-          "Exact legal name BrightLoop Marketing LLP; LLPIN AAX-4471; no conflict"
+          "Exact legal name BrightLoop Marketing LLP, LLPIN AAX-4471"
         ]
       },
       {
         "doc_id": "DOC-17",
         "confidence": 0.9,
         "evidence": [
-          "Sender entity BrightLoop Marketing LLP, Agency Retainer Agreement redline (DOC-16 family)"
+          "Email signed with exact legal name BrightLoop Marketing LLP; retainer agreement is the same family as DOC-16"
         ]
       },
       {
         "doc_id": "DOC-18",
-        "confidence": 0.95,
+        "confidence": 0.97,
         "evidence": [
-          "LLPIN AAX-4471 shared with DOC-16"
+          "LLPIN AAX-4471 shared with DOC-16 (BrightLoop Marketing LLP)"
         ]
       }
     ],
@@ -373,9 +632,8 @@
           "doc_role": "msa",
           "executed": true,
           "execution_evidence": [
-            "Signature blocks for Neha Bhat (Designated Partner) and Rahul Iyer (Head of Marketing), both dated 24/02/2025",
-            "CFO approval signature Kavita Deshpande 24/02/2025",
-            "Agreement stated as executed on 24 February 2025"
+            "Signature blocks with names and dates 24/02/2025 for Neha Bhat (Designated Partner) and Rahul Iyer (Head of Marketing)",
+            "Approved for Velora: [signature] Kavita Deshpande, CFO — 24/02/2025"
           ],
           "references": [],
           "signed_date": "2025-02-24"
@@ -385,9 +643,9 @@
           "doc_role": "email",
           "executed": false,
           "execution_evidence": [
-            "Email with attached redline marked DRAFT — NOT FOR SIGNATURE",
-            "Blank signature blocks",
-            "Track changes and open agency comments"
+            "DRAFT — NOT FOR SIGNATURE footer",
+            "Track changes and open agency comments",
+            "Blank signature blocks"
           ],
           "references": [
             "DOC-16"
@@ -399,8 +657,7 @@
           "doc_role": "other",
           "executed": true,
           "execution_evidence": [
-            "Signatures of Neha Bhat and Rahul Iyer dated 08/01/2025",
-            "Mutual NDA only"
+            "Signature blocks with names and dates 08/01/2025 for both parties"
           ],
           "references": [],
           "signed_date": "2025-01-08"
@@ -413,7 +670,7 @@
             {
               "key": "renewal_type",
               "value": "auto",
-              "confidence": 0.93,
+              "confidence": 0.95,
               "citation": {
                 "doc_id": "DOC-16",
                 "section": "18.2",
@@ -429,8 +686,7 @@
                 "doc_id": "DOC-16",
                 "section": "18.1",
                 "quote": "shall continue until 26 February 2027 (the \"Initial Term\")"
-              },
-              "note": null
+              }
             },
             {
               "key": "renewal_term_months",
@@ -440,8 +696,7 @@
                 "doc_id": "DOC-16",
                 "section": "18.2",
                 "quote": "automatically renew for successive twelve (12) month periods"
-              },
-              "note": null
+              }
             },
             {
               "key": "notice_days",
@@ -449,10 +704,14 @@
               "confidence": 0.93,
               "citation": {
                 "doc_id": "DOC-16",
+                "section": "18.2",
+                "quote": "intention not to renew no later than the Renewal Notice Deadline"
+              },
+              "via": {
+                "doc_id": "DOC-16",
                 "section": "Schedule 1",
                 "quote": "sixty (60) Business Days prior to the expiry of the Initial Term or the then-current Renewal Term"
-              },
-              "note": "Renewal Notice Deadline defined in Schedule 1 via clause 1.23"
+              }
             },
             {
               "key": "notice_day_type",
@@ -460,54 +719,54 @@
               "confidence": 0.93,
               "citation": {
                 "doc_id": "DOC-16",
+                "section": "18.2",
+                "quote": "intention not to renew no later than the Renewal Notice Deadline"
+              },
+              "via": {
+                "doc_id": "DOC-16",
                 "section": "Schedule 1",
                 "quote": "sixty (60) Business Days prior to the expiry of the Initial Term or the then-current Renewal Term"
-              },
-              "note": null
+              }
             },
             {
               "key": "notice_method",
               "value": "email",
-              "confidence": 0.85,
+              "confidence": 0.9,
               "citation": {
                 "doc_id": "DOC-16",
                 "section": "32.1",
                 "quote": "All notices under this Agreement shall be in writing and sent by email"
-              },
-              "note": null
+              }
             },
             {
               "key": "notice_address",
               "value": "accounts@brightloop.in",
-              "confidence": 0.93,
+              "confidence": 0.92,
               "citation": {
                 "doc_id": "DOC-16",
                 "section": "32.1",
                 "quote": "Agency — accounts@brightloop.in (attention: Managing Partner)"
-              },
-              "note": null
+              }
             },
             {
               "key": "uplift.type",
               "value": "fixed",
-              "confidence": 0.93,
-              "citation": {
-                "doc_id": "DOC-16",
-                "section": "19.3",
-                "quote": "The retainer fee shall be increased by five per cent (5%) at the commencement of each Renewal Term."
-              },
-              "note": null
-            },
-            {
-              "key": "uplift.value_pct",
-              "value": 5,
               "confidence": 0.95,
               "citation": {
                 "doc_id": "DOC-16",
                 "section": "19.3",
                 "quote": "The retainer fee shall be increased by five per cent (5%) at the commencement of each Renewal Term."
-              },
-              "note": null
+              }
+            },
+            {
+              "key": "uplift.value_pct",
+              "value": 5,
+              "confidence": 0.97,
+              "citation": {
+                "doc_id": "DOC-16",
+                "section": "19.3",
+                "quote": "The retainer fee shall be increased by five per cent (5%) at the commencement of each Renewal Term."
+              }
             },
             {
               "key": "tfc",
@@ -517,41 +776,37 @@
                 "doc_id": "DOC-16",
                 "section": "22.2",
                 "quote": "neither Party may terminate this Agreement for convenience during the Initial Term or any Renewal Term"
-              },
-              "note": null
+              }
             },
             {
               "key": "payment_terms_days",
               "value": 45,
-              "confidence": 0.95,
+              "confidence": 0.97,
               "citation": {
                 "doc_id": "DOC-16",
                 "section": "20.1",
                 "quote": "The Client shall pay within forty-five (45) days of receipt of invoice."
-              },
-              "note": null
+              }
             },
             {
               "key": "sla_credits",
               "value": true,
-              "confidence": 0.8,
+              "confidence": 0.9,
               "citation": {
                 "doc_id": "DOC-16",
                 "section": "21.1",
                 "quote": "the Client shall receive a fee credit of ₹15,000 per missed Deliverable"
-              },
-              "note": "Fee credits for missed deliverables"
+              }
             },
             {
               "key": "currency",
               "value": "INR",
-              "confidence": 0.95,
+              "confidence": 0.97,
               "citation": {
                 "doc_id": "DOC-16",
                 "section": "19.1",
-                "quote": "monthly retainer fee of ₹3,00,000 (Rupees Three Lakh only)"
-              },
-              "note": null
+                "quote": "a monthly retainer fee of ₹3,00,000 (Rupees Three Lakh only)"
+              }
             },
             {
               "key": "governing_law",
@@ -561,8 +816,7 @@
                 "doc_id": "DOC-16",
                 "section": "34.1",
                 "quote": "This Agreement shall be governed by the laws of India."
-              },
-              "note": null
+              }
             },
             {
               "key": "annual_value",
@@ -572,15 +826,135 @@
                 "doc_id": "DOC-16",
                 "section": "19.1",
                 "quote": "exclusive of GST (₹36,00,000 per annum)"
-              },
-              "note": null
+              }
             }
           ],
           "rate_lines": []
         },
         {
           "doc_id": "DOC-17",
-          "fields": [],
+          "fields": [
+            {
+              "key": "renewal_type",
+              "value": "auto",
+              "confidence": 0.9,
+              "citation": {
+                "doc_id": "DOC-17",
+                "section": "18.2",
+                "quote": "this Agreement shall automatically renew for successive twelve (12) month periods"
+              }
+            },
+            {
+              "key": "initial_term_end",
+              "value": "2027-02-26",
+              "confidence": 0.9,
+              "citation": {
+                "doc_id": "DOC-17",
+                "section": "18.1",
+                "quote": "shall continue until 26 February 2027 (the \"Initial Term\")"
+              }
+            },
+            {
+              "key": "renewal_term_months",
+              "value": 12,
+              "confidence": 0.9,
+              "citation": {
+                "doc_id": "DOC-17",
+                "section": "18.2",
+                "quote": "automatically renew for successive twelve (12) month periods"
+              }
+            },
+            {
+              "key": "notice_days",
+              "value": 60,
+              "confidence": 0.85,
+              "citation": {
+                "doc_id": "DOC-17",
+                "section": "18.2",
+                "quote": "intention not to renew no later than the Renewal Notice Deadline"
+              },
+              "via": {
+                "doc_id": "DOC-17",
+                "section": "Schedule 1",
+                "quote": "sixty (60) calendar days"
+              }
+            },
+            {
+              "key": "notice_day_type",
+              "value": "calendar",
+              "confidence": 0.85,
+              "citation": {
+                "doc_id": "DOC-17",
+                "section": "18.2",
+                "quote": "intention not to renew no later than the Renewal Notice Deadline"
+              },
+              "via": {
+                "doc_id": "DOC-17",
+                "section": "Schedule 1",
+                "quote": "sixty (60) calendar days"
+              }
+            },
+            {
+              "key": "uplift.type",
+              "value": "fixed",
+              "confidence": 0.85,
+              "citation": {
+                "doc_id": "DOC-17",
+                "section": "19.3",
+                "quote": "seven per cent (7%) at the"
+              }
+            },
+            {
+              "key": "uplift.value_pct",
+              "value": 7,
+              "confidence": 0.85,
+              "citation": {
+                "doc_id": "DOC-17",
+                "section": "19.3",
+                "quote": "seven per cent (7%) at the"
+              }
+            },
+            {
+              "key": "tfc",
+              "value": true,
+              "confidence": 0.85,
+              "citation": {
+                "doc_id": "DOC-17",
+                "section": "22.2",
+                "quote": "Either Party may terminate this Agreement for convenience by giving sixty (60)"
+              }
+            },
+            {
+              "key": "tfc_notice_days",
+              "value": 60,
+              "confidence": 0.85,
+              "citation": {
+                "doc_id": "DOC-17",
+                "section": "22.2",
+                "quote": "Either Party may terminate this Agreement for convenience by giving sixty (60)"
+              }
+            },
+            {
+              "key": "currency",
+              "value": "INR",
+              "confidence": 0.9,
+              "citation": {
+                "doc_id": "DOC-17",
+                "section": "19.1",
+                "quote": "a monthly retainer fee of ₹3,00,000 (Rupees Three"
+              }
+            },
+            {
+              "key": "annual_value",
+              "value": 3600000,
+              "confidence": 0.9,
+              "citation": {
+                "doc_id": "DOC-17",
+                "section": "19.1",
+                "quote": "exclusive of GST (₹36,00,000 per annum)"
+              }
+            }
+          ],
           "rate_lines": []
         },
         {
@@ -589,13 +963,12 @@
             {
               "key": "governing_law",
               "value": "India",
-              "confidence": 0.9,
+              "confidence": 0.95,
               "citation": {
                 "doc_id": "DOC-18",
                 "section": "5",
-                "quote": "Laws of India; courts at Bengaluru."
-              },
-              "note": "NDA only"
+                "quote": "Governing law. Laws of India; courts at Bengaluru."
+              }
             }
           ],
           "rate_lines": []
@@ -604,17 +977,28 @@
       "not_stated": [
         {
           "key": "uplift.cap_pct",
-          "confidence": 0.85,
-          "reason": "Fixed uplift; no cap stated"
+          "confidence": 0.9,
+          "reason": "No cap on uplift stated; uplift is fixed"
         },
         {
           "key": "tfc_notice_days",
           "confidence": 0.9,
-          "reason": "No termination for convenience right in executed agreement"
+          "reason": "Executed agreement has no TfC right"
         }
       ],
       "quote": null,
-      "sla_terms": null,
+      "sla_terms": {
+        "metric": "deliverables_on_time",
+        "target": 100,
+        "currency": "INR",
+        "credit_rule": "the Client shall receive a fee credit of ₹15,000 per missed Deliverable, up to a maximum of ten per cent (10%) of the monthly retainer fee",
+        "credit_basis": "other",
+        "citation": {
+          "doc_id": "DOC-16",
+          "section": "21.1",
+          "quote": "the Client shall receive a fee credit of ₹15,000 per missed Deliverable, up to a maximum of ten per cent (10%) of the monthly retainer fee"
+        }
+      },
       "licensed_units": []
     }
   }
