@@ -9,7 +9,7 @@ describe("data loaders (docket_data/data)", () => {
     expect((await data.loadTracker()).length).toBeGreaterThan(0);
     expect((await data.loadLedger()).length).toBeGreaterThan(0);
     expect((await data.loadVendorMaster()).length).toBeGreaterThan(0);
-    expect(Object.keys(await data.loadPolicy()).length).toBe(9);
+    expect(Object.keys((await data.loadPolicy()).categories).length).toBe(9);
     expect((await data.loadBenchmarks()).length).toBeGreaterThan(0);
     expect((await data.loadHolidays()).length).toBeGreaterThan(0);
     expect((await data.loadFx()).USD_INR).toBe(84);

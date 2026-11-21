@@ -1,13 +1,15 @@
 import type { ReactNode } from "react";
+import { getInitialRequests } from "@/lib/initialRequests";
 import { PersonaGate } from "./PersonaGate";
 import { Sidebar } from "./Sidebar";
 import { StoreHydrator } from "./StoreHydrator";
 import { TopBar } from "./TopBar";
 
-export function AppShell({ children }: { children: ReactNode }) {
+export async function AppShell({ children }: { children: ReactNode }) {
+  const initialRequests = await getInitialRequests();
   return (
     <div className="flex min-h-screen">
-      <StoreHydrator />
+      <StoreHydrator initialRequests={initialRequests} />
       <Sidebar />
       <div className="flex min-w-0 flex-1 flex-col bg-gradient-to-b from-surface/70 to-white">
         <TopBar />

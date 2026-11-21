@@ -40,13 +40,6 @@ const csvNumber = z.preprocess((v) => {
   return Number(s);
 }, z.number().nullable());
 
-const csvBool = z.preprocess((v) => {
-  const s = String(v ?? "").trim().toLowerCase();
-  if (["true", "yes", "y", "1"].includes(s)) return true;
-  if (["false", "no", "n", "0"].includes(s)) return false;
-  return null;
-}, z.boolean().nullable());
-
 const csvString = z.preprocess((v) => {
   const s = String(v ?? "").trim();
   return s === "" ? null : s;
@@ -71,15 +64,17 @@ export const TrackerRowSchema = z.object({
   tracker_id: z.string(),
   supplier_name: z.string(),
   contract_ref: csvString,
-  category: csvString,
-  owner: csvString,
-  start_date: csvString,
-  end_date: csvString,
-  auto_renew: csvBool,
+  /** Free text in the Excel tracker, e.g. "SaaS". */
+  category: z.string(),
+  owner: z.string(),
+  start_date: z.string(),
+  end_date: z.string(),
+  /** Raw tracker value: Y / N / TBC. */
+  auto_renew: z.enum(["Y", "N", "TBC"]),
   notice_days: csvNumber,
   annual_value_inr: csvNumber,
-  status: csvString,
-  last_updated: csvString,
+  status: z.enum(["Active", "Expired"]),
+  last_updated: z.string(),
 });
 export type TrackerRow = z.infer<typeof TrackerRowSchema>;
 
@@ -89,13 +84,15 @@ export const LedgerRowSchema = z.object({
   vendor_gstin: csvString,
   invoice_no: csvString,
   invoice_date: z.string(),
-  service_period: csvString,
-  amount_pre_tax_inr: csvNumber,
-  gst_inr: csvNumber,
-  total_inr: csvNumber,
-  currency: z.string(),
-  amount_original: csvNumber,
+  /** yyyy-mm */
+  service_period: z.string().regex(/^\d{4}-\d{2}$/),
+  amount_pre_tax_inr: z.coerce.number(),
+  gst_inr: z.coerce.number(),
+  total_inr: z.coerce.number(),
+  currency: z.enum(["INR", "USD"]),
+  amount_original: z.coerce.number(),
   cost_centre: csvString,
+  /** Empty for untracked spend (no PO). */
   po_ref: csvString,
 });
 export type LedgerRow = z.infer<typeof LedgerRowSchema>;
@@ -105,9 +102,9 @@ export const VendorMasterRowSchema = z.object({
   legal_name: z.string(),
   erp_vendor_name: z.string(),
   gstin: csvString,
-  category: z.string(),
-  owner_persona: z.string(),
-  criticality: csvString,
+  category: CategorySchema,
+  owner_persona: PersonaIdSchema,
+  criticality: z.enum(["low", "medium", "high"]),
 });
 export type VendorMasterRow = z.infer<typeof VendorMasterRowSchema>;
 
@@ -122,14 +119,29 @@ export const CategoryPolicySchema = z.object({
 });
 export type CategoryPolicy = z.infer<typeof CategoryPolicySchema>;
 
-/** Accepts either { saas: {...}, ... } or { categories: { saas: {...} } }. */
-export const PolicySchema = z.preprocess(
-  (v) => (v && typeof v === "object" && "categories" in v ? (v as { categories: unknown }).categories : v),
-  z.partialRecord(CategorySchema, CategoryPolicySchema),
-);
+export const GlobalPolicySchema = z.object({
+  renewal_horizon_days: z.number(),
+  red_days_to_act_by: z.number(),
+  confidence_min: z.number(),
+  auto_log_reversible_until_days_before_act_by: z.number(),
+  l1_overspend_tolerance_pct: z.number(),
+  l3_drift_tolerance_pct: z.number(),
+  l3_min_consecutive_months: z.number(),
+  l4_min_recurring_months: z.number(),
+  notice_method_vocab: z.array(z.string()),
+  special_notice_methods: z.array(z.string()),
+  minor_flags: z.array(z.string()),
+});
+export type GlobalPolicy = z.infer<typeof GlobalPolicySchema>;
+
+export const PolicySchema = z.object({
+  demo_today: z.string().optional(),
+  categories: z.partialRecord(CategorySchema, CategoryPolicySchema),
+  global: GlobalPolicySchema,
+});
 export type Policy = z.infer<typeof PolicySchema>;
 
-export const BenchmarkSchema = z.looseObject({
+export const BenchmarkSchema = z.object({
   role: z.string(),
   rate_inr_per_hr: z.number(),
   source_supplier: z.string(),
@@ -139,28 +151,28 @@ export type Benchmark = z.infer<typeof BenchmarkSchema>;
 
 export const HolidaySchema = z.object({ date: z.string(), name: z.string() });
 export type Holiday = z.infer<typeof HolidaySchema>;
-export const HolidaysFileSchema = z.looseObject({
-  calendar: z.string().optional(),
-  business_day_rule: z.string().optional(),
+export const HolidaysFileSchema = z.object({
+  calendar: z.string(),
+  business_day_rule: z.string(),
   holidays: z.array(HolidaySchema),
 });
 export type HolidaysFile = z.infer<typeof HolidaysFileSchema>;
 
-export const FxSchema = z.looseObject({ USD_INR: z.number() });
+export const FxSchema = z.object({ USD_INR: z.number() });
 export type Fx = z.infer<typeof FxSchema>;
 
-export const CpiSchema = z.looseObject({ india_cpi_yoy_pct: z.number() });
+export const CpiSchema = z.object({ india_cpi_yoy_pct: z.number() });
 export type Cpi = z.infer<typeof CpiSchema>;
 
 export const PersonasFileSchema = z.array(
   z.looseObject({
     id: PersonaIdSchema,
     name: z.string(),
-    full_name: z.string().optional(),
+    full_name: z.string(),
     role: z.string(),
     default: z.boolean().optional(),
-    sees: z.array(z.string()).optional(),
-    hands_off: z.array(z.string()).optional(),
+    sees: z.array(z.string()),
+    hands_off: z.array(z.string()),
   }),
 );
 export type PersonaRecord = z.infer<typeof PersonasFileSchema>[number];
@@ -248,19 +260,48 @@ export type ExtractionOutput = z.infer<typeof ExtractionOutputSchema>;
 /* ------------------------------------------------------------------ */
 
 /** Dev gold: per supplier, the extraction shape plus expected Rules outputs. */
+export const RateLineSchema = z.object({
+  role_in_contract: z.string(),
+  benchmark_role: z.string(),
+  count: z.number(),
+  rate_inr_per_hr: z.number(),
+  citation: CitationSchema,
+});
+export type RateLine = z.infer<typeof RateLineSchema>;
+
+export const VendorQuoteSchema = z.object({
+  doc_id: z.string(),
+  proposed_annual_inr: z.number(),
+  proposed_uplift_pct: z.number(),
+  citation: CitationSchema,
+});
+export type VendorQuote = z.infer<typeof VendorQuoteSchema>;
+
 export const DevGoldSupplierSchema = z.looseObject({
   supplier_id: z.string(),
   contract_name: z.string(),
-  erp_vendor_name: z.string().nullable().optional(),
-  vendor_id: z.string().nullable().optional(),
-  category: z.string(),
-  tracker_id: z.string().nullable().optional(),
+  erp_vendor_name: z.string(),
+  vendor_id: z.string(),
+  category: CategorySchema,
+  tracker_id: z.string().nullable(),
   family: z.array(FamilyMemberSchema),
-  effective_terms: z.record(z.string(), z.unknown()),
-  computed: z.record(z.string(), z.unknown()).optional(),
-  expected_flags: z.array(z.unknown()).optional(),
-  expected_lane: z.string().optional(),
-  lane_reason: z.string().optional(),
+  effective_terms: EffectiveTermsSchema,
+  /** Rules outputs the engine must reproduce (act-by, ₹ figures, ledger summary). */
+  computed: z.looseObject({
+    annual_value_inr: z.number(),
+    monthly_contract_value_inr: z.number(),
+    act_by_date: z.string().nullable(),
+    days_to_act_by: z.number().nullable(),
+    decision_target_date: z.string().optional(),
+    effective_uplift_pct: z.number(),
+    uplift_basis: z.string(),
+    uplift_exposure_inr: z.number(),
+  }),
+  expected_flags: z.array(z.object({ code: z.string(), detail: z.unknown() })),
+  expected_lane: LaneSchema,
+  lane_reason: z.string(),
+  quote: VendorQuoteSchema.optional(),
+  rate_card: z.array(RateLineSchema).optional(),
 });
 export type DevGoldSupplier = z.infer<typeof DevGoldSupplierSchema>;
 export const DevGoldFileSchema = z.looseObject({
@@ -304,6 +345,10 @@ export type Flag = {
   /** Short human detail, e.g. "Quote +9.0% vs cap 5.0%". Numbers come from Rules, never the LLM. */
   detail: string;
   evidence?: Citation[];
+  /** ₹ at stake, computed by Rules. */
+  impactInr?: number;
+  /** Structured numbers behind the detail (for drawers, drafts and tests). */
+  data?: Record<string, unknown>;
   /** e.g. T1 once a human has fixed the tracker. */
   resolved?: boolean;
 };
@@ -360,6 +405,7 @@ export type Request = {
   owner: PersonaId;
   raised_at: string;
   updated_at: string;
+  lane_reason?: string;
   owner_decision?: { choice: OwnerChoice; reason: string; answers?: Record<string, string> };
 };
 

@@ -57,7 +57,7 @@ export const useDocketStore = create<DocketStore>()(
           requests: { ...s.requests, ...Object.fromEntries(fresh.map((r) => [r.id, r])) },
           audit: [
             ...s.audit,
-            ...fresh.map((r) => ({ id: auditId(), ts, requestId: r.id, actor, action: `Raised (${r.state})`, reason })),
+            ...fresh.map((r) => ({ id: auditId(), ts, requestId: r.id, actor, action: `Raised (${r.state})`, reason: r.lane_reason ?? reason })),
           ],
         }));
       },

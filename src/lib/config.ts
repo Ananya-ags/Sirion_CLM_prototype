@@ -1,4 +1,4 @@
-import type { PersonaId } from "./types";
+import type { GlobalPolicy, PersonaId } from "./types";
 
 /** Fixed demo clock. All date maths uses this, never the real "today". */
 export const DEMO_TODAY = "2026-11-25";
@@ -22,6 +22,24 @@ export const GREEN_REVERSIBLE_DAYS = 7;
 export const RED_URGENT_DAYS = 14;
 /** Key fields below this confidence go to human review. */
 export const CONFIDENCE_THRESHOLD = 0.85;
+
+/** Used only if policy.json is missing; mirrors its "global" block. */
+export const DEFAULT_GLOBAL_POLICY: GlobalPolicy = {
+  renewal_horizon_days: 180,
+  red_days_to_act_by: RED_URGENT_DAYS,
+  confidence_min: CONFIDENCE_THRESHOLD,
+  auto_log_reversible_until_days_before_act_by: GREEN_REVERSIBLE_DAYS,
+  l1_overspend_tolerance_pct: 10,
+  l3_drift_tolerance_pct: 5,
+  l3_min_consecutive_months: 3,
+  l4_min_recurring_months: 3,
+  notice_method_vocab: ["email", "email_or_physical", "email_and_physical", "registered_post", "physical_only"],
+  special_notice_methods: ["registered_post", "physical_only", "email_and_physical"],
+  minor_flags: ["F5", "F7", "X2", "T1"],
+};
+
+/** Staffing rate cards: planned hours per resource per month (from the data pack's build script). */
+export const PLANNED_HOURS_PER_RESOURCE_MONTH = 150;
 
 /** Gemini model names. Override with env vars without code changes. Server-side only. */
 export const MODELS = {

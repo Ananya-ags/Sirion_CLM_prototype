@@ -7,7 +7,7 @@ import { promises as fs } from "node:fs";
 import path from "node:path";
 import Papa from "papaparse";
 import type { z } from "zod";
-import { CPI_INDIA_YOY_PCT, FX } from "./config";
+import { CPI_INDIA_YOY_PCT, DEFAULT_GLOBAL_POLICY, FX } from "./config";
 import {
   BenchmarksSchema,
   CpiSchema,
@@ -25,8 +25,10 @@ import {
   type ExtractionOutput,
 } from "./types";
 
-/** Case data lives in docket_data/data (see CLAUDE.md). */
-export const DATA_DIR = path.join(process.cwd(), "docket_data", "data");
+/** Case data lives in docket_data/data (see CLAUDE.md); DOCKET_DATA_DIR overrides it (e.g. to test a new data pack). */
+export const DATA_DIR = process.env.DOCKET_DATA_DIR
+  ? path.resolve(process.env.DOCKET_DATA_DIR)
+  : path.join(process.cwd(), "docket_data", "data");
 
 const warned = new Set<string>();
 function warnOnce(key: string, msg: string) {
@@ -87,9 +89,9 @@ export const loadDocText = (file: string) => readDoc("docs", file);
 export const loadTracker = () => loadCsv("tracker.csv", TrackerRowSchema);
 export const loadLedger = () => loadCsv("ledger.csv", LedgerRowSchema);
 export const loadVendorMaster = () => loadCsv("vendor_master.csv", VendorMasterRowSchema);
-export const loadPolicy = () => loadJson("policy.json", PolicySchema, {});
+export const loadPolicy = () => loadJson("policy.json", PolicySchema, { categories: {}, global: DEFAULT_GLOBAL_POLICY });
 export const loadBenchmarks = () => loadJson("benchmarks.json", BenchmarksSchema, []);
-export const loadHolidaysFile = () => loadJson("holidays.json", HolidaysFileSchema, { holidays: [] });
+export const loadHolidaysFile = () => loadJson("holidays.json", HolidaysFileSchema, { calendar: "", business_day_rule: "", holidays: [] });
 export const loadHolidays = async () => (await loadHolidaysFile()).holidays;
 export const loadFx = () => loadJson("fx.json", FxSchema, { USD_INR: FX.USD_INR });
 export const loadCpi = () => loadJson("cpi.json", CpiSchema, { india_cpi_yoy_pct: CPI_INDIA_YOY_PCT });
