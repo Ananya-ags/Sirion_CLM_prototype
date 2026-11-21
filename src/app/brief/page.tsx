@@ -1,7 +1,10 @@
 import { Activity, ArrowRight, BookOpen, Compass, Cpu, DoorOpen, Gauge, Lightbulb, Puzzle, ScrollText, ShieldAlert, ShieldCheck, Users } from "lucide-react";
 import type { ReactNode } from "react";
 import { ActorBadge, Hint, SourceChip } from "@/components/docket";
+import { ProblemSection, type EvidenceRow } from "@/components/brief/ProblemSection";
 import { TourButton } from "@/components/tour/TourButton";
+import { getPortfolio } from "@/lib/portfolio";
+import type { SupplierView } from "@/lib/seed";
 import { CPI_INDIA_YOY_PCT, DEMO_TODAY_LABEL, FX, PERSONA_ORDER, PERSONAS } from "@/lib/config";
 import { fullRunCost } from "@/lib/costs";
 import { loadCache } from "@/lib/data";
@@ -30,8 +33,47 @@ const STAKEHOLDERS = [
 
 async function getData() {
   "use cache";
-  const [evals, cost] = await Promise.all([loadCache("eval_results", EvalResultsSchema.nullable(), null), fullRunCost()]);
-  return { evals, fullRun: cost.usd, calls: cost.calls };
+  const [evals, cost, { views }] = await Promise.all([loadCache("eval_results", EvalResultsSchema.nullable(), null), fullRunCost(), getPortfolio()]);
+  return { evals, fullRun: cost.usd, calls: cost.calls, evidence: evidenceRows(views), suppliers: views.length };
+}
+
+/** "Found in Velora's own data": every value from the rules engine output; "—" when unavailable. */
+function evidenceRows(views: SupplierView[]): EvidenceRow[] {
+  const v = (id: string) => views.find((x) => x.supplierId === id);
+  const flag = (id: string, code: string) => v(id)?.flags.find((f) => f.code === code);
+  const short = (id: string, fallback: string) => v(id)?.name.split(" ")[0] ?? fallback;
+  const tw = v("SUP-09");
+  const u1 = flag("SUP-01", "U1")?.data as { latest_active?: number; licensed_units?: number } | undefined;
+  const conflicts = views.filter((x) => x.trackerConflicts.length);
+  const n = conflicts.reduce((a, x) => a + x.trackerConflicts.length, 0);
+  return [
+    {
+      supplier: short("SUP-09", "TalkWave"),
+      href: tw ? "/contracts/SUP-09" : null,
+      finding: `Silent renewal: no tracker row${tw?.actBy ? `, ${tw.actBy.daysToActBy} days to act-by` : ""}`,
+      impactInr: tw && flag("SUP-09", "L4") ? tw.money.annualInr : null,
+      impactSuffix: "/yr",
+      lane: tw?.lane ?? null,
+    },
+    { supplier: short("SUP-01", "Nimbus"), href: "/contracts/SUP-01", finding: "Billing drift above contract", impactInr: flag("SUP-01", "L3")?.impactInr ?? null, lane: v("SUP-01")?.lane ?? null },
+    {
+      supplier: short("SUP-01", "Nimbus"),
+      href: "/contracts/SUP-01",
+      finding: `Unused seats${u1?.latest_active != null ? ` (${u1.latest_active}/${u1.licensed_units})` : ""}`,
+      impactInr: flag("SUP-01", "U1")?.impactInr ?? null,
+      impactSuffix: "/yr",
+      lane: v("SUP-01")?.lane ?? null,
+    },
+    { supplier: short("SUP-01", "Nimbus"), href: "/contracts/SUP-01", finding: "Unclaimed SLA credit", impactInr: flag("SUP-01", "S1")?.impactInr ?? null, lane: v("SUP-01")?.lane ?? null },
+    { supplier: short("SUP-10", "LearnLeap"), href: "/contracts/SUP-10", finding: "Paid after contract expiry", impactInr: flag("SUP-10", "L2")?.impactInr ?? null, lane: v("SUP-10")?.lane ?? null },
+    {
+      supplier: "Tracker",
+      href: "/inbox",
+      finding: `${n} conflicts (${conflicts.map((x) => x.name.split(" ")[0]).join(", ") || "none"})`,
+      impactInr: null,
+      lane: n ? "amber" : null,
+    },
+  ];
 }
 
 const score = (s: Score | null | undefined) => (s ? `${s.correct + s.correct_abstention}/${s.fields}` : "—");
@@ -85,7 +127,7 @@ function Num({ n, label, sub }: { n: string; label: string; sub?: string }) {
 }
 
 export default async function Page() {
-  const { evals, fullRun, calls } = await getData();
+  const { evals, fullRun, calls, evidence, suppliers } = await getData();
   const suite = (id: string) => evals?.suites.find((s) => s.id === id);
   const metric = (id: string, label: string) => suite(id)?.metrics.find((m) => m.label === label)?.value ?? "—";
   const cit = suite("citations");
@@ -120,7 +162,7 @@ export default async function Page() {
         <Block id="why" icon={DoorOpen} title="1 · Why this stage: intake, triggered by renewal">
           <p className="text-lg font-semibold text-navy">“The riskiest request is the one never filed.”</p>
           <p>Renewals roll over unless someone acts, so nobody files them. Docket <b>raises the intake request itself</b> before act-by: existing contracts pass through one guarded front door. New purchases use the same door later (v2).</p>
-          <div className="rounded-xl border border-brand/20 bg-surface-2 p-5">
+          <div id="source" className="scroll-mt-24 rounded-xl border border-brand/20 bg-surface-2 p-5">
             <div className="flex items-center gap-2 text-base font-semibold text-navy"><ShieldCheck className="size-5 text-brand" /> Stopping the problem at its source</div>
             <p className="mt-2 text-base leading-relaxed text-slate-800">
               Docket intervenes at the renewal decision point, before a contract rolls into another term. Every contract is reviewed when it comes up for renewal: contracts that should not continue are exited, and those that do renew continue only on reviewed terms. Addressing the problem at this point stops it at its source. It prevents the issues the case highlights (unreviewed auto-renewals, missed service levels, and invoices that do not match agreed prices) from carrying into the next contract term, rather than having to detect and recover them after the fact.
@@ -158,22 +200,7 @@ export default async function Page() {
         </Block>
 
         <Block id="problem" icon={ShieldAlert} title="3 · The problem">
-          <p>Velora: ~2,500 suppliers, ~₹2,000 Cr indirect spend, contracts scattered across SharePoint, inboxes and DocuSign. Missed notice windows lock in uplifts; invoices drift; expired contracts keep getting paid.</p>
-          <div className="grid gap-3 md:grid-cols-4">
-            {[
-              ["70%", "of tail-spend contracts renew without review", "Vertice, Q3 2026"],
-              ["79%", "of IT leaders saw renewal price rises", "Zylo 2026"],
-              ["~16%", "SaaS inflation", "Vertice, Jun 2026"],
-              ["8.6–11%", "of contract value leaks", "WorldCC estimate"],
-            ].map(([n, t, s]) => (
-              <div key={n} className="rounded-xl bg-hero-gradient p-4 text-white">
-                <div className="text-2xl font-semibold">{n}</div>
-                <div className="text-sm text-white/90">{t}</div>
-                <div className="mt-1 text-xs text-white/65">{s}</div>
-              </div>
-            ))}
-          </div>
-          <p>In this demo alone: a silent renewal, billing drift, payment after expiry, an unclaimed SLA credit and 4 tracker conflicts.</p>
+          <ProblemSection rows={evidence} suppliers={suppliers} />
         </Block>
 
         <Block id="prototype" icon={Puzzle} title="4 · The prototype">
