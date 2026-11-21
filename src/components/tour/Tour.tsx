@@ -45,7 +45,8 @@ export function Tour() {
             <DialogDescription asChild>
               <div className="space-y-2 text-base leading-relaxed text-slate-700">
                 <p>Velora Consumer has about 2,500 supplier contracts and no CLM. Docket catches renewals before they roll over and routes them to the right people.</p>
-                <p>Docket scans contracts and renewal data across shared drives, mailboxes, DocuSign, Excel trackers and the AP ledger, bringing every upcoming renewal into one place. Problem contracts are stopped or corrected before they renew, preventing silent auto-renewals, unchecked price increases, missed SLAs and billing mismatches.</p>
+                <p>Docket scans contracts and renewal data across shared drives, mailboxes, DocuSign, Excel trackers and the AP ledger, bringing every upcoming renewal into one place.</p>
+                <p>Problem contracts are stopped or corrected before they renew, preventing silent auto-renewals, unchecked price increases, missed SLAs and billing mismatches.</p>
               </div>
             </DialogDescription>
             <div className="flex flex-col gap-2 sm:flex-row">
