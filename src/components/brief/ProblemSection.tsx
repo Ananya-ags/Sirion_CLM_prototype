@@ -189,7 +189,7 @@ export function ProblemSection({ rows, suppliers }: { rows: EvidenceRow[]; suppl
                   </tr>
                 ))}
                 <tr className="border-t-2 border-navy/15">
-                  <td colSpan={2} className="pt-2.5 font-semibold text-navy">Identified in {suppliers} suppliers</td>
+                  <td colSpan={2} className="pt-2.5 font-semibold text-navy">Total across the {suppliers} demo suppliers</td>
                   <td className="pt-2.5 text-right text-base font-bold whitespace-nowrap text-brand tabular-nums">{formatINRShort(total)}</td>
                   <td />
                 </tr>

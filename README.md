@@ -7,7 +7,7 @@ Docket is an AI-assisted contract **intake** prototype for Velora Consumer Pvt L
 ## Start here
 
 1. Open the app: a **welcome screen** offers the **3-minute guided tour**. It switches between the four employees for you and starts from a fresh demo state. Reopen it any time with **Tour** in the top bar.
-2. Use **“Viewing as · switch employee”** (top right) to explore as:
+2. Use the sidebar (grouped by employee: open a page and you become its owner) or **“Viewing as · switch employee”** (top right) to explore as:
    - **Priya**, Procurement Lead: decides risky renewals and drafts notices.
    - **Rahul**, Budget Owner: answers 2 questions per renewal, then chooses.
    - **Meera**, Legal Counsel: approves notices before a human sends them.
@@ -43,7 +43,7 @@ Also try Priya's **Needs human review** list: confirm CleanSphere's OCR'd key fi
 | Grouping (dev) | 29 / 29, 0 wrong; look-alike decoy sent to review |
 | Citations | 0 unverified (every quote is checked against the document text in code) |
 | Prompt injection | 7 / 7 |
-| Draft safety (live) | 6 / 6 drafts passed boundary + numeric checks, 0 retries |
+| Draft safety (live) | 6 / 6 drafts passed boundary + numeric checks (1 needed a retry) |
 | Stability | 51 / 51 fields identical across 3 runs (v1) |
 | Cost | ≈ $1.3 per full pipeline run (OCR + grouping + 10 extractions) |
 
@@ -83,4 +83,4 @@ Without an API key the app still works: extraction comes from the committed cach
 
 ## Deploying on Vercel
 
-Import the repo, then set **`ANTHROPIC_API_KEY`** and **`ANTHROPIC_MODEL_EXTRACT`** in **Project → Settings → Environment Variables**, and redeploy. Keys are only read by server routes; nothing secret reaches the browser.
+Import the repo, then set **`ANTHROPIC_API_KEY`** (the only required variable) in **Project → Settings → Environment Variables**, and redeploy. `ANTHROPIC_MODEL_EXTRACT` is optional and only used by a local `npm run precompute`. Keys are only read by server routes; nothing secret reaches the browser.

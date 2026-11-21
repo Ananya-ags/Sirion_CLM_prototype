@@ -86,11 +86,13 @@ function TourOverlay({ index }: { index: number }) {
       if (step.onEnter && !entered.current && pathname === stepPathname) entered.current = step.onEnter();
       const el = document.querySelector(`[data-tour="${step.target}"]`) as HTMLElement | null;
       if (!el) return setRect(null);
-      if (!scrolled.current) {
+      const r = el.getBoundingClientRect();
+      // Scroll once on arrival, and again if late-loading content pushed the target off-screen.
+      if (!scrolled.current || r.top > window.innerHeight || r.bottom < 0) {
         el.scrollIntoView({ block: "center", behavior: "smooth" });
         scrolled.current = true;
       }
-      setRect(el.getBoundingClientRect());
+      setRect(r);
     }, 200);
     return () => clearInterval(t);
   }, [step, pathname, stepPathname]);

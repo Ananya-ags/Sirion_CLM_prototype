@@ -132,8 +132,8 @@ export default async function Page() {
   const cit = suite("citations");
   const u = evals ? evalUnits(evals) : null;
   return (
-    <div className="grid gap-8 lg:grid-cols-[200px_1fr]">
-      <nav className="sticky top-28 hidden h-fit space-y-1 lg:block">
+    <div className="grid gap-8 xl:grid-cols-[200px_minmax(0,1fr)]">
+      <nav className="sticky top-28 hidden h-fit space-y-1 xl:block">
         {NAV.map(([id, label]) => (
           <a key={id} href={`#${id}`} className="block rounded-lg px-3 py-1.5 text-sm text-slate-600 hover:bg-surface hover:text-navy">{label}</a>
         ))}

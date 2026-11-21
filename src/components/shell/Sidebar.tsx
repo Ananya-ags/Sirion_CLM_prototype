@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { Sparkle } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { PERSONA_ORDER, PERSONAS } from "@/lib/config";
-import { DESIGN_NAV, EVALUATOR_NAV, PERSONA_NAV, type NavItem } from "@/lib/nav";
+import { EVALUATOR_NAV, PERSONA_NAV, type NavItem } from "@/lib/nav";
 import { cn } from "@/lib/utils";
 import { useDocketStore } from "@/store/useDocketStore";
 import { Logo } from "./Logo";
@@ -58,7 +58,7 @@ export function Sidebar() {
               <div className="flex items-center gap-2 px-1.5 pt-0.5 pb-1">
                 <span
                   className={cn(
-                    "grid size-6 shrink-0 place-items-center rounded-full text-[0.6875rem] font-semibold",
+                    "grid size-6 shrink-0 place-items-center rounded-full text-xs font-semibold",
                     current ? "bg-hero-gradient text-white" : "bg-white/10 text-sidebar-foreground",
                   )}
                 >
@@ -82,9 +82,6 @@ export function Sidebar() {
           <NavLink key={item.href} item={item} active={isActive(item.href)} />
         ))}
       </nav>
-      <Link href={DESIGN_NAV.href} className="mt-4 px-3 text-xs text-sidebar-foreground/55 transition-colors hover:text-sidebar-foreground">
-        Velora Consumer · {DESIGN_NAV.label}
-      </Link>
     </aside>
   );
 }

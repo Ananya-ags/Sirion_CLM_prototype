@@ -23,13 +23,13 @@ export function TopBar() {
       <h1 className="truncate text-2xl font-semibold tracking-tight">{title}</h1>
       <div className="flex items-center gap-2">
         <Hint content="Demo clock is fixed so every date in the case is reproducible.">
-          <span className="inline-flex h-9 items-center gap-1.5 rounded-full bg-surface-2 px-3 text-sm font-medium text-brand-strong">
+          <span className="inline-flex h-9 items-center gap-1.5 rounded-full bg-surface-2 px-3 text-sm font-medium whitespace-nowrap text-brand-strong">
             <CalendarDays className="size-4" />
             {DEMO_TODAY_LABEL}
           </span>
         </Hint>
         <Hint content="New request (coming next): intake for brand-new purchases. Today Docket raises renewal requests itself.">
-          <span>
+          <span className="hidden xl:inline">
             <Button variant="outline" disabled aria-label="New request (coming next)">
               <Plus /> New request <span className="rounded bg-surface-2 px-1 text-xs text-brand-strong">soon</span>
             </Button>

@@ -2,9 +2,10 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   // Case data is read at runtime by API routes (drafts, PDFs): ship it in the serverless bundle.
-  // Only what the app reads at runtime: root data files, the AI cache, the PDFs and dev_gold (seed fallback).
+  // Only what the app reads at runtime: root data files, the AI cache (JSON + pipeline OCR; not the eval-only
+  // eval_ocr_* held-out transcripts), the PDFs and dev_gold (seed fallback).
   outputFileTracingIncludes: {
-    "/**": ["./docket_data/data/*.{json,csv}", "./docket_data/data/cache/**/*", "./docket_data/data/docs/**/*", "./docket_data/data/gold/dev_gold.json"],
+    "/**": ["./docket_data/data/*.{json,csv}", "./docket_data/data/cache/*.json", "./docket_data/data/cache/ocr_*.txt","./docket_data/data/docs/**/*", "./docket_data/data/gold/dev_gold.json"],
   },
   // Eval-only sources, held-out gold, scripts and old data packs never ship ("/**" matches every route).
   outputFileTracingExcludes: {
@@ -14,6 +15,7 @@ const nextConfig: NextConfig = {
       "./docket_data/data/docs_src/**/*",
       "./docket_data/data/gold/heldout/**/*",
       "./docket_data/data/gold/heldout_gold.json",
+      "./docket_data/data/cache/eval_ocr_*", // OCR of held-out scans (evals only)
       "./docket_data/scripts/**/*",
       "./scripts/**/*",
     ],

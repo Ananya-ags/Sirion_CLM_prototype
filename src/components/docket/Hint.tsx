@@ -1,13 +1,14 @@
 import type { ReactNode } from "react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { cn } from "@/lib/utils";
 
 /** Wraps any inline element with a tooltip. Keeps on-screen text minimal. */
-export function Hint({ content, children }: { content?: ReactNode; children: ReactNode }) {
+export function Hint({ content, children, className }: { content?: ReactNode; children: ReactNode; className?: string }) {
   if (!content) return <>{children}</>;
   return (
     <Tooltip>
       <TooltipTrigger asChild>
-        <span className="inline-flex">{children}</span>
+        <span className={cn("inline-flex", className)}>{children}</span>
       </TooltipTrigger>
       <TooltipContent className="max-w-72 text-xs leading-snug whitespace-pre-line">{content}</TooltipContent>
     </Tooltip>

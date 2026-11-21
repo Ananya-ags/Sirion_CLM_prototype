@@ -29,10 +29,10 @@ export function PersonaSwitcher() {
         <Avatar className="size-9">
           <AvatarFallback className="bg-hero-gradient text-sm font-semibold text-white">{current.initials}</AvatarFallback>
         </Avatar>
-        <div className="text-left leading-tight">
+        <div className="text-left leading-tight whitespace-nowrap">
           <div className="text-xs font-medium text-muted-foreground">Viewing as · switch employee</div>
           <div className="text-base font-semibold text-navy">
-            {current.name} <span className="font-normal text-slate-600">· {current.role}</span>
+            {current.name} <span className="hidden font-normal text-slate-600 xl:inline">· {current.role}</span>
           </div>
         </div>
         <ChevronDown className="size-4 text-brand" />

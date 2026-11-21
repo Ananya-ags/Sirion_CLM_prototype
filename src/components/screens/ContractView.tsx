@@ -290,8 +290,8 @@ export function ContractView({ view: serverView }: { view: SupplierView }) {
               <h3 className="text-lg font-semibold">Decision card</h3>
               <ActorBadge actor="procurement" />
             </div>
-            <Hint content={view.laneReason}>
-              <div className="flex items-center gap-2 rounded-lg bg-surface p-3">
+            <Hint content={view.laneReason} className="flex w-full min-w-0">
+              <div className="flex w-full min-w-0 items-center gap-2 rounded-lg bg-surface p-3">
                 <LaneBadge lane={view.lane} />
                 <span className="truncate text-sm text-slate-600">{view.laneReason.split(":")[1]?.split(".")[0]?.trim() || view.laneReason}</span>
               </div>
