@@ -142,7 +142,7 @@ export default async function Page() {
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div>
               <h2 className="flex items-center gap-2 text-xl font-semibold"><Compass className="size-5 text-brand" /> How to use this prototype</h2>
-              <p className="mt-1 text-base text-slate-700">Switch employee at the top right. Each sees only their own screens; the state is shared.</p>
+              <p className="mt-1 text-base text-slate-700">Switch employee at the top right, or open any page in the sidebar: the employee follows the page. The state is shared.</p>
             </div>
             <TourButton />
           </div>

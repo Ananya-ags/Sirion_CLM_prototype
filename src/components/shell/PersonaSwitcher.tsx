@@ -1,16 +1,21 @@
 "use client";
 
 import { Check, ChevronDown } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { PERSONA_ORDER, PERSONAS } from "@/lib/config";
+import { choosePersona } from "@/lib/personaSync";
 import { cn } from "@/lib/utils";
 import { useDocketStore } from "@/store/useDocketStore";
 
-/** Prominent, labelled "Viewing as" control: the demo is driven by switching between the 4 employees. */
+/**
+ * Prominent, labelled "Viewing as" control. Choosing someone opens their home page (the route then sets the
+ * persona); on neutral pages (guide, evals, contract file) it switches in place.
+ */
 export function PersonaSwitcher() {
   const router = useRouter();
+  const pathname = usePathname();
   const persona = useDocketStore((s) => s.persona);
   const setPersona = useDocketStore((s) => s.setPersona);
   const current = PERSONAS[persona];
@@ -41,10 +46,7 @@ export function PersonaSwitcher() {
           return (
             <DropdownMenuItem
               key={id}
-              onSelect={() => {
-                setPersona(id);
-                router.push(p.home);
-              }}
+              onSelect={() => choosePersona(id, pathname, { getPersona: () => persona, setPersona, navigate: (href) => router.push(href) })}
               className={cn("items-start gap-3 rounded-lg p-2.5", active && "bg-surface-2")}
             >
               <Avatar className="mt-0.5 size-8">

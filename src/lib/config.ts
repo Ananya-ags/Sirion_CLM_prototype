@@ -49,16 +49,15 @@ export type PersonaMeta = {
   name: string;
   role: string;
   initials: string;
-  home: string;
   /** One line: what they do in Docket (persona switcher). */
   does: string;
 };
 
 export const PERSONAS: Record<PersonaId, PersonaMeta> = {
-  procurement: { id: "procurement", name: "Priya", role: "Procurement Lead", initials: "PR", home: "/inbox", does: "Decides risky renewals and drafts notices" },
-  owner: { id: "owner", name: "Rahul", role: "Budget Owner", initials: "RA", home: "/requests", does: "Answers 2 questions per renewal and chooses" },
-  legal: { id: "legal", name: "Meera", role: "Legal Counsel", initials: "ME", home: "/legal", does: "Approves notices before a human sends them" },
-  finance: { id: "finance", name: "Akshat", role: "Finance / AP", initials: "AK", home: "/finance", does: "Checks invoices against the contract" },
+  procurement: { id: "procurement", name: "Priya", role: "Procurement Lead", initials: "PR", does: "Decides risky renewals and drafts notices" },
+  owner: { id: "owner", name: "Rahul", role: "Budget Owner", initials: "RA", does: "Answers 2 questions per renewal and chooses" },
+  legal: { id: "legal", name: "Meera", role: "Legal Counsel", initials: "ME", does: "Approves notices before a human sends them" },
+  finance: { id: "finance", name: "Akshat", role: "Finance / AP", initials: "AK", does: "Checks invoices against the contract" },
 };
 
 export const DEFAULT_PERSONA: PersonaId = "procurement";

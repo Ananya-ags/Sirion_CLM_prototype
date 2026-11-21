@@ -6,8 +6,8 @@ import { toast } from "sonner";
 import { useTour } from "@/components/tour/tourStore";
 import { Hint } from "@/components/docket/Hint";
 import { Button } from "@/components/ui/button";
-import { DEMO_TODAY_LABEL, PERSONAS } from "@/lib/config";
-import { navForPath } from "@/lib/nav";
+import { DEFAULT_PERSONA, DEMO_TODAY_LABEL } from "@/lib/config";
+import { homeOf, navForPath } from "@/lib/nav";
 import { useDocketStore } from "@/store/useDocketStore";
 import { PersonaSwitcher } from "./PersonaSwitcher";
 
@@ -41,7 +41,7 @@ export function TopBar() {
             variant="ghost"
             onClick={() => {
               resetDemo();
-              router.push(PERSONAS.procurement.home);
+              router.push(homeOf(DEFAULT_PERSONA));
               toast.success("Demo reset");
             }}
           >

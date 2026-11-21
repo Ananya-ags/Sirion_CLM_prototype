@@ -67,24 +67,23 @@ function TourOverlay({ index }: { index: number }) {
   const router = useRouter();
   const pathname = usePathname();
   const { setStep, busy, setBusy } = useTour();
-  const setPersona = useDocketStore((s) => s.setPersona);
   const [rect, setRect] = useState<DOMRect | null>(null);
   const entered = useRef(false);
   const scrolled = useRef(false);
+  const stepPathname = step.path.split("?")[0];
 
-  // Switch persona + route for this step.
+  // Navigate to this step's page; the persona follows the route (RouteSync), same as any other navigation.
   useEffect(() => {
     entered.current = false;
     scrolled.current = false;
-    setPersona(step.persona);
-    if (pathname !== step.path) router.push(step.path);
+    if (window.location.pathname + window.location.search !== step.path) router.push(step.path);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [index]);
 
   // Find the target (pages render client-side, sheets open later) and keep the spotlight on it.
   useEffect(() => {
     const t = setInterval(() => {
-      if (step.onEnter && !entered.current && pathname === step.path) entered.current = step.onEnter();
+      if (step.onEnter && !entered.current && pathname === stepPathname) entered.current = step.onEnter();
       const el = document.querySelector(`[data-tour="${step.target}"]`) as HTMLElement | null;
       if (!el) return setRect(null);
       if (!scrolled.current) {
@@ -94,7 +93,7 @@ function TourOverlay({ index }: { index: number }) {
       setRect(el.getBoundingClientRect());
     }, 200);
     return () => clearInterval(t);
-  }, [step, pathname]);
+  }, [step, pathname, stepPathname]);
 
   const last = index === TOUR.length - 1;
   const next = async () => {
