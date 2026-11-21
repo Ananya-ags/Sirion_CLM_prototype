@@ -1,7 +1,6 @@
-/** Format-neutral document handling for Gemini (server-only). */
+/** Format-neutral document handling for the LLM (server-only). */
 import { promises as fs } from "node:fs";
 import path from "node:path";
-import type { Part } from "@google/genai";
 
 const MIME: Record<string, string> = {
   ".md": "text/markdown",
@@ -14,18 +13,19 @@ export const mimeTypeFor = (file: string) => MIME[path.extname(file).toLowerCase
 export const isTextMime = (m: string) => m.startsWith("text/");
 
 export type DocumentPart = {
-  part: Part;
+  /** Base64 payload + MIME, provider-neutral (Claude: document/text block; PDF support later). */
+  part: { mimeType: string; data: string };
   mimeType: string;
   /** Decoded text for quote verification (null for binary formats such as PDF, until we add text extraction). */
   text: string | null;
 };
 
-/** Reads file bytes and wraps them as an inline Gemini part with the right MIME type. */
+/** Reads file bytes and wraps them with the right MIME type (text/markdown today, application/pdf later). */
 export async function loadDocumentPart(filePath: string): Promise<DocumentPart> {
   const bytes = await fs.readFile(filePath);
   const mimeType = mimeTypeFor(filePath);
   return {
-    part: { inlineData: { mimeType, data: bytes.toString("base64") } },
+    part: { mimeType, data: bytes.toString("base64") },
     mimeType,
     text: isTextMime(mimeType) ? bytes.toString("utf8") : null,
   };

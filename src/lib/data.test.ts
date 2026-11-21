@@ -22,9 +22,13 @@ describe("data loaders (docket_data/data)", () => {
     warn.mockRestore();
   });
 
-  it("reads every document listed in documents.json", async () => {
-    for (const doc of await data.loadDocuments()) {
-      expect(await data.loadDocText(doc.file), doc.file).toBeTruthy();
+  it("every document in documents.json exists, with an eval-only markdown source", async () => {
+    const { existsSync } = await import("node:fs");
+    const docs = await data.loadDocuments();
+    expect(docs.length).toBe(29);
+    for (const doc of docs) {
+      expect(existsSync(data.docPath(doc.file)), doc.file).toBe(true);
+      expect(await data.loadDocSourceForEval(doc.doc_id), doc.doc_id).toBeTruthy();
     }
   });
 

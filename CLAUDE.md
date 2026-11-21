@@ -32,7 +32,7 @@ Needs review: any key field "unclear" or confidence < 0.85.
 F1 AUTO_RENEW_NOTICE, F2 UPLIFT_EXPOSURE, F3 QUOTE_EXCEEDS_CAP, F4 RATE_ABOVE_BENCHMARK, F5 NO_SLA_CREDITS, F6 NO_TERMINATION_FOR_CONVENIENCE, F7 PAYMENT_TERMS_BELOW_POLICY, L1 SPEND_ABOVE_CONTRACT_VALUE, L2 PAID_AFTER_EXPIRY, L3 BILLING_DRIFT_ABOVE_CONTRACT, L4 UNTRACKED_RECURRING_SPEND, T1 TRACKER_CONFLICT, X1 UNCLEAR_CLAUSE, X2 SPECIAL_NOTICE_METHOD.
 
 ## Division of work: who does what (show an AI / Rules / Human badge on every step in the UI)
-AI (Gemini, server-side only): document classification, executed vs draft (with evidence), linking contract families, clause extraction with citations and confidence, matching vendor names between the ledger and contracts, plain-language briefs, drafting notice wording.
+AI (Claude, server-side only): document classification, executed vs draft (with evidence), linking contract families, clause extraction with citations and confidence, matching vendor names between the ledger and contracts, plain-language briefs, drafting notice wording.
 Rules (TypeScript, deterministic): act-by dates (calendar and business days using holidays.json), all ₹ maths, FX, benchmark gaps, ledger checks, lanes, routing, reminders, precedence (the latest executed amendment overrides each field).
 Human: low-confidence fields, family conflicts, tracker fixes, owner decision, Procurement decision, Legal approval and sending.
 
@@ -46,8 +46,8 @@ Human: low-confidence fields, family conflicts, tracker fixes, owner decision, P
 
 ## Data (lives in docket_data/data; never rename anything)
 All data/... paths below are relative to docket_data/ (e.g. docket_data/data/tracker.csv). The app reads them via DATA_DIR in src/lib/data.ts.
-data/docs/DOC-xx.md, data/documents.json, data/tracker.csv, data/ledger.csv, data/vendor_master.csv, data/policy.json, data/benchmarks.json, data/holidays.json, data/fx.json, data/cpi.json, data/personas.json, data/gold/dev_gold.json, data/gold/heldout/HO-xx.md, data/gold/heldout_gold.json. Cached AI outputs go in data/cache/*.json.
-documents.json item: {doc_id, supplier_id, filename, source: "sharepoint"|"email"|"docusign", source_path, received_date, file}
+data/docs/DOC-xx.pdf (v2; DOC-12 is image-only), data/docs_src/DOC-xx.md (eval-only), data/documents.json, data/tracker.csv, data/ledger.csv, data/vendor_master.csv, data/policy.json, data/benchmarks.json, data/holidays.json, data/fx.json, data/cpi.json, data/personas.json, data/gold/dev_gold.json, data/gold/heldout/HO-xx.md, data/gold/heldout_gold.json. Cached AI outputs go in data/cache/*.json.
+documents.json item: {doc_id, filename, source: "sharepoint"|"email"|"docusign", source_path, received_date, file} (no supplier_id: grouping is an AI task; file is docs/DOC-xx.pdf). data/docs_src/DOC-xx.md is the Markdown source of each PDF, for evals and quote verification ONLY; the pipeline never reads it.
 tracker.csv: tracker_id,supplier_name,contract_ref,category,owner,start_date,end_date,auto_renew,notice_days,annual_value_inr,status,last_updated
 ledger.csv: txn_id,erp_vendor_name,vendor_gstin,invoice_no,invoice_date,service_period,amount_pre_tax_inr,gst_inr,total_inr,currency,amount_original,cost_centre,po_ref
 vendor_master.csv: vendor_id,legal_name,erp_vendor_name,gstin,category,owner_persona,criticality
@@ -59,11 +59,11 @@ Extraction output per supplier (every leaf = {value, confidence, citation:{doc_i
 ## Live vs cached
 Pre-computed (scripts/precompute.ts writes docket_data/data/cache): classification, families, extraction, eval results.
 Live: (A) "Add a contract" upload with live extraction; (B) live drafting of briefs, notices and cap letters. Both fall back to the cache.
-Models: a Pro-class Gemini model for precompute, a Flash-class model for live calls. Make the model names configurable in lib/config.ts. Use the @google/genai SDK. GEMINI_API_KEY comes from env, server routes only.
+Models: Claude via @anthropic-ai/sdk (src/lib/ai/claude.ts). Live drafting (/api/draft) uses claude-haiku-5-5, overridable with ANTHROPIC_MODEL_DRAFT; names live in lib/config.ts. ANTHROPIC_API_KEY comes from env, server routes only. Missing key or failed call → template draft with a "cached" badge; never block the UI.
 
 ## Design system
 White base. Light-blue surfaces #F5F9FF and #EAF2FF. Primary #2563EB. Navy #0F1E3D for headings and the sidebar. A subtle blue-to-indigo gradient on hero metric cards. Rounded-xl cards, soft shadows, pill chips, lucide icons. Green, amber and red are used ONLY for lane and status. Minimal text: details go in tooltips and drawers. A polished B2B SaaS feel, catchy but tidy.
 Source chips: Email, SharePoint, DocuSign, Tracker, Ledger (each with its own icon and tint).
 
 ## Tech
-Next.js (latest, App Router) + TypeScript + Tailwind + shadcn/ui + lucide-react + Zustand (persisted to localStorage, with a "Reset demo" action) + zod + vitest + @google/genai. Deploy on Vercel. Keep components small; one route per screen.
+Next.js (latest, App Router) + TypeScript + Tailwind + shadcn/ui + lucide-react + Zustand (persisted to localStorage, with a "Reset demo" action) + zod + vitest + @anthropic-ai/sdk. Deploy on Vercel. Keep components small; one route per screen.

@@ -1,0 +1,14 @@
+vendor_id,legal_name,erp_vendor_name,gstin,category,owner_persona,criticality
+V-10003,Metrocab Corporate Travel Private Limited,METROCAB CORPORATE TRAVEL PRIVATE LIMITED,29AACCM8832F1ZA,facilities,owner,medium
+V-10008,CleanSphere Facility Services Private Limited,CLEANSPHERE FACILITY SERVICES PRIVATE LIMITED,29AAFCC2210B1ZD,facilities,owner,medium
+V-10012,CodeCraft Staffing Solutions Private Limited,CODECRAFT STAFFING SOLUTIONS PRIVATE LIMITED,29AAECC7310R1Z6,staffing,owner,high
+V-10021,AquaPure Water Solutions Private Limited,AQUAPURE WATER SOLUTIONS PRIVATE LIMITED,29AAECA1294G1ZO,facilities,owner,low
+V-10041,Nimbus CRM Private Limited,NIMBUS CRM PRIVATE LIMITED,29AADCN4417K1Z8,saas,owner,high
+V-10049,Sentinel Guarding Services Private Limited,SENTINEL GUARDING SERVICES PRIVATE LIMITED,29AAJCS0418H1ZB,security,owner,medium
+V-10057,PeopleGrid HR Technologies Private Limited,PEOPLEGRID HR TECHNOLOGIES PRIVATE LIMITED,29AAGCP2905M1Z2,saas,owner,medium
+V-10066,SwiftMove Logistics Private Limited,SWIFTMOVE LOGISTICS PRIVATE LIMITED,29AAHCS1558Q1ZJ,logistics,owner,medium
+V-10069,TalkWave Communications Private Limited,TALKWAVE COMMUNICATIONS PRIVATE LIMITED,29AAFCT6219N1ZQ,telecom,owner,high
+V-10071,BrightLoop Marketing LLP,BRIGHTLOOP MARKETING LLP,29AASFB4471D1Z8,marketing,owner,medium
+V-10074,Stratus Cloud Pte. Ltd.,STRATUS CLOUD PTE LTD,,cloud,owner,high
+V-10077,LearnLeap Training Academy Private Limited,LEARNLEAP TRAINING ACADEMY PRIVATE LIMITED,29AAKCL5870P1ZI,training,owner,low
+V-10088,Inkwell Print and Branding Services,INKWELL PRINT AND BRANDING SERVICES,29ABHPI6621L1ZC,marketing,owner,low

@@ -1,0 +1,84 @@
+[
+  {
+    "suite": "heldout_field_accuracy",
+    "passed": 0,
+    "total": 0,
+    "skipped": true,
+    "details": [
+      "skipped: GEMINI_API_KEY not set (add it to .env.local)"
+    ]
+  },
+  {
+    "suite": "heldout_citations_exist",
+    "passed": 0,
+    "total": 0,
+    "skipped": true,
+    "details": [
+      "skipped: GEMINI_API_KEY not set (add it to .env.local)"
+    ]
+  },
+  {
+    "suite": "citation_verifier_dev_docs",
+    "passed": 340,
+    "total": 340,
+    "details": [
+      "340/340 checks (real gold quotes must verify; fabricated variants must not)"
+    ]
+  },
+  {
+    "suite": "draft_safety",
+    "passed": 5,
+    "total": 5,
+    "details": [
+      {
+        "case": "clean notice passes boundary",
+        "ok": true
+      },
+      {
+        "case": "clean notice passes numeric fidelity",
+        "ok": true,
+        "info": []
+      },
+      {
+        "case": "negotiation draft is blocked",
+        "ok": true,
+        "info": [
+          "discount",
+          "we propose"
+        ]
+      },
+      {
+        "case": "wrong date is caught",
+        "ok": true,
+        "info": [
+          {
+            "raw": "2 January 2027",
+            "kind": "date",
+            "value": "2027-01-02"
+          }
+        ]
+      },
+      {
+        "case": "unapproved ₹ amount is caught",
+        "ok": true
+      },
+      {
+        "case": "injection snippet (live)",
+        "skipped": "GEMINI_API_KEY not set"
+      }
+    ]
+  },
+  {
+    "suite": "rules_and_unit_tests",
+    "passed": 127,
+    "total": 127,
+    "details": [
+      "useDocketStore.test.ts: 3/3",
+      "data.test.ts: 4/4",
+      "format.test.ts: 3/3",
+      "guardrails.test.ts: 18/18",
+      "rules.gold.test.ts: 63/63",
+      "rules.unit.test.ts: 36/36"
+    ]
+  }
+]

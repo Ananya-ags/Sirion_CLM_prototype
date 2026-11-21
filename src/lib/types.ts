@@ -49,9 +49,9 @@ const csvString = z.preprocess((v) => {
 /* Data files                                                          */
 /* ------------------------------------------------------------------ */
 
+/** v2: no supplier_id. Grouping to suppliers is an AI task (see groupDocuments). */
 export const DocumentSchema = z.object({
   doc_id: z.string(),
-  supplier_id: z.string(),
   filename: z.string(),
   source: DocSourceSchema,
   source_path: z.string(),
@@ -304,9 +304,13 @@ export const DevGoldSupplierSchema = z.looseObject({
   rate_card: z.array(RateLineSchema).optional(),
 });
 export type DevGoldSupplier = z.infer<typeof DevGoldSupplierSchema>;
+export const DocSupplierMapSchema = z.array(z.object({ doc_id: z.string(), supplier_id: z.string().nullable(), evidence: z.array(z.string()) }));
+export type DocSupplierMap = z.infer<typeof DocSupplierMapSchema>;
+
 export const DevGoldFileSchema = z.looseObject({
   meta: z.record(z.string(), z.unknown()),
   suppliers: z.array(DevGoldSupplierSchema),
+  doc_supplier_map: DocSupplierMapSchema.optional(),
 });
 export type DevGoldFile = z.infer<typeof DevGoldFileSchema>;
 
@@ -372,7 +376,7 @@ export type RequestState = z.infer<typeof RequestStateSchema>;
 export const TRANSITIONS: Record<RequestState, RequestState[]> = {
   raised: ["human_review", "owner_pending", "procurement_review", "auto_logged"],
   human_review: ["raised", "owner_pending", "procurement_review", "auto_logged"],
-  owner_pending: ["owner_decided"],
+  owner_pending: ["owner_decided", "procurement_review"],
   owner_decided: ["procurement_review", "renewed_logged"],
   procurement_review: ["legal_pending", "renewed_logged", "handoff_renegotiation"],
   legal_pending: ["sent", "procurement_review"],
@@ -426,3 +430,22 @@ export type FinanceConfirmation = {
   ts: string;
   note?: string;
 };
+
+export type DraftKind = "exit_notice" | "cap_letter";
+
+export type LockedValue = { key: string; label: string; value: string };
+
+export type Draft = {
+  requestId: string;
+  kind: DraftKind;
+  subject: string;
+  body: string;
+  locked: LockedValue[];
+  /** live = Claude this session; cached = template fallback */
+  source: "live" | "cached";
+  model: string | null;
+  guardrails: { boundary: { ok: boolean; violations: string[] }; numbers: { ok: boolean; violations: string[] }; attempts: number; note?: string };
+  createdAt: string;
+};
+
+export type FinanceDismissal = { alertId: string; requestId: string; reason: string; by: PersonaId; ts: string };

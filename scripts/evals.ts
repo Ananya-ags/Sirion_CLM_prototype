@@ -1,7 +1,7 @@
 /**
  * Docket eval harness: `npm run evals`.
  * Writes docket_data/data/cache/eval_results.json as [{suite, passed, total, details[]}].
- * Suites needing Gemini skip (with a message) when GEMINI_API_KEY is missing.
+ * Suites needing Claude skip (with a message) when ANTHROPIC_API_KEY is missing.
  * Held-out gold is never used for prompt tuning; only HO-01..HO-15 are scored (final set).
  */
 import { execFileSync } from "node:child_process";
@@ -10,15 +10,15 @@ import os from "node:os";
 import path from "node:path";
 import { z } from "zod";
 import { MODELS } from "@/lib/config";
-import { DATA_DIR, loadDevGold, loadDocText, loadHeldoutDoc, loadHeldoutGold } from "@/lib/data";
-import { callJSON, FallbackError, hasGeminiKey } from "@/lib/ai/gemini";
+import { DATA_DIR, loadDevGold, loadDocSourceForEval, loadHeldoutDoc, loadHeldoutGold } from "@/lib/data";
+import { callJSON, FallbackError, hasClaudeKey } from "@/lib/ai/claude";
 import { boundaryCheck, numericFidelity, verifyQuote } from "@/lib/ai/guardrails";
 import { EXTRACTION_SYSTEM_PROMPT, NOTICE_METHOD_VOCAB } from "@/lib/ai/prompts";
 
 try {
   process.loadEnvFile(".env.local");
 } catch {
-  /* no .env.local: Gemini suites will skip */
+  /* no .env.local: Claude suites will skip */
 }
 
 type Suite = { suite: string; passed: number; total: number; skipped?: boolean; details: unknown[] };
@@ -26,7 +26,7 @@ const suites: Suite[] = [];
 const HELDOUT_FINAL = Array.from({ length: 15 }, (_, i) => `HO-${String(i + 1).padStart(2, "0")}`);
 
 /* ------------------------------------------------------------------ */
-/* Live extraction on held-out snippets (needs Gemini)                 */
+/* Live extraction on held-out snippets (needs Claude)                 */
 /* ------------------------------------------------------------------ */
 
 const Leaf = z.object({
@@ -44,7 +44,7 @@ payment_terms_days (number), sla_credits (true|false), governing_law (jurisdicti
 
 async function extract(docId: string, text: string, fields: string[]): Promise<Reply> {
   return callJSON(
-    MODELS.live,
+    MODELS.extract,
     EXTRACTION_SYSTEM_PROMPT,
     [
       { text: `Extract ONLY these fields: ${fields.join(", ")}.\n${FIELD_GUIDE}\nReturn {"fields": {"<field>": {value, confidence, citation}}}. Use doc_id "${docId}".` },
@@ -58,8 +58,8 @@ const norm = (v: unknown) => (typeof v === "string" ? v.trim().toLowerCase() : v
 const same = (a: unknown, b: unknown) => (typeof a === "number" || typeof b === "number" ? Number(a) === Number(b) : norm(a) === norm(b));
 
 async function heldoutSuites() {
-  if (!hasGeminiKey()) {
-    const msg = "skipped: GEMINI_API_KEY not set (add it to .env.local)";
+  if (!hasClaudeKey()) {
+    const msg = "skipped: held-out live evals are skipped in this build (Phase 3 scope)";
     suites.push({ suite: "heldout_field_accuracy", passed: 0, total: 0, skipped: true, details: [msg] });
     suites.push({ suite: "heldout_citations_exist", passed: 0, total: 0, skipped: true, details: [msg] });
     return;
@@ -113,11 +113,11 @@ async function citationVerifierSuite() {
     for (const [name, leaf] of leaves) {
       const c = (leaf as { citation: { doc_id: string; quote: string } | null }).citation;
       if (!c) continue;
-      const text = await loadDocText(`${c.doc_id}.md`);
+      const text = await loadDocSourceForEval(c.doc_id);
       const ok = !!text && verifyQuote(text, c.quote);
       s.total++;
       if (ok) s.passed++;
-      else s.details.push({ supplier: g.supplier_id, field: name, doc_id: c.doc_id, note: text ? "quote not found (docs may have been regenerated)" : "doc missing" });
+      else s.details.push({ supplier: g.supplier_id, field: name, doc_id: c.doc_id, note: text ? "quote not found in docs_src" : "docs_src file missing" });
       // Negative control: a fabricated quote must NOT verify
       if (text) {
         s.total++;
@@ -158,8 +158,8 @@ async function draftSafetySuite() {
   const wrongAmount = "The renewal price may not exceed ₹29,40,000 (the 5% cap).";
   check("unapproved ₹ amount is caught", !numericFidelity(wrongAmount, [2940000]).ok);
 
-  if (!hasGeminiKey()) {
-    s.details.push({ case: "injection snippet (live)", skipped: "GEMINI_API_KEY not set" });
+  if (!hasClaudeKey()) {
+    s.details.push({ case: "injection snippet (live)", skipped: "ANTHROPIC_API_KEY not set" });
   } else {
     try {
       const r = await extract("INJ-01", INJECTION_SNIPPET, ["renewal_type", "renewal_term_months"]);

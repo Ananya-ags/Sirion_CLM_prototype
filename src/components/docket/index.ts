@@ -6,3 +6,5 @@ export { ActorBadge, actorKind } from "./ActorBadge";
 export { ConfidencePill } from "./ConfidencePill";
 export { FlagChip } from "./FlagChip";
 export { EmptyState } from "./EmptyState";
+export { StateChip } from "./StateChip";
+export { MiniBars } from "./MiniBars";

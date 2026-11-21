@@ -1,12 +1,12 @@
 import type { ReactNode } from "react";
-import { getInitialRequests } from "@/lib/initialRequests";
+import { getPortfolio } from "@/lib/portfolio";
 import { PersonaGate } from "./PersonaGate";
 import { Sidebar } from "./Sidebar";
 import { StoreHydrator } from "./StoreHydrator";
 import { TopBar } from "./TopBar";
 
 export async function AppShell({ children }: { children: ReactNode }) {
-  const initialRequests = await getInitialRequests();
+  const { requests: initialRequests } = await getPortfolio();
   return (
     <div className="flex min-h-screen">
       <StoreHydrator initialRequests={initialRequests} />

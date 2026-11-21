@@ -1,0 +1,60 @@
+[
+  {
+    "id": "procurement",
+    "name": "Priya",
+    "full_name": "Priya Nair",
+    "role": "Procurement Lead",
+    "default": true,
+    "sees": [
+      "Renewal inbox",
+      "Contract file",
+      "Decision cards",
+      "Human-review queue"
+    ],
+    "hands_off": [
+      "Approve renewal / draft exit or cap letter → Legal",
+      "Renegotiation handoff (out of scope)"
+    ]
+  },
+  {
+    "id": "owner",
+    "name": "Rahul",
+    "full_name": "Rahul Iyer",
+    "role": "Budget Owner (Head of Marketing; also owns IT/Facilities items in demo via assignment)",
+    "default": false,
+    "sees": [
+      "Auto-raised renewal requests: pre-filled, 2 questions, plain-language flags"
+    ],
+    "hands_off": [
+      "Renew",
+      "Exit",
+      "Send to Procurement"
+    ]
+  },
+  {
+    "id": "legal",
+    "name": "Meera",
+    "full_name": "Meera Krishnan",
+    "role": "Legal Counsel",
+    "default": false,
+    "sees": [
+      "Notices & letters awaiting approval (locked deadline/method/address)"
+    ],
+    "hands_off": [
+      "Approve & mark sent → closes"
+    ]
+  },
+  {
+    "id": "finance",
+    "name": "Akshat",
+    "full_name": "Akshat Jain",
+    "role": "Finance / AP",
+    "default": false,
+    "sees": [
+      "Billing-vs-contract alerts"
+    ],
+    "hands_off": [
+      "Confirm/annotate → evidence on Priya's card"
+    ]
+  }
+]

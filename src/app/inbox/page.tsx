@@ -1,13 +1,7 @@
-import { Inbox } from "lucide-react";
-import { EmptyState } from "@/components/docket/EmptyState";
+import { InboxView } from "@/components/screens/InboxView";
+import { getPortfolio } from "@/lib/portfolio";
 
-export default function Page() {
-  return (
-    <EmptyState
-      icon={Inbox}
-      tag="Placeholder"
-      title="Nothing in the inbox yet"
-      description="Renewal requests Docket raises itself will land here, sorted by act-by date."
-    />
-  );
+export default async function Page() {
+  const { views, unmatched, sources } = await getPortfolio();
+  return <InboxView views={views} unmatched={unmatched} sources={sources} />;
 }

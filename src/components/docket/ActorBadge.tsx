@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 import { Hint } from "./Hint";
 
 const ACTOR_META: Record<ActorKind, { icon: LucideIcon; hint: string; className: string }> = {
-  AI: { icon: Sparkles, hint: "AI (Gemini): reads, classifies, extracts with citations, drafts wording. Never does maths, never sends.", className: "bg-actor-ai-bg text-actor-ai" },
+  AI: { icon: Sparkles, hint: "AI (Claude): reads, classifies, extracts with citations, drafts wording. Never does maths, never sends.", className: "bg-actor-ai-bg text-actor-ai" },
   Rules: { icon: Cog, hint: "Rules (deterministic TypeScript): dates, ₹ maths, FX, benchmarks, ledger checks, lanes and routing.", className: "bg-actor-rules-bg text-actor-rules" },
   Human: { icon: UserRound, hint: "Human: confirms low-confidence fields, decides, approves and sends.", className: "bg-actor-human-bg text-actor-human" },
 };

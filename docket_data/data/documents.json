@@ -1,0 +1,234 @@
+[
+  {
+    "doc_id": "DOC-01",
+    "filename": "Completed_7F3A2C19.pdf",
+    "source": "docusign",
+    "source_path": "/DocuSign/Completed/2024/",
+    "received_date": "2024-03-28",
+    "file": "docs/DOC-01.pdf"
+  },
+  {
+    "doc_id": "DOC-02",
+    "filename": "Nimbus_OrderForm_2_FY26-27.pdf",
+    "source": "sharepoint",
+    "source_path": "/Procurement/IT/Nimbus/",
+    "received_date": "2025-03-24",
+    "file": "docs/DOC-02.pdf"
+  },
+  {
+    "doc_id": "DOC-03",
+    "filename": "Nimbus pricing update effective 1 June 2026.eml",
+    "source": "email",
+    "source_path": "/Mailboxes/procurement@velora.in/Inbox/",
+    "received_date": "2026-05-12",
+    "file": "docs/DOC-03.pdf"
+  },
+  {
+    "doc_id": "DOC-04",
+    "filename": "PeopleGrid_MSA_executed.pdf",
+    "source": "sharepoint",
+    "source_path": "/Procurement/HR Tech/PeopleGrid/",
+    "received_date": "2025-02-20",
+    "file": "docs/DOC-04.pdf"
+  },
+  {
+    "doc_id": "DOC-05",
+    "filename": "OrderForm_signed.pdf",
+    "source": "sharepoint",
+    "source_path": "/Procurement/IT/Nimbus/",
+    "received_date": "2025-02-20",
+    "file": "docs/DOC-05.pdf"
+  },
+  {
+    "doc_id": "DOC-06",
+    "filename": "PeopleGrid renewal quote - FY27.eml",
+    "source": "email",
+    "source_path": "/Mailboxes/procurement@velora.in/Inbox/",
+    "received_date": "2026-11-12",
+    "file": "docs/DOC-06.pdf"
+  },
+  {
+    "doc_id": "DOC-07",
+    "filename": "CodeCraft_MSA_v3_FINAL_final.docx",
+    "source": "sharepoint",
+    "source_path": "/Procurement/Staffing/CodeCraft/",
+    "received_date": "2024-01-18",
+    "file": "docs/DOC-07.pdf"
+  },
+  {
+    "doc_id": "DOC-08",
+    "filename": "Completed_C41E9B07.pdf",
+    "source": "docusign",
+    "source_path": "/DocuSign/Completed/2024/",
+    "received_date": "2024-01-29",
+    "file": "docs/DOC-08.pdf"
+  },
+  {
+    "doc_id": "DOC-09",
+    "filename": "SOW1_signed_scan.pdf",
+    "source": "sharepoint",
+    "source_path": "/Procurement/Staffing/Archive/",
+    "received_date": "2024-01-30",
+    "file": "docs/DOC-09.pdf"
+  },
+  {
+    "doc_id": "DOC-10",
+    "filename": "SOW-2_RateCard_signed.pdf",
+    "source": "sharepoint",
+    "source_path": "/Procurement/Staffing/",
+    "received_date": "2025-01-27",
+    "file": "docs/DOC-10.pdf"
+  },
+  {
+    "doc_id": "DOC-11",
+    "filename": "Signed - Amendment No.1.eml",
+    "source": "email",
+    "source_path": "/Mailboxes/vendor-contracts@velora.in/Inbox/",
+    "received_date": "2026-04-10",
+    "file": "docs/DOC-11.pdf"
+  },
+  {
+    "doc_id": "DOC-12",
+    "filename": "Scan_20231204_0012.pdf",
+    "source": "sharepoint",
+    "source_path": "/Procurement/Facilities/Misc/",
+    "received_date": "2023-12-22",
+    "file": "docs/DOC-12.pdf"
+  },
+  {
+    "doc_id": "DOC-13",
+    "filename": "CleanSphere - continuation of services Jan 2026.eml",
+    "source": "email",
+    "source_path": "/Mailboxes/facilities@velora.in/Inbox/",
+    "received_date": "2026-01-06",
+    "file": "docs/DOC-13.pdf"
+  },
+  {
+    "doc_id": "DOC-14",
+    "filename": "Completed_2B8D61F4.pdf",
+    "source": "docusign",
+    "source_path": "/DocuSign/Completed/2025/",
+    "received_date": "2025-03-12",
+    "file": "docs/DOC-14.pdf"
+  },
+  {
+    "doc_id": "DOC-15",
+    "filename": "Annexure_B.pdf",
+    "source": "sharepoint",
+    "source_path": "/Procurement/Logistics/",
+    "received_date": "2025-03-12",
+    "file": "docs/DOC-15.pdf"
+  },
+  {
+    "doc_id": "DOC-16",
+    "filename": "BrightLoop_Retainer_Agreement_signed.pdf",
+    "source": "sharepoint",
+    "source_path": "/Marketing/Agencies/BrightLoop/",
+    "received_date": "2025-02-24",
+    "file": "docs/DOC-16.pdf"
+  },
+  {
+    "doc_id": "DOC-17",
+    "filename": "BrightLoop Retainer - FINAL version.eml",
+    "source": "email",
+    "source_path": "/Mailboxes/marketing-ops@velora.in/Inbox/",
+    "received_date": "2025-10-14",
+    "file": "docs/DOC-17.pdf"
+  },
+  {
+    "doc_id": "DOC-18",
+    "filename": "BrightLoop_Mutual_NDA.pdf",
+    "source": "sharepoint",
+    "source_path": "/Marketing/Agencies/BrightLoop/",
+    "received_date": "2025-01-10",
+    "file": "docs/DOC-18.pdf"
+  },
+  {
+    "doc_id": "DOC-19",
+    "filename": "Completed_9E0C47A2.pdf",
+    "source": "docusign",
+    "source_path": "/DocuSign/Completed/2025/",
+    "received_date": "2025-04-25",
+    "file": "docs/DOC-19.pdf"
+  },
+  {
+    "doc_id": "DOC-20",
+    "filename": "Completed_9E0C47A2 (1).pdf",
+    "source": "docusign",
+    "source_path": "/DocuSign/Completed/2025/",
+    "received_date": "2025-04-25",
+    "file": "docs/DOC-20.pdf"
+  },
+  {
+    "doc_id": "DOC-21",
+    "filename": "Completed_9E0C47A2 (2).pdf",
+    "source": "docusign",
+    "source_path": "/DocuSign/Completed/2025/",
+    "received_date": "2025-04-25",
+    "file": "docs/DOC-21.pdf"
+  },
+  {
+    "doc_id": "DOC-22",
+    "filename": "Sentinel_Security_Services_Agreement.pdf",
+    "source": "sharepoint",
+    "source_path": "/Facilities/Vendors/Security/",
+    "received_date": "2025-01-10",
+    "file": "docs/DOC-22.pdf"
+  },
+  {
+    "doc_id": "DOC-23",
+    "filename": "Schedule2.pdf",
+    "source": "sharepoint",
+    "source_path": "/Facilities/Vendors/Misc/",
+    "received_date": "2025-01-10",
+    "file": "docs/DOC-23.pdf"
+  },
+  {
+    "doc_id": "DOC-24",
+    "filename": "Fwd_ TalkWave signed agreement - Velora.eml",
+    "source": "email",
+    "source_path": "/Mailboxes/it-ops@velora.in/Inbox/",
+    "received_date": "2025-02-26",
+    "file": "docs/DOC-24.pdf"
+  },
+  {
+    "doc_id": "DOC-25",
+    "filename": "Agreement_executed.pdf",
+    "source": "email",
+    "source_path": "/Mailboxes/it-ops@velora.in/Inbox/",
+    "received_date": "2025-02-26",
+    "file": "docs/DOC-25.pdf"
+  },
+  {
+    "doc_id": "DOC-26",
+    "filename": "LearnLeap_Training_Agreement_2025.pdf",
+    "source": "sharepoint",
+    "source_path": "/HR/L&D/Vendors/LearnLeap/",
+    "received_date": "2025-06-20",
+    "file": "docs/DOC-26.pdf"
+  },
+  {
+    "doc_id": "DOC-27",
+    "filename": "RE_ LearnLeap - programme closure and next steps.eml",
+    "source": "email",
+    "source_path": "/Mailboxes/hr-ld@velora.in/Inbox/",
+    "received_date": "2026-06-30",
+    "file": "docs/DOC-27.pdf"
+  },
+  {
+    "doc_id": "DOC-28",
+    "filename": "LearnLeap Invoice LL-26-27-0815.eml",
+    "source": "email",
+    "source_path": "/Mailboxes/ap@velora.in/Inbox/",
+    "received_date": "2026-08-04",
+    "file": "docs/DOC-28.pdf"
+  },
+  {
+    "doc_id": "DOC-29",
+    "filename": "Quotation_NA-Q-2026-118.pdf",
+    "source": "sharepoint",
+    "source_path": "/Procurement/IT/Nimbus/",
+    "received_date": "2026-09-10",
+    "file": "docs/DOC-29.pdf"
+  }
+]

@@ -10,6 +10,7 @@ import {
   loadCache,
   loadCpi,
   loadDevGold,
+  loadDocuments,
   loadFx,
   loadHolidays,
   loadLedger,
@@ -17,13 +18,16 @@ import {
   loadTracker,
 } from "./data";
 import { evaluateSupplier, type RulesContext, type SupplierEvaluation } from "./rules/flags";
+import { rowsForVendor } from "./rules/ledger";
 import {
   ExtractionOutputSchema,
   RateLineSchema,
   VendorQuoteSchema,
   type Category,
   type DevGoldSupplier,
+  type DocumentMeta,
   type ExtractionOutput,
+  type FamilyMember,
   type Field,
   type Request,
 } from "./types";
@@ -96,10 +100,45 @@ export async function getExtraction(supplierId: string): Promise<SupplierExtract
   return g ? goldToExtraction(g) : null;
 }
 
+export type FamilyDoc = FamilyMember & {
+  meta: DocumentMeta | null;
+  /** Grouping evidence from doc_supplier_map (CIN/GSTIN/envelope/cross-reference). */
+  grouping_evidence: string[];
+  /** Effective-term fields this document supplies (it "wins" for these). */
+  governs: string[];
+};
+
+/**
+ * Family = documents assigned to this supplier in doc_supplier_map (grouping truth until AI grouping ships),
+ * enriched with the extraction's role/executed/evidence and documents.json metadata.
+ */
+async function buildFamily(supplierId: string, ex: SupplierExtraction): Promise<FamilyDoc[]> {
+  const [gold, docs] = await Promise.all([loadDevGold(), loadDocuments()]);
+  const map = (gold.doc_supplier_map ?? []).filter((m) => m.supplier_id === supplierId);
+  const ids = map.length ? map.map((m) => m.doc_id) : ex.family.map((f) => f.doc_id);
+  const leaves = Object.entries(ex.effective_terms).flatMap(([k, v]) =>
+    k === "uplift" ? Object.entries(v as Record<string, Field<unknown>>).map(([kk, vv]) => [`uplift.${kk}`, vv] as const) : [[k, v as Field<unknown>] as const],
+  );
+  const ORDER = ["msa", "sow", "order_form", "amendment", "quote", "email", "other"];
+  return ids
+    .map((doc_id) => {
+      const f = ex.family.find((x) => x.doc_id === doc_id) ?? { doc_id, doc_role: "other" as const, executed: "unknown" as const, execution_evidence: [], references: [] };
+      return {
+        ...f,
+        meta: docs.find((d) => d.doc_id === doc_id) ?? null,
+        grouping_evidence: map.find((m) => m.doc_id === doc_id)?.evidence ?? [],
+        governs: leaves.filter(([, l]) => (l.overridden_by ?? l.citation?.doc_id) === doc_id).map(([k]) => k),
+      };
+    })
+    .sort((a, b) => ORDER.indexOf(a.doc_role) - ORDER.indexOf(b.doc_role) || a.doc_id.localeCompare(b.doc_id));
+}
+
 export type SupplierView = SupplierMeta & {
   source: "seed" | "cache";
   terms: ExtractionOutput["effective_terms"];
-  family: ExtractionOutput["family"];
+  family: FamilyDoc[];
+  trackerRow: SupplierEvaluation["trackerRow"];
+  ledgerMonths: { period: string; amount: number }[];
   flags: SupplierEvaluation["flags"];
   lane: SupplierEvaluation["lane"];
   laneReason: string;
@@ -119,11 +158,16 @@ export async function getSupplierView(supplierId: string): Promise<SupplierView 
     await loadRulesContext(),
   );
   const cur = ex.effective_terms.currency.value;
+  const ctx = await loadRulesContext();
+  const months = new Map<string, number>();
+  for (const r of rowsForVendor(ctx.ledger, meta.name)) months.set(r.service_period, (months.get(r.service_period) ?? 0) + r.amount_pre_tax_inr);
   return {
     ...meta,
     source: ex.source,
     terms: ex.effective_terms,
-    family: ex.family,
+    family: await buildFamily(supplierId, ex),
+    trackerRow: ev.trackerRow,
+    ledgerMonths: [...months.entries()].sort().map(([period, amount]) => ({ period, amount })),
     flags: ev.flags,
     lane: ev.lane,
     laneReason: ev.laneReason,

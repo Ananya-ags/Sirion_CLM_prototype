@@ -12,7 +12,7 @@
     "evals": "tsx scripts/evals.ts"
   },
   "dependencies": {
-    "@google/genai": "^3.6.1",
+    "@anthropic-ai/sdk": "^1.12.0",
     "class-variance-authority": "^0.7.1",
     "cn": "^0.5.2",
     "date-fns": "^4.4.0",

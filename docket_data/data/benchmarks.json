@@ -1,0 +1,72 @@
+[
+  {
+    "role": "Senior React Developer",
+    "rate_inr_per_hr": 1900,
+    "source_supplier": "Talentrix IT Services Pvt Ltd"
+  },
+  {
+    "role": "Senior React Developer",
+    "rate_inr_per_hr": 1950,
+    "source_supplier": "Kovai Tech Staffing Pvt Ltd"
+  },
+  {
+    "role": "Senior React Developer",
+    "rate_inr_per_hr": 2000,
+    "source_supplier": "NorthStar Digital Talent LLP"
+  },
+  {
+    "role": "Junior React Developer",
+    "rate_inr_per_hr": 1100,
+    "source_supplier": "Talentrix IT Services Pvt Ltd"
+  },
+  {
+    "role": "Junior React Developer",
+    "rate_inr_per_hr": 1150,
+    "source_supplier": "Kovai Tech Staffing Pvt Ltd"
+  },
+  {
+    "role": "Junior React Developer",
+    "rate_inr_per_hr": 1180,
+    "source_supplier": "Arcadia Workforce Solutions Pvt Ltd"
+  },
+  {
+    "role": "QA Automation Engineer",
+    "rate_inr_per_hr": 1050,
+    "source_supplier": "Talentrix IT Services Pvt Ltd"
+  },
+  {
+    "role": "QA Automation Engineer",
+    "rate_inr_per_hr": 1080,
+    "source_supplier": "NorthStar Digital Talent LLP"
+  },
+  {
+    "role": "QA Automation Engineer",
+    "rate_inr_per_hr": 1120,
+    "source_supplier": "Arcadia Workforce Solutions Pvt Ltd"
+  },
+  {
+    "role": "DevOps Engineer",
+    "rate_inr_per_hr": 1850,
+    "source_supplier": "Kovai Tech Staffing Pvt Ltd"
+  },
+  {
+    "role": "DevOps Engineer",
+    "rate_inr_per_hr": 1900,
+    "source_supplier": "Arcadia Workforce Solutions Pvt Ltd"
+  },
+  {
+    "role": "Data Engineer",
+    "rate_inr_per_hr": 1700,
+    "source_supplier": "Talentrix IT Services Pvt Ltd"
+  },
+  {
+    "role": "Data Engineer",
+    "rate_inr_per_hr": 1750,
+    "source_supplier": "NorthStar Digital Talent LLP"
+  },
+  {
+    "role": "Data Engineer",
+    "rate_inr_per_hr": 1820,
+    "source_supplier": "Kovai Tech Staffing Pvt Ltd"
+  }
+]

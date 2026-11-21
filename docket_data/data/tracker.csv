@@ -1,0 +1,12 @@
+tracker_id,supplier_name,contract_ref,category,owner,start_date,end_date,auto_renew,notice_days,annual_value_inr,status,last_updated
+TR-001,Nimbus CRM,NCRM-OF-0002,SaaS,Rahul Iyer (IT via assignment),2025-04-01,2027-03-31,Y,90,6200000,Active,2025-04-03
+TR-002,PeopleGrid HR Tech,PG-OF-2025-017,SaaS,Rahul Iyer (HR tech via assignment),2025-03-01,2027-02-28,Y,60,2800000,Active,2025-03-05
+TR-003,CodeCraft Staffing,CC-SOW-02,Staffing,Rahul Iyer (IT via assignment),2025-02-01,2027-01-31,Y,30,18000000,Active,2025-02-04
+TR-004,CleanSphere Facility Svcs,CS-HK-2024,Facilities,Rahul Iyer (Facilities via assignment),2024-01-01,2025-12-31,N,30,2200000,Expired,2024-01-08
+TR-005,SwiftMove Logistics,SML-MSA-2025,Logistics,Rahul Iyer (Ops via assignment),2025-03-16,2027-03-15,Y,45,4100000,Active,2025-03-14
+TR-006,BrightLoop Mktg,BL-RET-2025,Marketing,Rahul Iyer,2025-02-27,2027-02-26,Y,60,3600000,Active,2025-03-02
+TR-007,Stratus Cloud,STR-OS-001,Cloud,Rahul Iyer (IT via assignment),2025-05-01,2027-04-30,Y,30,3780000,Active,2025-05-06
+TR-008,Sentinel Security,SGS-2025-01,Security,Rahul Iyer (Facilities via assignment),2025-01-16,2027-01-15,TBC,45,1800000,Active,2025-01-20
+TR-009,LearnLeap Training,LL-TSA-2025,Training,Rahul Iyer (HR via assignment),2025-07-01,2026-06-30,N,,3000000,Expired,2026-07-02
+TR-010,Metrocab Corporate Travel,MCT-2024-07,Facilities,Rahul Iyer (Admin via assignment),2024-07-01,2027-06-30,Y,60,5040000,Active,2024-07-10
+TR-011,AquaPure Water,AQP-AMC-2025,Facilities,Rahul Iyer (Admin via assignment),2025-04-01,2026-03-31,Y,30,462000,Active,2025-04-02

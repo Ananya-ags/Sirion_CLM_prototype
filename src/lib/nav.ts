@@ -1,6 +1,7 @@
 import {
   BookOpen,
   FilePlus2,
+  FileText,
   FlaskConical,
   Inbox,
   ListChecks,
@@ -41,10 +42,13 @@ export const DESIGN_NAV: NavItem = {
   group: "evaluator",
 };
 
+/** Contract file: opened from the inbox, not listed in the sidebar. */
+export const CONTRACT_NAV: NavItem = { href: "/contracts", label: "Contract file", icon: FileText, personas: "all", group: "work" };
+
 export function canSee(item: NavItem, persona: PersonaId): boolean {
   return item.personas === "all" || item.personas.includes(persona);
 }
 
 export function navForPath(pathname: string): NavItem | undefined {
-  return [...NAV, DESIGN_NAV].find((n) => pathname === n.href || pathname.startsWith(`${n.href}/`));
+  return [...NAV, DESIGN_NAV, CONTRACT_NAV].find((n) => pathname === n.href || pathname.startsWith(`${n.href}/`));
 }

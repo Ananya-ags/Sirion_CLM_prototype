@@ -1,0 +1,293 @@
+{
+  "meta": {
+    "purpose": "Held-out eval set — never used for prompt tuning (spec §9).",
+    "eval_fields": [
+      "renewal_type",
+      "initial_term_end",
+      "renewal_term_months",
+      "notice_days",
+      "notice_day_type",
+      "notice_method",
+      "uplift.type",
+      "uplift.value_pct",
+      "uplift.cap_pct",
+      "tfc",
+      "payment_terms_days",
+      "sla_credits",
+      "governing_law",
+      "currency"
+    ],
+    "scoring": "Snippets are scored only on the fields listed for them; contracts on all 14. 'unclear' is the correct answer where given.",
+    "notice_method_vocab": [
+      "email",
+      "email_or_physical",
+      "email_and_physical",
+      "registered_post",
+      "physical_only"
+    ],
+    "default_notice_day_type": "calendar when the text says only 'days'"
+  },
+  "items": [
+    {
+      "ho_id": "HO-01",
+      "file": "gold/heldout/HO-01.md",
+      "kind": "snippet",
+      "fields": {
+        "renewal_type": "auto",
+        "initial_term_end": "2027-09-30",
+        "renewal_term_months": 12,
+        "notice_days": 75,
+        "notice_day_type": "calendar"
+      },
+      "abstain_fields": []
+    },
+    {
+      "ho_id": "HO-02",
+      "file": "gold/heldout/HO-02.md",
+      "kind": "snippet",
+      "fields": {
+        "renewal_type": "auto",
+        "renewal_term_months": 12,
+        "notice_days": 40,
+        "notice_day_type": "business"
+      },
+      "abstain_fields": []
+    },
+    {
+      "ho_id": "HO-03",
+      "file": "gold/heldout/HO-03.md",
+      "kind": "snippet",
+      "fields": {
+        "uplift.type": "greater_of",
+        "uplift.value_pct": 6,
+        "uplift.cap_pct": 10
+      },
+      "abstain_fields": []
+    },
+    {
+      "ho_id": "HO-04",
+      "file": "gold/heldout/HO-04.md",
+      "kind": "snippet",
+      "fields": {
+        "uplift.type": "cpi",
+        "uplift.value_pct": null,
+        "uplift.cap_pct": 4.5
+      },
+      "abstain_fields": []
+    },
+    {
+      "ho_id": "HO-05",
+      "file": "gold/heldout/HO-05.md",
+      "kind": "snippet",
+      "fields": {
+        "uplift.type": "fixed",
+        "uplift.value_pct": 8,
+        "uplift.cap_pct": null
+      },
+      "abstain_fields": []
+    },
+    {
+      "ho_id": "HO-06",
+      "file": "gold/heldout/HO-06.md",
+      "kind": "snippet",
+      "fields": {
+        "uplift.type": "none",
+        "payment_terms_days": 60
+      },
+      "abstain_fields": []
+    },
+    {
+      "ho_id": "HO-07",
+      "file": "gold/heldout/HO-07.md",
+      "kind": "snippet",
+      "fields": {
+        "tfc": true
+      },
+      "abstain_fields": []
+    },
+    {
+      "ho_id": "HO-08",
+      "file": "gold/heldout/HO-08.md",
+      "kind": "snippet",
+      "fields": {
+        "tfc": false
+      },
+      "abstain_fields": []
+    },
+    {
+      "ho_id": "HO-09",
+      "file": "gold/heldout/HO-09.md",
+      "kind": "snippet",
+      "fields": {
+        "sla_credits": true
+      },
+      "abstain_fields": []
+    },
+    {
+      "ho_id": "HO-10",
+      "file": "gold/heldout/HO-10.md",
+      "kind": "snippet",
+      "fields": {
+        "sla_credits": false
+      },
+      "abstain_fields": []
+    },
+    {
+      "ho_id": "HO-11",
+      "file": "gold/heldout/HO-11.md",
+      "kind": "snippet",
+      "fields": {
+        "notice_method": "physical_only"
+      },
+      "abstain_fields": []
+    },
+    {
+      "ho_id": "HO-12",
+      "file": "gold/heldout/HO-12.md",
+      "kind": "snippet",
+      "fields": {
+        "governing_law": "England and Wales",
+        "currency": "EUR"
+      },
+      "abstain_fields": []
+    },
+    {
+      "ho_id": "HO-13",
+      "file": "gold/heldout/HO-13.md",
+      "kind": "snippet",
+      "fields": {
+        "renewal_type": "manual",
+        "initial_term_end": "2027-08-31"
+      },
+      "abstain_fields": []
+    },
+    {
+      "ho_id": "HO-14",
+      "file": "gold/heldout/HO-14.md",
+      "kind": "snippet",
+      "fields": {
+        "renewal_type": "unclear"
+      },
+      "abstain_fields": [
+        "renewal_type"
+      ]
+    },
+    {
+      "ho_id": "HO-15",
+      "file": "gold/heldout/HO-15.md",
+      "kind": "snippet",
+      "fields": {
+        "renewal_type": "auto",
+        "renewal_term_months": "unclear",
+        "notice_days": "unclear"
+      },
+      "abstain_fields": [
+        "renewal_term_months",
+        "notice_days"
+      ]
+    },
+    {
+      "ho_id": "HO-16",
+      "file": "gold/heldout/HO-16.pdf",
+      "source_md": "gold/heldout/HO-16.md",
+      "pdf_kind": "text",
+      "kind": "contract",
+      "fields": {
+        "renewal_type": "auto",
+        "initial_term_end": "2027-06-30",
+        "renewal_term_months": 12,
+        "notice_days": 50,
+        "notice_day_type": "calendar",
+        "notice_method": "email",
+        "uplift.type": "fixed",
+        "uplift.value_pct": 6,
+        "uplift.cap_pct": null,
+        "tfc": false,
+        "payment_terms_days": 30,
+        "sla_credits": true,
+        "governing_law": "India",
+        "currency": "INR"
+      },
+      "abstain_fields": [],
+      "executed": true,
+      "execution_evidence": [
+        "Adobe Acrobat Sign transaction ID",
+        "Both signers ✔ with timestamps",
+        "Agreement status: Signed"
+      ]
+    },
+    {
+      "ho_id": "HO-17",
+      "file": "gold/heldout/HO-17.pdf",
+      "source_md": "gold/heldout/HO-17.md",
+      "pdf_kind": "text",
+      "kind": "contract",
+      "fields": {
+        "renewal_type": "auto",
+        "initial_term_end": "2028-03-31",
+        "renewal_term_months": 12,
+        "notice_days": 30,
+        "notice_day_type": "calendar",
+        "notice_method": "email_and_physical",
+        "uplift.type": "discretionary",
+        "uplift.value_pct": null,
+        "uplift.cap_pct": 5,
+        "tfc": true,
+        "payment_terms_days": 45,
+        "sla_credits": true,
+        "governing_law": "India",
+        "currency": "INR"
+      },
+      "abstain_fields": [],
+      "executed": false,
+      "execution_evidence": [
+        "Header: 'DRAFT v0.4 — SUBJECT TO CONTRACT — NOT FOR SIGNATURE'",
+        "Blank signature blocks",
+        "Open review comments"
+      ]
+    },
+    {
+      "ho_id": "HO-18",
+      "file": "gold/heldout/HO-18.pdf",
+      "source_md": "gold/heldout/HO-18.md",
+      "pdf_kind": "image_only",
+      "kind": "contract",
+      "fields": {
+        "renewal_type": "auto",
+        "initial_term_end": "2027-09-14",
+        "renewal_term_months": 12,
+        "notice_days": 90,
+        "notice_day_type": "calendar",
+        "notice_method": "email",
+        "uplift.type": "cpi",
+        "uplift.value_pct": null,
+        "uplift.cap_pct": null,
+        "tfc": true,
+        "payment_terms_days": 60,
+        "sla_credits": true,
+        "governing_law": "India",
+        "currency": "INR"
+      },
+      "abstain_fields": [],
+      "executed": true,
+      "execution_evidence": [
+        "Principal Agreement signed 02.09.2025 by both parties",
+        "Addendum No. 1 signed 18.03.2026 / 20.03.2026"
+      ],
+      "precedence": [
+        {
+          "field": "notice_days",
+          "superseded_value": 30,
+          "effective_value": 90,
+          "overridden_by": "Addendum No. 1, A1"
+        },
+        {
+          "field": "payment_terms_days",
+          "superseded_value": 30,
+          "effective_value": 60,
+          "overridden_by": "Addendum No. 1, A2"
+        }
+      ]
+    }
+  ]
+}

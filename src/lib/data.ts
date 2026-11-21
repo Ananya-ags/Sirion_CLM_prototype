@@ -85,7 +85,11 @@ async function readDoc(folder: string, file: string): Promise<string | null> {
 }
 
 export const loadDocuments = () => loadJson("documents.json", DocumentSchema.array(), []);
+/** Raw document file (PDF in v2). The pipeline reads only these. */
+export const docPath = (file: string) => path.join(DATA_DIR, "docs", path.basename(file));
 export const loadDocText = (file: string) => readDoc("docs", file);
+/** Markdown source a PDF was rendered from. EVALS AND QUOTE VERIFICATION ONLY: the pipeline must never read docs_src. */
+export const loadDocSourceForEval = (docId: string) => readDoc("docs_src", `${path.basename(docId)}.md`);
 export const loadTracker = () => loadCsv("tracker.csv", TrackerRowSchema);
 export const loadLedger = () => loadCsv("ledger.csv", LedgerRowSchema);
 export const loadVendorMaster = () => loadCsv("vendor_master.csv", VendorMasterRowSchema);

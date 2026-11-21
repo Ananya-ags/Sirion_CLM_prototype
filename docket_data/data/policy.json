@@ -1,0 +1,114 @@
+{
+  "demo_today": "2026-11-25",
+  "categories": {
+    "saas": {
+      "uplift_flag_pct": 6,
+      "benchmark_gap_pct": 10,
+      "min_comparables": 3,
+      "green_max_annual_value_inr": 5000000,
+      "payment_terms_policy_days": 45,
+      "tfc_required": true,
+      "internal_buffer_days": 15
+    },
+    "staffing": {
+      "uplift_flag_pct": 6,
+      "benchmark_gap_pct": 10,
+      "min_comparables": 3,
+      "green_max_annual_value_inr": 5000000,
+      "payment_terms_policy_days": 45,
+      "tfc_required": true,
+      "internal_buffer_days": 15
+    },
+    "facilities": {
+      "uplift_flag_pct": 6,
+      "benchmark_gap_pct": 10,
+      "min_comparables": 3,
+      "green_max_annual_value_inr": 5000000,
+      "payment_terms_policy_days": 45,
+      "tfc_required": true,
+      "internal_buffer_days": 15
+    },
+    "logistics": {
+      "uplift_flag_pct": 6,
+      "benchmark_gap_pct": 10,
+      "min_comparables": 3,
+      "green_max_annual_value_inr": 5000000,
+      "payment_terms_policy_days": 45,
+      "tfc_required": true,
+      "internal_buffer_days": 15
+    },
+    "marketing": {
+      "uplift_flag_pct": 6,
+      "benchmark_gap_pct": 10,
+      "min_comparables": 3,
+      "green_max_annual_value_inr": 5000000,
+      "payment_terms_policy_days": 45,
+      "tfc_required": true,
+      "internal_buffer_days": 15
+    },
+    "cloud": {
+      "uplift_flag_pct": 5,
+      "benchmark_gap_pct": 10,
+      "min_comparables": 3,
+      "green_max_annual_value_inr": 5000000,
+      "payment_terms_policy_days": 45,
+      "tfc_required": false,
+      "internal_buffer_days": 15
+    },
+    "security": {
+      "uplift_flag_pct": 6,
+      "benchmark_gap_pct": 10,
+      "min_comparables": 3,
+      "green_max_annual_value_inr": 5000000,
+      "payment_terms_policy_days": 45,
+      "tfc_required": true,
+      "internal_buffer_days": 15
+    },
+    "telecom": {
+      "uplift_flag_pct": 5,
+      "benchmark_gap_pct": 10,
+      "min_comparables": 3,
+      "green_max_annual_value_inr": 5000000,
+      "payment_terms_policy_days": 45,
+      "tfc_required": true,
+      "internal_buffer_days": 15
+    },
+    "training": {
+      "uplift_flag_pct": 6,
+      "benchmark_gap_pct": 10,
+      "min_comparables": 3,
+      "green_max_annual_value_inr": 5000000,
+      "payment_terms_policy_days": 45,
+      "tfc_required": true,
+      "internal_buffer_days": 15
+    }
+  },
+  "global": {
+    "renewal_horizon_days": 180,
+    "red_days_to_act_by": 14,
+    "confidence_min": 0.85,
+    "auto_log_reversible_until_days_before_act_by": 7,
+    "l1_overspend_tolerance_pct": 10,
+    "l3_drift_tolerance_pct": 5,
+    "l3_min_consecutive_months": 3,
+    "l4_min_recurring_months": 3,
+    "notice_method_vocab": [
+      "email",
+      "email_or_physical",
+      "email_and_physical",
+      "registered_post",
+      "physical_only"
+    ],
+    "special_notice_methods": [
+      "registered_post",
+      "physical_only",
+      "email_and_physical"
+    ],
+    "minor_flags": [
+      "F5",
+      "F7",
+      "X2",
+      "T1"
+    ]
+  }
+}
