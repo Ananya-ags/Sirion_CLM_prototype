@@ -9,7 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { formatDate, formatINRShort } from "@/lib/format";
-import { CATEGORY_LABEL, TERMINAL } from "@/lib/labels";
+import { CATEGORY_LABEL } from "@/lib/labels";
 import type { Portfolio } from "@/lib/portfolio";
 import type { Lane } from "@/lib/types";
 import { cn } from "@/lib/utils";
@@ -26,7 +26,9 @@ export function InboxView({ views, unmatched, sources }: Pick<Portfolio, "views"
   const due = views.filter((v) => v.actBy && v.actBy.daysToActBy >= 0 && v.actBy.daysToActBy <= HORIZON);
   const atStake = due.reduce((a, v) => a + v.money.annualInr, 0);
   const greens = views.filter((v) => v.lane === "green").length;
-  const needsYou = views.filter((v) => (v.lane === "red" || v.lane === "needs_review") && !TERMINAL.includes(req[v.supplierId].state)).length + unmatched.length;
+  // Priya acts once the owner has decided (procurement_review) or a clause needs human review; unmatched docs too.
+  const needsYou = views.filter((v) => ["procurement_review", "human_review"].includes(req[v.supplierId].state)).length + unmatched.length;
+  const withOwner = views.filter((v) => req[v.supplierId].state === "owner_pending").length;
   const conflicts = views.reduce((a, v) => a + v.trackerConflicts.length, 0);
   const silent = views.filter((v) => v.flags.some((f) => f.code === "L4"));
   const review = views.filter((v) => v.lane === "needs_review");
@@ -46,7 +48,7 @@ export function InboxView({ views, unmatched, sources }: Pick<Portfolio, "views"
         <MetricCard variant="gradient" label="₹ at stake · next 120 days" value={formatINRShort(atStake)} sublabel={`${due.length} contracts renew by default`} icon={IndianRupee} hint="Annual value of contracts whose act-by date falls in the next 120 days. Rules compute it." />
         <MetricCard variant="gradient" label="Renewals due" value={String(due.length)} sublabel="raised by Docket itself" icon={CalendarClock} />
         <MetricCard variant="gradient" label="Auto-cleared (green)" value={String(greens)} sublabel="logged, reversible" icon={CheckCircle2} />
-        <MetricCard variant="gradient" label="Need you" value={String(needsYou)} sublabel="red, review, unmatched" icon={Hand} />
+        <MetricCard variant="gradient" label="Need you" value={String(needsYou)} sublabel={`review + decided · ${withOwner} with budget owner`} icon={Hand} hint="Requests the budget owner has decided, clauses needing human review, and unmatched documents. Red and amber renewals go to the budget owner first." />
       </div>
 
       <div className="grid gap-3 md:grid-cols-2">

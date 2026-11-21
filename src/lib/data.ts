@@ -20,7 +20,9 @@ import {
   LedgerRowSchema,
   PersonasFileSchema,
   PolicySchema,
+  SlaPerformanceRowSchema,
   TrackerRowSchema,
+  UsageRowSchema,
   VendorMasterRowSchema,
   type ExtractionOutput,
 } from "./types";
@@ -93,6 +95,10 @@ export const loadDocSourceForEval = (docId: string) => readDoc("docs_src", `${pa
 export const loadTracker = () => loadCsv("tracker.csv", TrackerRowSchema);
 export const loadLedger = () => loadCsv("ledger.csv", LedgerRowSchema);
 export const loadVendorMaster = () => loadCsv("vendor_master.csv", VendorMasterRowSchema);
+/** v3: monthly SLA reports (last 12 fully reported months). Missing file → []. */
+export const loadSlaPerformance = () => loadCsv("sla_performance.csv", SlaPerformanceRowSchema);
+/** v3: licensed vs active units per month. Missing file → []. */
+export const loadUsage = () => loadCsv("usage.csv", UsageRowSchema);
 export const loadPolicy = () => loadJson("policy.json", PolicySchema, { categories: {}, global: DEFAULT_GLOBAL_POLICY });
 export const loadBenchmarks = () => loadJson("benchmarks.json", BenchmarksSchema, []);
 export const loadHolidaysFile = () => loadJson("holidays.json", HolidaysFileSchema, { calendar: "", business_day_rule: "", holidays: [] });

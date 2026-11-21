@@ -325,10 +325,14 @@ def kind_for(doc):
 
 
 def main():
+    import sys
+    only = set(sys.argv[1:])      # optional: render only these doc IDs (v3 re-renders just the changed docs)
     docs = json.load(open(os.path.join(ROOT, "documents.json"), encoding="utf-8"))
     os.makedirs(os.path.join(ROOT, "docs"), exist_ok=True)
     report = []
     for d in docs:
+        if only and d["doc_id"] not in only:
+            continue
         md = open(os.path.join(ROOT, "docs_src", f"{d['doc_id']}.md"), encoding="utf-8").read()
         out = os.path.join(ROOT, d["file"])
         k = kind_for(d)
@@ -341,7 +345,7 @@ def main():
             else:
                 render_text_pdf(md, out, d["doc_id"], k)
         report.append((d["doc_id"], k if d["doc_id"] != "DOC-17" else "email+draft"))
-    for ho, k in (("HO-16", "contract"), ("HO-17", "draft"), ("HO-18", "scan")):
+    for ho, k in (() if only else (("HO-16", "contract"), ("HO-17", "draft"), ("HO-18", "scan"))):
         md = open(os.path.join(ROOT, "gold", "heldout", f"{ho}.md"), encoding="utf-8").read()
         out = os.path.join(ROOT, "gold", "heldout", f"{ho}.pdf")
         if k == "scan":

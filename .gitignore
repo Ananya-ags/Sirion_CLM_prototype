@@ -42,3 +42,4 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 docket_data_v1_backup/
+docket_data_v2_backup/

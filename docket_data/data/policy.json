@@ -108,7 +108,12 @@
       "F5",
       "F7",
       "X2",
-      "T1"
-    ]
+      "T1",
+      "S1",
+      "U1"
+    ],
+    "sla_breach_months_red": 3,
+    "utilisation_flag_pct": 80,
+    "utilisation_min_months": 3
   }
 }

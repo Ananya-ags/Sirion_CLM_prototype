@@ -70,7 +70,7 @@ export const useDocketStore = create<DocketStore>()(
           requests: { ...s.requests, ...Object.fromEntries(fresh.map((r) => [r.id, r])) },
           audit: [
             ...s.audit,
-            ...fresh.map((r) => ({ id: auditId(), ts, requestId: r.id, actor, action: `Raised (${r.state})`, reason: r.lane_reason ?? reason })),
+            ...fresh.map((r) => ({ id: auditId(), ts, requestId: r.id, actor, action: r.state === "owner_pending" ? "Raised → budget owner" : r.state === "human_review" ? "Raised → human review" : r.state === "auto_logged" ? "Raised → auto-logged" : `Raised (${r.state})`, reason: r.lane_reason ?? reason })),
           ],
         }));
       },
@@ -144,7 +144,7 @@ export const useDocketStore = create<DocketStore>()(
       resetDemo: () => set(initialData()),
     }),
     {
-      name: "docket-demo-v2",
+      name: "docket-demo-v3",
       storage: createJSONStorage(() => localStorage),
       partialize: ({ persona, requests, audit, financeConfirmations, financeDismissals, drafts }) => ({ persona, requests, audit, financeConfirmations, financeDismissals, drafts }),
       // Rehydrated on the client by <StoreHydrator /> to avoid SSR mismatches.

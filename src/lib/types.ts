@@ -108,6 +108,36 @@ export const VendorMasterRowSchema = z.object({
 });
 export type VendorMasterRow = z.infer<typeof VendorMasterRowSchema>;
 
+/** sla_performance.csv: one row per vendor × month × metric (higher is better). */
+export const SlaPerformanceRowSchema = z.object({
+  report_id: z.string(),
+  vendor_id: z.string(),
+  erp_vendor_name: z.string(),
+  /** yyyy-mm */
+  month: z.string().regex(/^\d{4}-\d{2}$/),
+  /** e.g. uptime_pct, or ill_uptime_pct:<circuit id> */
+  metric: z.string(),
+  target: z.coerce.number(),
+  actual: z.coerce.number(),
+  unit: z.string(),
+  source: z.string(),
+  reported_date: z.string(),
+});
+export type SlaPerformanceRow = z.infer<typeof SlaPerformanceRowSchema>;
+
+/** usage.csv: licensed vs active units per vendor × month × metric. */
+export const UsageRowSchema = z.object({
+  usage_id: z.string(),
+  vendor_id: z.string(),
+  erp_vendor_name: z.string(),
+  month: z.string().regex(/^\d{4}-\d{2}$/),
+  metric: z.string(),
+  licensed_units: z.coerce.number(),
+  active_units: z.coerce.number(),
+  source: z.string(),
+});
+export type UsageRow = z.infer<typeof UsageRowSchema>;
+
 export const CategoryPolicySchema = z.object({
   uplift_flag_pct: z.number(),
   benchmark_gap_pct: z.number(),
@@ -131,6 +161,12 @@ export const GlobalPolicySchema = z.object({
   notice_method_vocab: z.array(z.string()),
   special_notice_methods: z.array(z.string()),
   minor_flags: z.array(z.string()),
+  /** v3: S1 escalates to red at ≥ N breach months in 12 on a high-criticality vendor. */
+  sla_breach_months_red: z.number().default(3),
+  /** v3: U1 fires below this active/licensed %… */
+  utilisation_flag_pct: z.number().default(80),
+  /** …for at least this many consecutive latest months. */
+  utilisation_min_months: z.number().default(3),
 });
 export type GlobalPolicy = z.infer<typeof GlobalPolicySchema>;
 
@@ -277,6 +313,47 @@ export const VendorQuoteSchema = z.object({
 });
 export type VendorQuote = z.infer<typeof VendorQuoteSchema>;
 
+/** SLA credit band: credit_pct applies when from_incl ≤ actual < to_excl. */
+export const CreditBandSchema = z.object({ from_incl: z.number(), to_excl: z.number(), credit_pct: z.number() });
+export type CreditBand = z.infer<typeof CreditBandSchema>;
+
+/** Contract SLA terms. credit_rule is a table, or free text when the contract has no % table (then S1 can't fire). */
+export const SlaTermsSchema = z.object({
+  metric: z.string(),
+  target: z.number(),
+  currency: z.string(),
+  credit_rule: z.union([z.array(CreditBandSchema), z.string()]),
+  fee_basis_monthly: z.number().nullable(),
+  citation: CitationSchema.optional(),
+});
+export type SlaTerms = z.infer<typeof SlaTermsSchema>;
+
+export const GoldSlaPerformanceSchema = z.looseObject({
+    sla_terms: SlaTermsSchema,
+    metrics: z.array(z.string()),
+    months_reported: z.number(),
+    breach_months: z.array(z.looseObject({ month: z.string(), metric: z.string(), credit_pct: z.number(), credit_due_inr: z.number(), claimed: z.boolean() })),
+    credits_due_inr: z.number(),
+    credits_claimed_inr: z.number(),
+    unclaimed_inr: z.number(),
+  });
+export type GoldSlaPerformance = z.infer<typeof GoldSlaPerformanceSchema>;
+export const GoldPerformanceSchema = z.union([z.looseObject({ tracked: z.literal(false), reason: z.string() }), GoldSlaPerformanceSchema]);
+export type GoldPerformance = z.infer<typeof GoldPerformanceSchema>;
+export const isSlaTracked = (p: GoldPerformance | undefined): p is GoldSlaPerformance => !!p && p.tracked !== false && "sla_terms" in p;
+
+export const GoldUtilisationSchema = z.looseObject({
+  order_form: z.string(),
+  latest_pct: z.number(),
+  months_below: z.number(),
+  unused_value_inr: z.number(),
+  lines: z.array(z.looseObject({ metric: z.string(), licensed_units: z.number(), latest_pct: z.number(), months_below: z.number(), unused_value_inr: z.number() })),
+});
+export type GoldUtilisation = z.infer<typeof GoldUtilisationSchema>;
+
+/** Licensed quantity per line, from the order form (source-agnostic: gold now, AI extraction later). */
+export type LicensedLine = { metric: string; licensed_units: number; doc_id?: string };
+
 export const DevGoldSupplierSchema = z.looseObject({
   supplier_id: z.string(),
   contract_name: z.string(),
@@ -297,11 +374,15 @@ export const DevGoldSupplierSchema = z.looseObject({
     uplift_basis: z.string(),
     uplift_exposure_inr: z.number(),
   }),
-  expected_flags: z.array(z.object({ code: z.string(), detail: z.unknown() })),
+  expected_flags: z.array(z.object({ code: z.string(), detail: z.unknown(), impact_inr: z.number().optional() })),
   expected_lane: LaneSchema,
   lane_reason: z.string(),
   quote: VendorQuoteSchema.optional(),
   rate_card: z.array(RateLineSchema).optional(),
+  /** v3: SLA terms + reported breaches, or {tracked:false, reason}. */
+  performance: GoldPerformanceSchema.optional(),
+  /** v3: order-form licensed units vs usage (SUP-01, SUP-02). */
+  utilisation: GoldUtilisationSchema.optional(),
 });
 export type DevGoldSupplier = z.infer<typeof DevGoldSupplierSchema>;
 export const DocSupplierMapSchema = z.array(z.object({ doc_id: z.string(), supplier_id: z.string().nullable(), evidence: z.array(z.string()) }));
@@ -338,6 +419,7 @@ export const FlagCodeSchema = z.enum([
   "L1", "L2", "L3", "L4",
   "T1",
   "X1", "X2",
+  "S1", "U1",
 ]);
 export type FlagCode = z.infer<typeof FlagCodeSchema>;
 

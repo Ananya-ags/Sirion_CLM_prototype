@@ -10,7 +10,7 @@ Issued under SaaS Master Agreement No. PG/MSA/2025/017 dated 18 February 2025 be
 | Subscription Fees | ₹28,00,000 per annum, exclusive of GST |
 | Billing | Monthly in advance — ₹2,33,333 per month plus GST @ 18% |
 | Implementation | Completed under PG-IMP-2024-09 (no further charge) |
-| Renewal | As per Clause 2.2 of the Master Agreement |
+| Renewal | As per Clause 11.2 of the Master Agreement |
 | Client PO | PO-2025-0264 |
 
 Additional employees above the licensed count shall be charged at ₹72 per employee per month, billed quarterly in arrears.

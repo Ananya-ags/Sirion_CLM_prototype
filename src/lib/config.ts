@@ -35,7 +35,10 @@ export const DEFAULT_GLOBAL_POLICY: GlobalPolicy = {
   l4_min_recurring_months: 3,
   notice_method_vocab: ["email", "email_or_physical", "email_and_physical", "registered_post", "physical_only"],
   special_notice_methods: ["registered_post", "physical_only", "email_and_physical"],
-  minor_flags: ["F5", "F7", "X2", "T1"],
+  minor_flags: ["F5", "F7", "X2", "T1", "S1", "U1"],
+  sla_breach_months_red: 3,
+  utilisation_flag_pct: 80,
+  utilisation_min_months: 3,
 };
 
 /** Staffing rate cards: planned hours per resource per month (from the data pack's build script). */

@@ -18,6 +18,9 @@ export function sameVendor(a: string, b: string): boolean {
   return !!x && x === normName(b)[0];
 }
 
+/** Credit notes: invoice_no starts with "CN-" and amounts are negative. */
+export const isCreditNote = (r: Pick<LedgerRow, "invoice_no">) => !!r.invoice_no && r.invoice_no.toUpperCase().startsWith("CN-");
+
 export const rowsForVendor = (ledger: LedgerRow[], name: string) => ledger.filter((r) => sameVendor(r.erp_vendor_name, name));
 
 export type LedgerSummary = {
@@ -25,7 +28,9 @@ export type LedgerSummary = {
   invoices: number;
   total_pre_tax_inr: number;
   total_inr: number;
+  /** Distinct billed service periods (credit notes do not add a month). */
   service_periods: string[];
+  credit_notes: { count: number; total_pre_tax_inr: number; service_periods: string[] };
 };
 
 export type L1 = { total_pre_tax_inr: number; annual_value_inr: number; overspend_inr: number; overspend_pct: number };
@@ -54,15 +59,20 @@ const mostCommon = (xs: number[]) => {
 const sum = (xs: number[]) => xs.reduce((a, b) => a + b, 0);
 
 export function ledgerChecks(i: LedgerInput): LedgerResult {
-  const rows = [...i.rows].sort((a, b) => a.service_period.localeCompare(b.service_period));
+  const all = [...i.rows].sort((a, b) => a.service_period.localeCompare(b.service_period));
+  const credits = all.filter(isCreditNote);
+  // Invoices only: L3 drift, L4 month counts and "most common monthly amount" ignore credit notes.
+  const rows = all.filter((r) => !isCreditNote(r));
   const periods = [...new Set(rows.map((r) => r.service_period))];
-  const total = sum(rows.map((r) => r.amount_pre_tax_inr));
+  // L1 / totals: credit notes net off.
+  const total = sum(all.map((r) => r.amount_pre_tax_inr));
   const summary: LedgerSummary = {
-    erp_vendor_names: [...new Set(rows.map((r) => r.erp_vendor_name))],
-    invoices: rows.length,
+    erp_vendor_names: [...new Set(all.map((r) => r.erp_vendor_name))],
+    invoices: all.length,
     total_pre_tax_inr: total,
-    total_inr: sum(rows.map((r) => r.total_inr)),
+    total_inr: sum(all.map((r) => r.total_inr)),
     service_periods: periods,
+    credit_notes: { count: credits.length, total_pre_tax_inr: sum(credits.map((r) => r.amount_pre_tax_inr)), service_periods: [...new Set(credits.map((r) => r.service_period))] },
   };
   const live = i.renewalType !== "none";
 
@@ -77,13 +87,14 @@ export function ledgerChecks(i: LedgerInput): LedgerResult {
   if (!live && i.termEnd) {
     const endMonth = i.termEnd.slice(0, 7);
     const after = rows.filter((r) => r.service_period > endMonth);
+    const afterAll = all.filter((r) => r.service_period > endMonth); // totals net any credit notes
     if (after.length) {
       l2 = {
         contract_end: i.termEnd,
         service_periods_after_expiry: [...new Set(after.map((r) => r.service_period))],
         monthly_pre_tax_inr: mostCommon(after.map((r) => r.amount_pre_tax_inr)),
-        total_pre_tax_inr: sum(after.map((r) => r.amount_pre_tax_inr)),
-        total_incl_gst_inr: sum(after.map((r) => r.total_inr)),
+        total_pre_tax_inr: sum(afterAll.map((r) => r.amount_pre_tax_inr)),
+        total_incl_gst_inr: sum(afterAll.map((r) => r.total_inr)),
         po_ref: after[0].po_ref,
       };
     }
@@ -128,6 +139,7 @@ export function ledgerChecks(i: LedgerInput): LedgerResult {
 export function untrackedRecurringVendors(ledger: LedgerRow[], trackerNames: string[], minMonths: number): string[] {
   const byVendor = new Map<string, Set<string>>();
   for (const r of ledger) {
+    if (isCreditNote(r)) continue;
     if (!byVendor.has(r.erp_vendor_name)) byVendor.set(r.erp_vendor_name, new Set());
     byVendor.get(r.erp_vendor_name)!.add(r.service_period);
   }

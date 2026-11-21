@@ -6,6 +6,8 @@ export type LaneInput = {
   annualInr: number;
   greenMaxInr: number;
   daysToActBy: number | null;
+  /** Minor flags the Rules escalated to material (e.g. S1 at ≥ sla_breach_months_red breach months on a high-criticality vendor). */
+  escalated?: FlagCode[];
   global: Pick<GlobalPolicy, "red_days_to_act_by" | "minor_flags">;
 };
 
@@ -14,14 +16,14 @@ export type LaneInput = {
  * red: any material flag (F2, F3, F4, F6, L1–L4), or ≤ red_days_to_act_by days to act-by.
  *      F6 is only "above threshold" when annual > green max; below it, F6 is still not a minor
  *      flag, so it cannot be amber or green either (same as the data pack's reference engine).
- * amber: minor flags only (policy.global.minor_flags: F5, F7, X2, T1), or no flags but above the green limit.
+ * amber: minor flags only (policy.global.minor_flags: F5, F7, X2, T1, S1, U1), or no flags but above the green limit.
  * green: no flags besides F1 and annual ≤ green max.
  */
 export function decideLane(i: LaneInput): { lane: Lane; reason: string } {
   if (i.flags.includes("X1")) return { lane: "needs_review", reason: "Needs review: a key field is unclear or low-confidence (X1)." };
 
   const other = i.flags.filter((f) => f !== "F1");
-  const material = other.filter((f) => !i.global.minor_flags.includes(f));
+  const material = other.filter((f) => !i.global.minor_flags.includes(f) || i.escalated?.includes(f));
   const urgent = i.daysToActBy != null && i.daysToActBy <= i.global.red_days_to_act_by;
   if (material.length || urgent) {
     const why = [...material, ...(urgent ? [`act-by in ${i.daysToActBy} days`] : [])];

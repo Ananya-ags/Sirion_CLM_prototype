@@ -15,14 +15,20 @@ import {
   loadHolidays,
   loadLedger,
   loadPolicy,
+  loadSlaPerformance,
   loadTracker,
+  loadUsage,
+  loadVendorMaster,
 } from "./data";
+import { initialStateFor } from "./requestFlow";
 import { evaluateSupplier, type RulesContext, type SupplierEvaluation } from "./rules/flags";
-import { rowsForVendor } from "./rules/ledger";
+import { isCreditNote, rowsForVendor } from "./rules/ledger";
 import {
   ExtractionOutputSchema,
   RateLineSchema,
+  SlaTermsSchema,
   VendorQuoteSchema,
+  isSlaTracked,
   type Category,
   type DevGoldSupplier,
   type DocumentMeta,
@@ -38,6 +44,10 @@ export const SEED_CONFIDENCE = 0.95;
 export const SupplierExtractionSchema = ExtractionOutputSchema.extend({
   quote: VendorQuoteSchema.optional(),
   rate_card: z.array(RateLineSchema).optional(),
+  /** v3: SLA terms from the executed contract (null = no % service level). */
+  sla_terms: SlaTermsSchema.nullable().optional(),
+  /** v3: licensed units per line from the order form. */
+  licensed_units: z.array(z.object({ metric: z.string(), licensed_units: z.number(), doc_id: z.string().optional() })).optional(),
 });
 export type SupplierExtraction = z.infer<typeof SupplierExtractionSchema> & { source: "seed" | "cache" };
 
@@ -56,13 +66,16 @@ export function goldToExtraction(g: DevGoldSupplier): SupplierExtraction {
         : [k, seedField(v as Field<unknown>)],
     ),
   ) as ExtractionOutput["effective_terms"];
-  return { supplier_id: g.supplier_id, family: g.family, effective_terms: terms, quote: g.quote, rate_card: g.rate_card, source: "seed" };
+  // v3: SLA terms and order-form licensed units come from gold for now (AI extraction replaces this source later).
+  const perf = isSlaTracked(g.performance) ? g.performance.sla_terms : null;
+  const licensed = g.utilisation?.lines.map((l) => ({ metric: l.metric, licensed_units: l.licensed_units, doc_id: g.utilisation!.order_form }));
+  return { supplier_id: g.supplier_id, family: g.family, effective_terms: terms, quote: g.quote, rate_card: g.rate_card, sla_terms: perf, licensed_units: licensed, source: "seed" };
 }
 
 let ctxPromise: Promise<RulesContext> | null = null;
 export function loadRulesContext(): Promise<RulesContext> {
   ctxPromise ??= (async () => {
-    const [policy, benchmarks, holidays, ledger, tracker, fx, cpi] = await Promise.all([
+    const [policy, benchmarks, holidays, ledger, tracker, fx, cpi, sla, usage, vendors] = await Promise.all([
       loadPolicy(),
       loadBenchmarks(),
       loadHolidays(),
@@ -70,6 +83,9 @@ export function loadRulesContext(): Promise<RulesContext> {
       loadTracker(),
       loadFx(),
       loadCpi(),
+      loadSlaPerformance(),
+      loadUsage(),
+      loadVendorMaster(),
     ]);
     return {
       policy,
@@ -80,6 +96,9 @@ export function loadRulesContext(): Promise<RulesContext> {
       usdInr: fx.USD_INR,
       cpiPct: cpi.india_cpi_yoy_pct,
       today: DEMO_TODAY,
+      sla,
+      usage,
+      vendors,
     };
   })();
   return ctxPromise;
@@ -147,6 +166,8 @@ export type SupplierView = SupplierMeta & {
   benchmarks: SupplierEvaluation["benchmarks"];
   ledgerSummary: SupplierEvaluation["ledger"]["summary"];
   trackerConflicts: SupplierEvaluation["trackerConflicts"];
+  sla: SupplierEvaluation["sla"];
+  utilisation: SupplierEvaluation["utilisation"];
 };
 
 export async function getSupplierView(supplierId: string): Promise<SupplierView | null> {
@@ -154,13 +175,23 @@ export async function getSupplierView(supplierId: string): Promise<SupplierView 
   const ex = await getExtraction(supplierId);
   if (!meta || !ex) return null;
   const ev = evaluateSupplier(
-    { supplierId, name: meta.name, category: meta.category, terms: ex.effective_terms, quote: ex.quote, rateCard: ex.rate_card },
+    {
+      supplierId,
+      name: meta.name,
+      category: meta.category,
+      terms: ex.effective_terms,
+      quote: ex.quote,
+      rateCard: ex.rate_card,
+      vendorId: meta.vendorId,
+      slaTerms: ex.sla_terms ?? null,
+      licensed: ex.licensed_units,
+    },
     await loadRulesContext(),
   );
   const cur = ex.effective_terms.currency.value;
   const ctx = await loadRulesContext();
   const months = new Map<string, number>();
-  for (const r of rowsForVendor(ctx.ledger, meta.name)) months.set(r.service_period, (months.get(r.service_period) ?? 0) + r.amount_pre_tax_inr);
+  for (const r of rowsForVendor(ctx.ledger, meta.name).filter((r) => !isCreditNote(r))) months.set(r.service_period, (months.get(r.service_period) ?? 0) + r.amount_pre_tax_inr);
   return {
     ...meta,
     source: ex.source,
@@ -176,6 +207,8 @@ export async function getSupplierView(supplierId: string): Promise<SupplierView 
     benchmarks: ev.benchmarks,
     ledgerSummary: ev.ledger.summary,
     trackerConflicts: ev.trackerConflicts,
+    sla: ev.sla,
+    utilisation: ev.utilisation,
   };
 }
 
@@ -184,7 +217,7 @@ export async function getAllSupplierViews(): Promise<SupplierView[]> {
   return views.filter((v): v is SupplierView => !!v);
 }
 
-/** Initial requests Docket raises itself: state raised, or auto_logged for green. */
+/** Initial requests Docket raises itself: owner_pending (amber/red), human_review (unclear), auto_logged (green). */
 export function buildInitialRequests(views: SupplierView[]): Request[] {
   const ts = `${DEMO_TODAY}T09:00:00.000Z`;
   return views.map((v) => ({
@@ -192,7 +225,7 @@ export function buildInitialRequests(views: SupplierView[]): Request[] {
     supplier_id: v.supplierId,
     supplier_name: v.name,
     category: v.category,
-    state: v.lane === "green" ? "auto_logged" : "raised",
+    state: initialStateFor(v.lane),
     lane: v.lane,
     lane_reason: v.laneReason,
     flags: v.flags,

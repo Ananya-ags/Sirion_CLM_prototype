@@ -3,12 +3,13 @@ import type { LedgerRow } from "../types";
 import { actByInfo, addDays, computeActBy, daysBetween, isBusinessDay } from "./actBy";
 import { benchmarkGap, median } from "./benchmark";
 import { decideLane } from "./lanes";
-import { ledgerChecks, normName, sameVendor, untrackedRecurringVendors } from "./ledger";
+import { isCreditNote, ledgerChecks, normName, sameVendor, untrackedRecurringVendors } from "./ledger";
+import { breachMonthsIn12, slaCredits, utilisation } from "./performance";
 import { effectiveUplift, formatINR, formatINRShort, quoteVsCap, toInr } from "./money";
 
 // Subset of holidays.json used in these edge cases.
 const H = new Set(["2026-12-25", "2027-01-01", "2027-01-15", "2027-01-26", "2026-11-09", "2026-11-10"]);
-const G = { red_days_to_act_by: 14, minor_flags: ["F5", "F7", "X2", "T1"] };
+const G = { red_days_to_act_by: 14, minor_flags: ["F5", "F7", "X2", "T1", "S1", "U1"] };
 
 describe("act-by edge cases", () => {
   it.each([
@@ -115,6 +116,92 @@ describe("ledger", () => {
     const ledger = [row("2026-02", 5, "INKWELL"), row("2026-09", 5, "INKWELL"), ...["2026-01", "2026-02", "2026-03"].map((p) => row(p, 9, "TALKWAVE"))];
     expect(untrackedRecurringVendors(ledger, [], 3)).toEqual(["TALKWAVE"]);
   });
+
+  describe("credit notes (CN- invoice_no, negative amounts)", () => {
+    const cn = (p: string, amt: number, name = "ACME PRIVATE LIMITED"): LedgerRow => ({ ...row(p, -amt, name), txn_id: `CN-${p}`, invoice_no: `CN-AC-${p}` });
+    const run = (rows: LedgerRow[], over: Partial<Parameters<typeof ledgerChecks>[0]> = {}) =>
+      ledgerChecks({ rows, annualInr: 1200, monthlyInr: 100, renewalType: "auto", termEnd: "2027-01-01", hasTrackerRow: true, global: g, ...over });
+    const months = (n: number, amt: number) => Array.from({ length: n }, (_, i) => row(`2026-${String(i + 1).padStart(2, "0")}`, amt));
+
+    it("identifies CN- rows only", () => {
+      expect(isCreditNote(cn("2026-01", 10))).toBe(true);
+      expect(isCreditNote(row("2026-01", 10))).toBe(false);
+      expect(isCreditNote({ invoice_no: "INV-CN-1" })).toBe(false);
+    });
+    it("L1 nets the credit note off the total", () => {
+      // 12 × 140 = 1,680 > 1,320 (1,200 + 10%) → L1; a 400 credit brings it to 1,280 → no L1
+      expect(run(months(12, 140)).l1).toMatchObject({ total_pre_tax_inr: 1680 });
+      expect(run([...months(12, 140), cn("2026-07", 400)]).l1).toBeNull();
+      expect(run([...months(12, 140), cn("2026-07", 100)]).l1).toMatchObject({ total_pre_tax_inr: 1580, overspend_inr: 380 });
+    });
+    it("L3 ignores the credit note (it does not break a drift run or lower the billed amount)", () => {
+      const rows = [...months(4, 120), cn("2026-02", 30)];
+      expect(run(rows).l3).toMatchObject({ months: 4, billed_monthly_inr: 120, excess_pre_tax_inr: 80 });
+    });
+    it("L4 does not count a credit-note month as a separate recurring month; most common amount excludes it", () => {
+      const two = [row("2026-01", 50), row("2026-02", 50), cn("2026-03", 50), cn("2026-04", 50)];
+      expect(run(two, { hasTrackerRow: false }).l4).toBeNull();
+      const three = [...months(3, 50), cn("2026-02", 50), cn("2026-03", 50)];
+      expect(run(three, { hasTrackerRow: false }).l4).toMatchObject({ recurring_months: 3, monthly_pre_tax_inr: 50, total_pre_tax_inr: 50 });
+      expect(untrackedRecurringVendors([...two], [], 3)).toEqual([]);
+    });
+    it("summary: distinct billed periods; credit notes listed separately", () => {
+      const s = run([...months(3, 100), cn("2026-02", 10)]).summary;
+      expect(s.service_periods).toEqual(["2026-01", "2026-02", "2026-03"]);
+      expect(s.invoices).toBe(4);
+      expect(s.total_pre_tax_inr).toBe(290);
+      expect(s.credit_notes).toEqual({ count: 1, total_pre_tax_inr: -10, service_periods: ["2026-02"] });
+    });
+  });
+});
+
+describe("S1 SLA credits", () => {
+  const terms = {
+    metric: "uptime_pct", target: 99.5, currency: "INR", fee_basis_monthly: 100000,
+    credit_rule: [{ from_incl: 99, to_excl: 99.5, credit_pct: 5 }, { from_incl: 98, to_excl: 99, credit_pct: 10 }, { from_incl: 0, to_excl: 98, credit_pct: 20 }],
+  };
+  const sla = (month: string, actual: number, metric = "uptime_pct") => ({ report_id: month, vendor_id: "V", erp_vendor_name: "ACME", month, metric, target: 99.5, actual, unit: "pct", source: "vendor_monthly_report", reported_date: `${month}-28` });
+  it("credit % × contracted fee; band edges are from-inclusive", () => {
+    const r = slaCredits({ terms, rows: [sla("2026-01", 99.5), sla("2026-02", 99.0), sla("2026-03", 98.99), sla("2026-04", 97)], creditNotePeriods: new Set(), usdInr: 84 });
+    expect(r.breaches.map((b) => [b.month, b.credit_pct, b.credit_due_inr])).toEqual([["2026-02", 5, 5000], ["2026-03", 10, 10000], ["2026-04", 20, 20000]]);
+    expect(r.monthsMet).toBe(1);
+    expect(breachMonthsIn12(r)).toBe(3);
+  });
+  it("a CN- for the service period marks the credit claimed", () => {
+    const r = slaCredits({ terms, rows: [sla("2026-02", 99.0), sla("2026-03", 99.0)], creditNotePeriods: new Set(["2026-02"]), usdInr: 84 });
+    expect([r.creditsDueInr, r.creditsClaimedInr, r.unclaimedInr, r.unclaimedMonths]).toEqual([10000, 5000, 5000, ["2026-03"]]);
+  });
+  it("USD fee converts at fx; a text-only credit rule computes nothing", () => {
+    const usd = slaCredits({ terms: { ...terms, currency: "USD", fee_basis_monthly: 3750 }, rows: [sla("2026-07", 99.2)], creditNotePeriods: new Set(), usdInr: 84 });
+    expect(usd.breaches[0]).toMatchObject({ credit_due_original: 187.5, credit_due_inr: 15750 });
+    const text = slaCredits({ terms: { ...terms, credit_rule: "2% per point" }, rows: [sla("2026-07", 90)], creditNotePeriods: new Set(), usdInr: 84 });
+    expect(text.noCreditTable).toBe(true);
+    expect(text.unclaimedInr).toBe(0);
+  });
+  it("per-circuit metrics (metric:<id>) match the contract metric", () => {
+    const r = slaCredits({ terms, rows: [sla("2026-01", 99.9, "uptime_pct:C1"), sla("2026-01", 99.2, "uptime_pct:C2"), sla("2026-01", 90, "other")], creditNotePeriods: new Set(), usdInr: 84 });
+    expect(r.monthsReported).toBe(1);
+    expect(r.breaches).toHaveLength(1);
+  });
+});
+
+describe("U1 utilisation", () => {
+  const use = (month: string, active: number, licensed = 100, metric = "seats") => ({ usage_id: month, vendor_id: "V", erp_vendor_name: "ACME", month, metric, licensed_units: licensed, active_units: active, source: "admin_console" });
+  const base = { licensed: [{ metric: "seats", licensed_units: 100 }, { metric: "agents", licensed_units: 100 }], annualInr: 200_000, flagPct: 80, minMonths: 3 };
+  it("fires at ≥ 3 consecutive latest months below 80%; impact = avg unused × annual ÷ total licensed", () => {
+    const r = utilisation({ ...base, rows: ["01", "02", "03", "04"].map((m, i) => use(`2026-${m}`, [90, 70, 75, 65][i])) })!;
+    const l = r.lines[0];
+    expect([l.flagged, l.months_below, l.avg_active_last_n, l.unused_units]).toEqual([true, 3, 70, 30]);
+    expect(l.unused_value_inr).toBe(30_000); // 30 × (2,00,000 ÷ 200)
+    expect(r.unusedValueInr).toBe(30_000);
+  });
+  it("2 latest months below is not enough; a recovery resets the run", () => {
+    expect(utilisation({ ...base, rows: ["01", "02", "03"].map((m, i) => use(`2026-${m}`, [90, 70, 75][i])) })!.lines[0].flagged).toBe(false);
+    expect(utilisation({ ...base, rows: ["01", "02", "03", "04"].map((m, i) => use(`2026-${m}`, [70, 70, 70, 85][i])) })!.lines[0].flagged).toBe(false);
+  });
+  it("no licensed lines → null", () => {
+    expect(utilisation({ ...base, licensed: [], rows: [] })).toBeNull();
+  });
 });
 
 describe("lanes", () => {
@@ -128,12 +215,17 @@ describe("lanes", () => {
     [["F6"], "red"],
     [["L4", "T1"], "red"],
     [["X1", "F2"], "needs_review"],
+    [["F1", "S1", "U1"], "amber"],
+    [["F1", "F2", "L3", "S1", "U1"], "red"],
   ] as const)("%j → %s", (flags, lane) => {
     expect(decideLane({ ...base, flags: [...flags] }).lane).toBe(lane);
   });
   it("≤14 days to act-by is red even with no flags", () => {
     expect(decideLane({ ...base, flags: ["F1"], daysToActBy: 14 }).lane).toBe("red");
     expect(decideLane({ ...base, flags: ["F1"], daysToActBy: 15 }).lane).toBe("green");
+  });
+  it("S1 escalated by Rules (≥3 breach months, high criticality) → red", () => {
+    expect(decideLane({ ...base, flags: ["F1", "S1"], escalated: ["S1"] }).lane).toBe("red");
   });
   it("no flags but above green max → amber", () => {
     expect(decideLane({ ...base, flags: ["F1"], annualInr: 6_200_000 }).lane).toBe("amber");

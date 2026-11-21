@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowLeft, BadgeCheck, CalendarClock, CheckCircle2, ExternalLink, FileSignature, FileText, Handshake, Loader2, Mail, Paperclip, ShieldCheck, Target } from "lucide-react";
+import { Activity, ArrowLeft, BadgeCheck, Hourglass, Users, CalendarClock, CheckCircle2, ExternalLink, FileSignature, FileText, Handshake, Loader2, Mail, Paperclip, ShieldCheck, Target } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { ActorBadge, ConfidencePill, FlagChip, Hint, LaneBadge, MiniBars, SourceChip, StateChip } from "@/components/docket";
@@ -10,11 +10,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { formatDate, formatINR, formatINRShort } from "@/lib/format";
-import { CATEGORY_LABEL, FIELD_LABEL, ROLE_LABEL, TERMINAL } from "@/lib/labels";
+import { CATEGORY_LABEL, FIELD_LABEL, lakh1, metricLabel, monthLabel, monthList, ROLE_LABEL } from "@/lib/labels";
+import { PROCUREMENT_ACTIONABLE } from "@/lib/requestFlow";
 import type { FamilyDoc, SupplierView } from "@/lib/seed";
 import type { Field, Flag } from "@/lib/types";
 import { cn } from "@/lib/utils";
-import { approveRenewal, draftNotice, handOffRenegotiation } from "@/store/actions";
+import { approveRenewal, confirmReview, draftNotice, handOffRenegotiation } from "@/store/actions";
 import { useDocketStore } from "@/store/useDocketStore";
 import { useRequestMap } from "./useRequest";
 
@@ -46,7 +47,9 @@ export function ContractView({ view }: { view: SupplierView }) {
   const docOf = (id?: string) => view.family.find((d) => d.doc_id === id);
   const days = view.actBy?.daysToActBy;
   const hasF3 = view.flags.some((f) => f.code === "F3");
-  const actionable = !TERMINAL.includes(req.state) && req.state !== "legal_pending";
+  const actionable = PROCUREMENT_ACTIONABLE.includes(req.state);
+  const s1 = view.flags.find((f) => f.code === "S1");
+  const u1 = view.flags.find((f) => f.code === "U1");
   const ledgerFlags = view.flags.filter((f) => f.code.startsWith("L"));
   const run = async (key: string, fn: () => unknown) => {
     setBusy(key);
@@ -164,11 +167,19 @@ export function ContractView({ view }: { view: SupplierView }) {
             <div className="grid gap-4 md:grid-cols-[1fr_240px]">
               <MiniBars months={view.ledgerMonths} contracted={view.lane === "needs_review" || view.money.annualInr ? view.money.monthlyInr : 0} />
               <div className="space-y-2">
-                <div className="flex items-center gap-2"><SourceChip source="ledger" /><span className="text-xs text-muted-foreground">{view.ledgerSummary.invoices} invoices · {formatINRShort(view.ledgerSummary.total_pre_tax_inr)}</span></div>
+                <div className="flex items-center gap-2"><SourceChip source="ledger" /><span className="text-xs text-muted-foreground">{view.ledgerSummary.invoices} invoices · {formatINRShort(view.ledgerSummary.total_pre_tax_inr)}{view.ledgerSummary.credit_notes.count > 0 && ` net of ${view.ledgerSummary.credit_notes.count} credit note`}</span></div>
                 {ledgerFlags.length ? ledgerFlags.map((f) => <FlagLine key={f.code} f={f} />) : <p className="text-xs text-muted-foreground">No billing anomalies.</p>}
               </div>
             </div>
           </Section>
+
+          {/* Performance + utilisation (v3) */}
+          {(view.sla || view.utilisation) && (
+            <div className="grid gap-6 md:grid-cols-2">
+              {view.sla && <PerformanceCard view={view} />}
+              {view.utilisation && <UtilisationCard view={view} />}
+            </div>
+          )}
 
           {/* Audit */}
           <Section title="Audit trail" actors={["AI", "Rules", "Human"]}>
@@ -204,6 +215,19 @@ export function ContractView({ view }: { view: SupplierView }) {
                 <LaneBadge lane={view.lane} />
                 <p className="mt-2 text-xs text-muted-foreground">{view.laneReason}</p>
               </div>
+              {req.state === "owner_pending" && (
+                <div className="flex items-center gap-2 rounded-lg border border-dashed p-3 text-xs text-muted-foreground">
+                  <Hourglass className="size-3.5 shrink-0" /> Waiting on <ActorBadge actor="owner" /> to decide. You act once the owner has chosen.
+                </div>
+              )}
+              {req.state === "human_review" && (
+                <div className="space-y-2 rounded-lg border border-lane-review/30 bg-lane-review-bg/50 p-3 text-xs">
+                  <div className="font-medium text-navy">Human review first: {view.flags.find((f) => f.code === "X1")?.detail ?? "confirm the unclear clause"}</div>
+                  <Button size="sm" variant="secondary" onClick={() => confirmReview(req.id, "Procurement reviewed the unclear clause; routed to budget owner")}>
+                    <CheckCircle2 /> Confirm reviewed · send to owner
+                  </Button>
+                </div>
+              )}
               {req.owner_decision && (
                 <div className="rounded-lg border p-3 text-xs">
                   <div className="flex items-center gap-2 font-medium text-navy"><ActorBadge actor="owner" /> chose {req.owner_decision.choice === "procurement" ? "Send to Procurement" : req.owner_decision.choice}</div>
@@ -229,8 +253,14 @@ export function ContractView({ view }: { view: SupplierView }) {
                       </span>
                     </Hint>
                   ))}
-                  {!confirmations.length && ledgerFlags.length > 0 && <span className="text-xs text-muted-foreground">Awaiting Finance confirmation</span>}
+                  {!confirmations.length && (ledgerFlags.length > 0 || s1) && <span className="text-xs text-muted-foreground">Awaiting Finance confirmation</span>}
                 </div>
+                {(s1 || u1) && (
+                  <div className="space-y-1.5 pt-1">
+                    {s1 && <EvidenceLine icon={Activity} label={`SLA credit unclaimed · ${monthsOf(s1)}`} inr={s1.impactInr} confirmed={confirmations.some((c) => c.flagCode === "S1")} />}
+                    {u1 && <EvidenceLine icon={Users} label={`Unused ${metricLabel(String(u1.data?.metric))} · ${Math.round(Number(u1.data?.latest_pct))}% used`} inr={u1.impactInr} suffix="/yr" />}
+                  </div>
+                )}
               </div>
               {draft && (
                 <div className="rounded-lg border p-3 text-xs">
@@ -344,6 +374,68 @@ function FamilyRow({ d }: { d: FamilyDoc }) {
         <ExternalLink className="size-4" />
       </a>
     </div>
+  );
+}
+
+const monthsOf = (f: Flag) => monthList((f.data?.months ?? []) as string[]);
+
+function EvidenceLine({ icon: Icon, label, inr, suffix = "", confirmed }: { icon: typeof Activity; label: string; inr?: number; suffix?: string; confirmed?: boolean }) {
+  return (
+    <div className="flex items-center justify-between gap-2 rounded-lg bg-surface px-2.5 py-1.5 text-xs">
+      <span className="flex min-w-0 items-center gap-1.5 text-navy"><Icon className="size-3.5 shrink-0 text-lane-amber" /> <span className="truncate">{label}</span>{confirmed && <CheckCircle2 className="size-3 shrink-0 text-lane-green" />}</span>
+      <span className="font-semibold text-navy tabular-nums">{inr ? `${formatINRShort(inr)}${suffix}` : "—"}</span>
+    </div>
+  );
+}
+
+function PerformanceCard({ view }: { view: SupplierView }) {
+  const s = view.sla!;
+  const missed = s.monthsReported - s.monthsMet;
+  return (
+    <Section title="Performance" actors={["Rules"]} hint="Monthly SLA reports vs the contract target. Credits = contract credit % × contracted monthly fee; claimed when the ledger has a CN- credit note for that month.">
+      <div className="space-y-3">
+        <div className="flex items-center justify-between text-sm">
+          <span className="text-muted-foreground">{metricLabel(s.metric)} ≥ {s.target}%</span>
+          <span className="font-medium text-navy">{s.monthsMet}/{s.monthsReported} months met</span>
+        </div>
+        <div className="flex gap-0.5" aria-label={`${s.monthsMet} months met, ${missed} missed`}>
+          {[...new Set(s.months.map((m) => m.month))].map((m) => {
+            const miss = s.months.some((x) => x.month === m && !x.met);
+            return (
+              <Hint key={m} content={`${monthLabel(m)}: ${s.months.filter((x) => x.month === m).map((x) => `${x.actual}%`).join(" / ")}`}>
+                <span className={cn("h-3 w-full min-w-3 rounded-[3px]", miss ? "bg-lane-amber" : "bg-brand/60")} />
+              </Hint>
+            );
+          })}
+        </div>
+        {s.noCreditTable ? (
+          <p className="text-xs text-muted-foreground">No % credit table in the contract, so credits aren&apos;t computed.</p>
+        ) : (
+          <div className="grid grid-cols-2 gap-2 text-center">
+            <div className="rounded-lg bg-surface p-2"><div className="text-[11px] text-muted-foreground">Credits due</div><div className="text-sm font-semibold text-navy">{formatINRShort(s.creditsDueInr)}</div></div>
+            <div className="rounded-lg bg-surface p-2"><div className="text-[11px] text-muted-foreground">Claimed (CN-)</div><div className={cn("text-sm font-semibold", s.unclaimedInr ? "text-lane-amber" : "text-lane-green")}>{formatINRShort(s.creditsClaimedInr)}</div></div>
+          </div>
+        )}
+      </div>
+    </Section>
+  );
+}
+
+function UtilisationCard({ view }: { view: SupplierView }) {
+  const u = view.utilisation!;
+  const line = u.lines.find((l) => l.flagged) ?? u.lines[0];
+  return (
+    <Section title="Utilisation" actors={["Rules"]} hint="Active vs licensed units (admin console vs the order form). Docket informs only.">
+      <div className="space-y-2">
+        <div className="flex items-center justify-between text-sm">
+          <span className="text-muted-foreground">{metricLabel(line.metric)}</span>
+          <span className="font-medium text-navy">{line.latest_active}/{line.licensed_units} · {Math.round(line.latest_pct)}%</span>
+        </div>
+        <MiniBars mode="utilisation" months={line.months.map((m) => ({ period: m.month, amount: m.pct }))} contracted={u.flagPct} height={56} />
+        {line.flagged && <p className="text-xs text-lane-amber">~{lakh1(line.unused_value_inr)}/yr of licences unused (implied cost)</p>}
+        {u.lines.length > 1 && <p className="text-[11px] text-muted-foreground">{u.lines.filter((l) => l !== line).map((l) => `${metricLabel(l.metric)} ${Math.round(l.latest_pct)}%`).join(" · ")}</p>}
+      </div>
+    </Section>
   );
 }
 

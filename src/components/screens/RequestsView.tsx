@@ -1,13 +1,14 @@
 "use client";
 
-import { ArrowRightLeft, CheckCircle2, DoorOpen, RefreshCw } from "lucide-react";
+import { ArrowRightLeft, CheckCircle2, DoorOpen, RefreshCw, Users } from "lucide-react";
 import { useState } from "react";
-import { ActorBadge, EmptyState, LaneBadge, StateChip } from "@/components/docket";
+import { ActorBadge, EmptyState, Hint, LaneBadge, StateChip } from "@/components/docket";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { FLAGS } from "@/lib/flags";
 import { formatDate, formatINRShort } from "@/lib/format";
-import { CATEGORY_LABEL } from "@/lib/labels";
+import { CATEGORY_LABEL, lakh1, metricLabel } from "@/lib/labels";
+import { OWNER_OPEN } from "@/lib/requestFlow";
 import type { SupplierView } from "@/lib/seed";
 import type { OwnerChoice } from "@/lib/types";
 import { cn } from "@/lib/utils";
@@ -29,11 +30,20 @@ function plain(code: string, impact?: number, detail?: string) {
     case "T1": return "Our tracker disagrees with the signed contract.";
     case "X2": return "Notice must go by a special method (e.g. registered post).";
     case "X1": return "A key clause is unclear; Procurement is checking it.";
+    case "S1": return `The supplier missed its service level and owes us a credit we haven't claimed${r}.`;
     default: return detail ?? FLAGS[code as keyof typeof FLAGS]?.label ?? code;
   }
 }
 
-const OPEN = ["raised", "owner_pending"];
+const OPEN: string[] = OWNER_OPEN;
+
+/** U1 in plain words, numbers from Rules. Informs only: no recommendation. */
+function seatsLine(v: SupplierView): string | null {
+  const u1 = v.flags.find((f) => f.code === "U1");
+  if (!u1?.data) return null;
+  const d = u1.data as { metric: string; latest_active: number; licensed_units: number; latest_pct: number };
+  return `You use ${d.latest_active} of ${d.licensed_units} ${metricLabel(d.metric)} (${Math.round(d.latest_pct)}%) · ~${lakh1(u1.impactInr ?? 0)}/yr unused`;
+}
 
 export function RequestsView({ views }: { views: SupplierView[] }) {
   const req = useRequestMap(views);
@@ -54,8 +64,9 @@ export function RequestsView({ views }: { views: SupplierView[] }) {
 function RequestCard({ v, state, decided }: { v: SupplierView; state: string; decided?: OwnerChoice }) {
   const [needed, setNeeded] = useState<string | null>(null);
   const [scope, setScope] = useState<string | null>(null);
-  const open = OPEN.includes(state) && v.lane !== "needs_review";
-  const flags = v.flags.filter((f) => f.code !== "F1");
+  const open = OPEN.includes(state);
+  const flags = v.flags.filter((f) => f.code !== "F1" && f.code !== "U1"); // U1 sits next to the seats question
+  const seats = seatsLine(v);
   const id = `REQ-${v.supplierId}`;
   const go = (c: OwnerChoice) => ownerDecide(id, v.lane, c, { needed: needed ?? "not answered", scope: scope ?? "not answered" });
   return (
@@ -86,7 +97,7 @@ function RequestCard({ v, state, decided }: { v: SupplierView; state: string; de
         {open ? (
           <>
             <Question label="Still needed?" options={["Yes", "No"]} value={needed} onChange={setNeeded} />
-            <Question label="Same scope or seats?" options={["Same", "Fewer", "More"]} value={scope} onChange={setScope} />
+            <Question label="Same scope or seats?" options={["Same", "Fewer", "More"]} value={scope} onChange={setScope} note={seats} />
             <div className="flex flex-wrap gap-2 pt-1">
               <Button onClick={() => go("renew")} disabled={!needed || !scope}><RefreshCw /> Renew</Button>
               <Button variant="secondary" onClick={() => go("exit")} disabled={!needed || !scope}><DoorOpen /> Exit</Button>
@@ -95,17 +106,24 @@ function RequestCard({ v, state, decided }: { v: SupplierView; state: string; de
             <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground"><ActorBadge actor="owner" /> decides · then <ActorBadge actor="Rules" /> routes</div>
           </>
         ) : (
-          <p className="text-xs text-muted-foreground">{v.lane === "needs_review" ? "Procurement is confirming an unclear clause before you're asked." : decided ? `You chose ${decided === "procurement" ? "Send to Procurement" : decided}.` : "Handled by Procurement."}</p>
+          <p className="text-xs text-muted-foreground">{state === "human_review" ? "Procurement is confirming an unclear clause before you're asked." : decided ? `You chose ${decided === "procurement" ? "Send to Procurement" : decided}.` : "Handled by Procurement."}</p>
         )}
       </CardContent>
     </Card>
   );
 }
 
-function Question({ label, options, value, onChange }: { label: string; options: string[]; value: string | null; onChange: (v: string) => void }) {
+function Question({ label, options, value, onChange, note }: { label: string; options: string[]; value: string | null; onChange: (v: string) => void; note?: string | null }) {
   return (
     <div className="flex items-center justify-between gap-3">
-      <span className="text-sm font-medium text-navy">{label}</span>
+      <div className="min-w-0">
+        <div className="text-sm font-medium text-navy">{label}</div>
+        {note && (
+          <Hint content="From the admin console vs the order form (Rules). Docket informs only; the seat count is your call.">
+            <span className="mt-0.5 flex items-center gap-1 text-xs text-lane-amber"><Users className="size-3 shrink-0" /> {note}</span>
+          </Hint>
+        )}
+      </div>
       <div className="flex gap-1 rounded-full bg-surface p-0.5">
         {options.map((o) => (
           <button key={o} onClick={() => onChange(o)} className={cn("rounded-full px-3 py-1 text-xs font-medium transition-colors", value === o ? "bg-brand text-white shadow-soft" : "text-muted-foreground hover:text-navy")}>

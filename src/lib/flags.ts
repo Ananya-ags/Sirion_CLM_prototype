@@ -23,5 +23,7 @@ export const FLAGS: Record<FlagCode, FlagMeta> = {
   L4: { code: "L4", key: "UNTRACKED_RECURRING_SPEND", label: "Untracked spend", description: "Recurring ledger spend with no contract in the tracker.", severity: "material" },
   T1: { code: "T1", key: "TRACKER_CONFLICT", label: "Tracker conflict", description: "The Excel tracker disagrees with the executed contract.", severity: "minor" },
   X1: { code: "X1", key: "UNCLEAR_CLAUSE", label: "Unclear clause", description: "A key clause could not be read with confidence; a human must confirm it.", severity: "review" },
+  S1: { code: "S1", key: "SLA_CREDIT_UNCLAIMED", label: "SLA credit unclaimed", description: "The supplier missed its SLA and the contractual service credit has not been claimed (no credit note).", severity: "minor" },
+  U1: { code: "U1", key: "LOW_UTILISATION", label: "Low utilisation", description: "Active users are below the utilisation threshold for several months in a row.", severity: "minor" },
   X2: { code: "X2", key: "SPECIAL_NOTICE_METHOD", label: "Special notice method", description: "Notice must be served by a specific method or to a specific address.", severity: "minor" },
 };

@@ -5,6 +5,7 @@
 import { DEMO_TODAY } from "../config";
 import { FLAGS } from "../flags";
 import { formatINR } from "../format";
+import { metricLabel, monthList } from "../labels";
 import type {
   Benchmark,
   Category,
@@ -14,15 +15,21 @@ import type {
   FlagCode,
   Lane,
   LedgerRow,
+  LicensedLine,
   Policy,
   RateLine,
+  SlaPerformanceRow,
+  SlaTerms,
   TrackerRow,
+  UsageRow,
+  VendorMasterRow,
   VendorQuote,
 } from "../types";
 import { actByInfo, earliestExit, type ActByInfo, type DayType } from "./actBy";
 import { benchmarkGap, type BenchmarkResult } from "./benchmark";
 import { decideLane } from "./lanes";
-import { ledgerChecks, rowsForVendor, type LedgerResult } from "./ledger";
+import { isCreditNote, ledgerChecks, rowsForVendor, sameVendor, type LedgerResult } from "./ledger";
+import { breachMonthsIn12, slaCredits, utilisation, type SlaResult, type UtilisationResult } from "./performance";
 import { effectiveUplift, monthly, pctOf, quoteVsCap, toInr, type UpliftType } from "./money";
 import { findTrackerRow, trackerConflicts, type TrackerConflict } from "./tracker";
 
@@ -35,6 +42,10 @@ export type RulesContext = {
   usdInr: number;
   cpiPct: number;
   today?: string;
+  /** v3 operational data (optional: missing files mean no S1/U1). */
+  sla?: SlaPerformanceRow[];
+  usage?: UsageRow[];
+  vendors?: VendorMasterRow[];
 };
 
 export type SupplierFacts = {
@@ -45,6 +56,12 @@ export type SupplierFacts = {
   quote?: VendorQuote;
   rateCard?: RateLine[];
   contractRef?: string | null;
+  /** Vendor master id (matches sla_performance / usage rows). */
+  vendorId?: string;
+  /** SLA terms from the executed contract (null = no % service level). */
+  slaTerms?: SlaTerms | null;
+  /** Licensed units per line from the order form. */
+  licensed?: LicensedLine[];
 };
 
 export type SupplierEvaluation = {
@@ -57,10 +74,14 @@ export type SupplierEvaluation = {
   ledger: LedgerResult;
   trackerRow: TrackerRow | null;
   trackerConflicts: TrackerConflict[];
+  sla: SlaResult | null;
+  utilisation: UtilisationResult | null;
   flags: Flag[];
   lane: Lane;
   laneReason: string;
 };
+
+export { monthList };
 
 export const KEY_FIELDS = ["renewal_type", "initial_term_end", "renewal_term_months", "notice_days", "notice_day_type"] as const;
 
@@ -207,11 +228,57 @@ export function evaluateSupplier(s: SupplierFacts, ctx: RulesContext): SupplierE
   );
   if (conflicts.length) add("T1", `${conflicts.length} tracker conflict${conflicts.length > 1 ? "s" : ""}`, { conflicts });
 
+  // S1 + U1 (v3): operational data for this vendor
+  const ofVendor = <R extends { vendor_id: string; erp_vendor_name: string }>(rows: R[] = []) =>
+    rows.filter((r) => (s.vendorId ? r.vendor_id === s.vendorId : sameVendor(r.erp_vendor_name, s.name)));
+  const escalated: FlagCode[] = [];
+  let sla: SlaResult | null = null;
+  if (live && s.slaTerms) {
+    const cnPeriods = new Set(rowsForVendor(ctx.ledger, s.name).filter(isCreditNote).map((r) => r.service_period));
+    sla = slaCredits({ terms: s.slaTerms, rows: ofVendor(ctx.sla), creditNotePeriods: cnPeriods, usdInr: ctx.usdInr });
+    if (sla.unclaimedMonths.length) {
+      const vendor = ctx.vendors?.find((v) => (s.vendorId ? v.vendor_id === s.vendorId : sameVendor(v.erp_vendor_name, s.name)));
+      const breachMonths = breachMonthsIn12(sla);
+      const escalate = vendor?.criticality === "high" && breachMonths >= g.sla_breach_months_red;
+      if (escalate) escalated.push("S1");
+      add(
+        "S1",
+        `SLA credit unclaimed · ${formatINR(sla.unclaimedInr)} · ${monthList(sla.unclaimedMonths)}`,
+        { months: sla.unclaimedMonths, unclaimed_inr: sla.unclaimedInr, breaches: sla.breaches.filter((b) => !b.claimed), breach_months_in_12: breachMonths, criticality: vendor?.criticality ?? null, escalated: escalate },
+        sla.unclaimedInr,
+        s.slaTerms.citation ? [s.slaTerms.citation] : undefined,
+      );
+    }
+  }
+  const util = live && s.licensed?.length ? utilisation({ licensed: s.licensed, rows: ofVendor(ctx.usage), annualInr, flagPct: g.utilisation_flag_pct, minMonths: g.utilisation_min_months }) : null;
+  const low = util?.lines.filter((l) => l.flagged) ?? [];
+  if (util && low.length) {
+    const top = low[0];
+    add(
+      "U1",
+      `${top.latest_active} of ${top.licensed_units} ${metricLabel(top.metric)} active (${Math.round(top.latest_pct)}%) · below ${g.utilisation_flag_pct}% for ${top.months_below} months`,
+      {
+        metric: top.metric,
+        licensed_units: top.licensed_units,
+        latest_active: top.latest_active,
+        avg_active_last_n: top.avg_active_last_n,
+        n: top.n,
+        latest_pct: top.latest_pct,
+        months_below: top.months_below,
+        unused_units: top.unused_units,
+        implied_annual_cost_per_unit_inr: util.impliedAnnualCostPerUnitInr,
+        lines: low.map((l) => l.metric),
+      },
+      util.unusedValueInr,
+    );
+  }
+
   const { lane, reason } = decideLane({
     flags: flags.map((f) => f.code),
     annualInr,
     greenMaxInr: pc.green_max_annual_value_inr,
     daysToActBy: ab?.daysToActBy ?? null,
+    escalated,
     global: g,
   });
 
@@ -225,6 +292,8 @@ export function evaluateSupplier(s: SupplierFacts, ctx: RulesContext): SupplierE
     ledger,
     trackerRow,
     trackerConflicts: conflicts,
+    sla,
+    utilisation: util,
     flags,
     lane,
     laneReason: reason,

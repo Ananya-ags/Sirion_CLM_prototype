@@ -31,3 +31,31 @@ export const FIELD_LABEL: Record<string, string> = {
 export const ROLE_LABEL: Record<string, string> = {
   msa: "MSA", sow: "SOW", amendment: "Amendment", order_form: "Order form", quote: "Quote", email: "Email", other: "Other",
 };
+
+/** Usage / SLA metric names from usage.csv and sla_performance.csv, in plain words. */
+const METRIC_LABEL: Record<string, string> = {
+  named_users_sales_cloud: "Sales Cloud seats",
+  agents_service_desk: "Service Desk agents",
+  active_employees: "employee licences",
+  uptime_pct: "uptime",
+  availability_pct: "availability",
+  on_time_delivery_pct: "on-time delivery",
+  control_plane_availability_pct: "control-plane availability",
+  guard_shift_coverage_pct: "guard-shift coverage",
+  ill_uptime_pct: "ILL circuit uptime",
+};
+export const metricLabel = (m: string) => METRIC_LABEL[m.split(":")[0]] ?? m.replace(/_/g, " ");
+
+/** ₹14,57,544 → "₹14.6L" (one decimal, for plain-language lines). */
+export const lakh1 = (n: number) => (Math.abs(n) >= 1e5 ? `₹${(n / 1e5).toFixed(1)}L` : `₹${Math.round(n).toLocaleString("en-IN")}`);
+
+const MON = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+/** "2026-08" → "Aug 2026" */
+export const monthLabel = (p: string) => `${MON[Number(p.slice(5, 7)) - 1]} ${p.slice(0, 4)}`;
+
+/** ["2026-08","2026-09"] → "Aug + Sep 2026" */
+export function monthList(ms: string[]): string {
+  const byYear = new Map<string, string[]>();
+  for (const m of [...ms].sort()) byYear.set(m.slice(0, 4), [...(byYear.get(m.slice(0, 4)) ?? []), MON[Number(m.slice(5, 7)) - 1]]);
+  return [...byYear.entries()].map(([y, names]) => `${names.join(" + ")} ${y}`).join(", ");
+}

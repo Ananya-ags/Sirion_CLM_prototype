@@ -36,3 +36,86 @@ The truth hasn't changed: §11 flags and lanes, supplier and doc IDs, act-by dat
 ## New and changed scripts
 
 `scripts/build_data.py` (clause library + long docs + gold) → `scripts/render_pdfs.py` (reportlab, pdftoppm, Pillow, numpy; nothing new installed) → `scripts/check_data.py` (2,650 checks).
+
+
+# CHANGES — data pack v2 → v3 (for the app-building chat)
+
+No truth value changed. All §11 flags, lanes, act-by dates and ₹ figures, the tracker, vendor master, documents.json, the held-out set and `doc_supplier_map` are identical to v2. `check_data.py` runs 3,297 checks with exit 0. The v2 data is backed up in `../docket_data_v2_backup/data`.
+
+## 1. Five agreements lengthened → **re-run precompute for SUP-02, SUP-05, SUP-07, SUP-08, SUP-09**
+
+| Doc | Supplier | Words | Pages | Renewal | Notice | Uplift / cap | Payment | TfC | SLA credits | Notices | Law |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| DOC-04 | SUP-02 PeopleGrid | 4,395 | 11 | 11.2 | **1.20 "Non-Renewal Notice Period"** | 12.2 | 13.2 | 15.1 | 14.2 + Annexure 1 | 18.1–18.2 | 19.1 |
+| DOC-14 | SUP-05 SwiftMove | 4,286 | 11 | 12.2 | **Annexure C table** | 13.2 (fuel index only) | 14.2 | 16.1 | 15.2 | 18.1 | 19.1 |
+| DOC-19 | SUP-07 Stratus | 4,262 | 11 | 11.2 | 11.2 | 12.2 + **1.24 "Price Increase Cap"** | 13.1 | 15.1 | 14.2 + Schedule A | 17.1 | 18.1 |
+| DOC-22 | SUP-08 Sentinel | 4,261 | 10 | **13.2 vs 13.3 (ambiguous)** | 13.3 | 5.3 | 5.2 | 15.1 | 14.1 | 17.1 + **1.3 "Agency Notice Address"** | 18.1 |
+| DOC-25 | SUP-09 TalkWave | 4,177 | 10 | 12.2 | 12.2 | 13.3 | **1.24 "Payment Period"** | 16.1 | 15.2 + Annexure 2 | 18.1 | 19.1 |
+
+- All gold citations (`section`, `quote`) for these docs were updated. Every quote is verbatim in `docs_src` and extractable from the PDF.
+- **Kept on purpose.** Sentinel's two conflicting renewal provisions are unchanged (gold `unclear` → X1), and no new text resolves them. TalkWave's injection line is verbatim at Annexure 3, item 3 (gold still auto, 24 months).
+- **DOC-05** (PeopleGrid order form) now cites "Clause 11.2 of the Master Agreement" (was 2.2). This is the only change to a short document.
+- Only these 6 PDFs were re-rendered: `python3 scripts/render_pdfs.py DOC-04 DOC-05 DOC-14 DOC-19 DOC-22 DOC-25`.
+
+## 2. New files
+
+**`data/sla_performance.csv`** — `report_id,vendor_id,erp_vendor_name,month,metric,target,actual,unit,source,reported_date`
+- 84 rows, Nov-2025 → Oct-2026. These are the last 12 *fully reported* months: on DEMO_TODAY (25 Nov) the November report doesn't exist yet. `reported_date` is 5–10 days after month end.
+- Covers only suppliers whose executed contract states a % service level: SUP-01 `uptime_pct`, SUP-02 `availability_pct`, SUP-05 `on_time_delivery_pct`, SUP-07 `control_plane_availability_pct`, SUP-08 `guard_shift_coverage_pct`, SUP-09 `ill_uptime_pct:<circuit id>` (one row per ILL circuit).
+- All metrics are higher-is-better. `source` ∈ `vendor_monthly_report | admin_console | internal_audit`.
+- Not tracked: SUP-03, 04, 06, 10. The reason is in `dev_gold.json → suppliers[].performance.reason`.
+
+**`data/usage.csv`** — `usage_id,vendor_id,erp_vendor_name,month,metric,licensed_units,active_units,source`
+- 36 rows, Nov-2025 → Oct-2026, `source = admin_console`.
+- Nimbus: `named_users_sales_cloud` (450) and `agents_service_desk` (120), from order form DOC-02.
+- PeopleGrid: `active_employees` (3,200), from order form DOC-05.
+
+## 3. ledger.csv — one row appended, no existing row changed
+
+`AP-2026-00146, STRATUS CLOUD PTE LTD, CN-SC-2026-0007, invoice_date 2026-08-18, service_period 2026-07, −31,500 INR, GST 0, USD −375`
+- Credit notes are identified by the **`CN-` prefix on `invoice_no`** and carry **negative amounts**. They are appended at the end of the file, not in date order.
+- Make sure the ledger rules handle a negative row:
+  - L1 totals net it off.
+  - L3 ignores it.
+  - L4 "recurring months" shouldn't count it as a separate month.
+  - "Most common monthly amount" should exclude it.
+- L1–L4 results are unchanged for every supplier.
+
+## 4. policy.json → `global` (keys added; nothing existing changed)
+
+`sla_breach_months_red: 3`, `utilisation_flag_pct: 80`, `utilisation_min_months: 3`. `minor_flags` now includes `S1` and `U1`.
+
+## 5. New flags (Rules)
+
+**S1 SLA_CREDIT_UNCLAIMED**
+- Fires for a month where actual < target, the executed contract has a credit table, and there is no `CN-` ledger row for that vendor + service period.
+- `impact_inr` = credits due on the CONTRACTED monthly fee (not the billed amount; Nimbus is drifting), with USD converted at fx.json.
+- Minor: Finance alert, plus evidence on the Procurement card.
+- Escalation: ≥ 3 breach months in 12 on a high-criticality vendor → Red. Nobody reaches this.
+
+**U1 LOW_UTILISATION**
+- Fires when active/licensed < 80% for ≥ 3 consecutive latest months.
+- `impact_inr` = avg unused units over the last 3 months × (annual value ÷ total licensed units on the order form). The order forms don't price lines separately, so this is an implied per-unit cost.
+- Minor: a plain-language line for the budget owner next to "Same scope or seats?". Docket only informs.
+
+| Supplier | Result | ₹ |
+|---|---|---|
+| SUP-01 Nimbus | **S1**: Aug-26 98.72% (10%) + Sep-26 99.31% (5%) of ₹5,16,667, unclaimed | **₹77,500** |
+| SUP-01 Nimbus | **U1**: Sales Cloud 316/450 = 70.2%, below 80% for 5 months; avg 134 unused × ₹10,877 | **₹14,57,544** |
+| SUP-07 Stratus | Jul-26 99.81%, 10% of USD 3,750, **claimed** via CN → no S1, stays Green | ₹31,500 claimed |
+| Others | all months met; PeopleGrid usage ~94% | — |
+
+Note: the U1 plant sits on Nimbus, not PeopleGrid. PeopleGrid licenses 3,200 employees and Velora has about 3,000, so 70% utilisation there wouldn't be credible. Nimbus is already Red, so no lane moves.
+
+## 6. Gold (`dev_gold.json`) — new keys
+
+- **`suppliers[].performance`** = `{sla_terms: {metric, target, currency, credit_rule, fee_basis_monthly, citation}, metrics, months_reported, breach_months: [{month, metric, target, actual, credit_pct, credit_due_inr, credit_due_original, currency, claimed}], credits_due_inr, credits_claimed_inr, unclaimed_inr}`. For untracked suppliers: `{tracked: false, reason}`.
+- **`suppliers[].utilisation`** = `{order_form, latest_pct, months_below, unused_value_inr, lines: [...]}` for SUP-01 and SUP-02.
+- **`expected_flags`** for SUP-01 now include `S1` and `U1`, each with `detail` and `impact_inr`. `expected_lane` is unchanged for all 10.
+- **`meta.v3_flags`** holds the S1/U1 rule text.
+
+## 7. Scripts
+
+- `build_data.py`: 5 new contract configs on the clause library; optional ANNEXURE/lettered schedule labels; `build_performance()`; credit-note append.
+- `render_pdfs.py`: optional doc-ID arguments.
+- `check_data.py`: section 12, which recomputes S1/U1 independently from the CSVs and contract tables, checks lengths, cross-references, distractors and must-preserve traps, compares against the v2 backup ledger and lanes, and checks every gold quote is verbatim in `docs_src`.

@@ -1,7 +1,7 @@
 "use client";
 
 import { toast } from "sonner";
-import { TERMINAL } from "@/lib/labels";
+import { PROCUREMENT_ACTIONABLE } from "@/lib/requestFlow";
 import type { Draft, DraftKind, Lane, OwnerChoice } from "@/lib/types";
 import { useDocketStore } from "./useDocketStore";
 
@@ -17,34 +17,35 @@ export function ownerDecide(requestId: string, lane: Lane | null, choice: OwnerC
     ["owner_decided", "owner", reason],
   ];
   if (choice === "renew" && lane === "amber") steps.push(["renewed_logged", "Rules", "Amber lane: owner confirmation is enough; renewal logged"]);
-  else steps.push(["procurement_review", "Rules", choice === "exit" ? "Exit requested: Procurement prepares the notice" : choice === "renew" ? "Red lane: Procurement decides; auto-renewal not allowed" : "Owner asked Procurement to review"]);
+  else steps.push(["procurement_review", "Rules", choice === "exit" ? "Exit requested: Procurement prepares the notice" : choice === "renew" ? `${lane === "red" ? "Red lane" : "Review lane"}: Procurement decides; auto-renewal not allowed` : "Owner asked Procurement to review"]);
   S().setOwnerDecision(requestId, { choice, reason, answers });
   report(S().transitionPath(requestId, steps), choice === "renew" && lane === "amber" ? "Renewal confirmed and logged" : "Sent to Procurement");
 }
 
-type Step = Parameters<ReturnType<typeof S>["transitionPath"]>[1][number];
-const toProcurement = (requestId: string): Step[] => {
-  const st = S().requests[requestId]?.state;
-  return st && st !== "procurement_review" ? [["procurement_review", "procurement", "Procurement took the decision"]] : [];
-};
-
+/** Procurement acts only after the budget owner has decided (state procurement_review). */
 export function canProcurementAct(requestId: string) {
   const st = S().requests[requestId]?.state;
-  return !!st && !TERMINAL.includes(st) && st !== "legal_pending";
+  return !!st && PROCUREMENT_ACTIONABLE.includes(st);
+}
+
+/** Priya confirms the unclear clause (human review); the request then goes to the budget owner. */
+export function confirmReview(requestId: string, note: string) {
+  report(S().transitionPath(requestId, [["owner_pending", "procurement", note || "Unclear clause confirmed by Procurement; routed to budget owner"]]), "Confirmed · sent to the budget owner");
 }
 
 export function approveRenewal(requestId: string) {
-  report(S().transitionPath(requestId, [...toProcurement(requestId), ["renewed_logged", "procurement", "Renewal approved within existing terms"]]), "Renewal approved and logged");
+  report(S().transitionPath(requestId, [["renewed_logged", "procurement", "Renewal approved within existing terms"]]), "Renewal approved and logged");
 }
 
 export function handOffRenegotiation(requestId: string) {
-  report(
-    S().transitionPath(requestId, [...toProcurement(requestId), ["handoff_renegotiation", "procurement", "Out of scope: handled by Procurement (renegotiation)"]]),
-    "Handed off to Procurement for renegotiation",
-  );
+  report(S().transitionPath(requestId, [["handoff_renegotiation", "procurement", "Out of scope: handled by Procurement (renegotiation)"]]), "Handed off to Procurement for renegotiation");
 }
 
 export async function draftNotice(requestId: string, kind: DraftKind): Promise<Draft | null> {
+  if (!canProcurementAct(requestId)) {
+    toast.error("Waiting on the budget owner's decision");
+    return null;
+  }
   const res = await fetch("/api/draft", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ requestId, kind }) }).catch(() => null);
   if (!res?.ok) {
     toast.error((await res?.json().catch(() => null))?.error ?? "Drafting failed");
@@ -52,7 +53,7 @@ export async function draftNotice(requestId: string, kind: DraftKind): Promise<D
   }
   const draft = (await res.json()) as Draft;
   S().saveDraft(draft);
-  const r = S().transitionPath(requestId, [...toProcurement(requestId), ["legal_pending", "procurement", `${kind === "exit_notice" ? "Exit notice" : "Cap-enforcement letter"} sent to Legal for approval`]]);
+  const r = S().transitionPath(requestId, [["legal_pending", "procurement", `${kind === "exit_notice" ? "Exit notice" : "Cap-enforcement letter"} sent to Legal for approval`]]);
   report(r, draft.source === "live" ? "Draft ready · sent to Legal" : "Template draft (cached) · sent to Legal");
   return draft;
 }
