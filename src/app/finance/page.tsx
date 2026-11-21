@@ -1,13 +1,7 @@
-import { Receipt } from "lucide-react";
-import { EmptyState } from "@/components/docket/EmptyState";
+import { FinanceView } from "@/components/screens/FinanceView";
+import { getPortfolio } from "@/lib/portfolio";
 
-export default function Page() {
-  return (
-    <EmptyState
-      icon={Receipt}
-      tag="Placeholder"
-      title="No billing alerts yet"
-      description="Ledger-vs-contract checks. Confirming an alert attaches it as evidence to Procurement's card."
-    />
-  );
+export default async function Page() {
+  const { views } = await getPortfolio();
+  return <FinanceView views={views} />;
 }
