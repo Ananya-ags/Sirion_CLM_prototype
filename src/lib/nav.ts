@@ -29,7 +29,7 @@ export const NAV: NavItem[] = [
   { href: "/finance", label: "Finance alerts", icon: Receipt, personas: ["procurement", "finance"], group: "work" },
   { href: "/add-contract", label: "Add a contract", icon: FilePlus2, personas: ["procurement"], group: "work" },
   { href: "/policy", label: "Policy", icon: SlidersHorizontal, personas: ["procurement"], group: "work" },
-  { href: "/brief", label: "Case Brief", icon: BookOpen, personas: "all", group: "evaluator" },
+  { href: "/brief", label: "Prototype Guide & Case Brief", icon: BookOpen, personas: "all", group: "evaluator" },
   { href: "/evals", label: "Evals & Guardrails", icon: FlaskConical, personas: "all", group: "evaluator" },
 ];
 

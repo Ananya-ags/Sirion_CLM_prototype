@@ -9,7 +9,7 @@ export function ConfidencePill({ value, unclear, className }: { value: number; u
   if (unclear) {
     return (
       <Hint content="The AI could not read this field with confidence. A human must confirm it.">
-        <span className={cn("inline-flex h-5 items-center gap-1 rounded-full border border-dashed border-lane-review/40 px-2 text-[11px] font-medium text-lane-review", className)}>
+        <span className={cn("inline-flex h-5 items-center gap-1 rounded-full border border-dashed border-lane-review/40 px-2 text-xs font-medium text-lane-review", className)}>
           <TriangleAlert className="size-3" />
           Unclear
         </span>
@@ -21,7 +21,7 @@ export function ConfidencePill({ value, unclear, className }: { value: number; u
     <Hint content={low ? `Below the ${CONFIDENCE_THRESHOLD * 100}% threshold: sent to human review.` : "Extraction confidence"}>
       <span
         className={cn(
-          "inline-flex h-5 items-center gap-1.5 rounded-full px-2 text-[11px] font-medium tabular-nums",
+          "inline-flex h-5 items-center gap-1.5 rounded-full px-2 text-xs font-medium tabular-nums",
           low ? "bg-lane-review-bg text-lane-review" : "bg-surface-2 text-brand-strong",
           className,
         )}

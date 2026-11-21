@@ -6,6 +6,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { FIELD_KEYS } from "@/lib/ai/precedence";
+import { clientIp, LIMITS, rateLimit } from "@/lib/rateLimit";
 import { getSupplierView } from "@/lib/seed";
 
 const Body = z.object({
@@ -14,6 +15,9 @@ const Body = z.object({
 });
 
 export async function POST(req: Request) {
+  // No Claude call here (Rules only), so the limit is looser than /api/draft; it still bounds abuse.
+  const rl = rateLimit(`evaluate:${clientIp(req)}`, LIMITS.evaluate);
+  if (!rl.ok) return NextResponse.json({ error: `Too many re-evaluations; try again in ~${Math.ceil(rl.retryAfterSec / 60)} min.` }, { status: 429 });
   const parsed = Body.safeParse(await req.json().catch(() => null));
   if (!parsed.success) return NextResponse.json({ error: "Invalid request" }, { status: 400 });
   const view = await getSupplierView(parsed.data.supplierId, parsed.data.overrides);

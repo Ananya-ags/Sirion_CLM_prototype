@@ -45,7 +45,7 @@ export function MiniBars({
         </div>
         {contracted > 0 && <div className="pointer-events-none absolute inset-x-0 border-t border-dashed border-navy/40" style={{ top: y(contracted) }} />}
       </div>
-      <figcaption className="flex justify-between text-[11px] text-muted-foreground">
+      <figcaption className="flex justify-between text-xs text-muted-foreground">
         <span>
           {months[0].period} → {months[months.length - 1].period}
         </span>

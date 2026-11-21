@@ -40,7 +40,7 @@ export default function DesignPage() {
             <div key={s.name} className="space-y-1.5">
               <div className={`h-14 rounded-xl ${s.cls}`} />
               <div className="text-xs font-medium text-navy">{s.name}</div>
-              <div className="text-[11px] text-muted-foreground">{s.hex}</div>
+              <div className="text-xs text-muted-foreground">{s.hex}</div>
             </div>
           ))}
         </div>

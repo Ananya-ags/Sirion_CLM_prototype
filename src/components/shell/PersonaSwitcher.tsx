@@ -1,19 +1,14 @@
 "use client";
 
-import { Check, ChevronsUpDown } from "lucide-react";
+import { Check, ChevronDown } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { PERSONA_ORDER, PERSONAS } from "@/lib/config";
+import { cn } from "@/lib/utils";
 import { useDocketStore } from "@/store/useDocketStore";
 
+/** Prominent, labelled "Viewing as" control: the demo is driven by switching between the 4 employees. */
 export function PersonaSwitcher() {
   const router = useRouter();
   const persona = useDocketStore((s) => s.persona);
@@ -22,21 +17,27 @@ export function PersonaSwitcher() {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="flex items-center gap-2.5 rounded-xl border bg-card py-1 pr-2 pl-1 shadow-soft transition-colors outline-none hover:bg-surface focus-visible:ring-3 focus-visible:ring-ring/40">
-        <Avatar className="size-7">
-          <AvatarFallback className="bg-surface-2 text-[11px] font-semibold text-brand-strong">{current.initials}</AvatarFallback>
+      <DropdownMenuTrigger
+        data-tour="persona"
+        className="flex items-center gap-3 rounded-xl border-2 border-brand/25 bg-white py-1.5 pr-3 pl-1.5 shadow-soft transition-colors outline-none hover:border-brand/50 hover:bg-surface focus-visible:ring-3 focus-visible:ring-ring/40"
+      >
+        <Avatar className="size-9">
+          <AvatarFallback className="bg-hero-gradient text-sm font-semibold text-white">{current.initials}</AvatarFallback>
         </Avatar>
         <div className="text-left leading-tight">
-          <div className="text-sm font-semibold text-navy">{current.name}</div>
-          <div className="text-[11px] text-muted-foreground">{current.role}</div>
+          <div className="text-xs font-medium text-muted-foreground">Viewing as · switch employee</div>
+          <div className="text-base font-semibold text-navy">
+            {current.name} <span className="font-normal text-slate-600">· {current.role}</span>
+          </div>
         </div>
-        <ChevronsUpDown className="size-3.5 text-muted-foreground" />
+        <ChevronDown className="size-4 text-brand" />
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-56">
-        <DropdownMenuLabel className="text-xs text-muted-foreground">View Docket as</DropdownMenuLabel>
+      <DropdownMenuContent align="end" className="w-80 p-1.5">
+        <DropdownMenuLabel className="text-xs text-muted-foreground">Switch employee: each sees their own screens</DropdownMenuLabel>
         <DropdownMenuSeparator />
         {PERSONA_ORDER.map((id) => {
           const p = PERSONAS[id];
+          const active = id === persona;
           return (
             <DropdownMenuItem
               key={id}
@@ -44,16 +45,18 @@ export function PersonaSwitcher() {
                 setPersona(id);
                 router.push(p.home);
               }}
-              className="gap-2.5"
+              className={cn("items-start gap-3 rounded-lg p-2.5", active && "bg-surface-2")}
             >
-              <Avatar className="size-6">
-                <AvatarFallback className="bg-surface-2 text-[10px] font-semibold text-brand-strong">{p.initials}</AvatarFallback>
+              <Avatar className="mt-0.5 size-8">
+                <AvatarFallback className={cn("text-xs font-semibold", active ? "bg-hero-gradient text-white" : "bg-surface-2 text-brand-strong")}>{p.initials}</AvatarFallback>
               </Avatar>
-              <div className="flex-1 leading-tight">
-                <div className="text-sm font-medium">{p.name}</div>
-                <div className="text-[11px] text-muted-foreground">{p.role}</div>
+              <div className="flex-1 leading-snug">
+                <div className="text-sm font-semibold text-navy">
+                  {p.name} <span className="font-normal text-slate-600">· {p.role}</span>
+                </div>
+                <div className="text-xs text-slate-600">{p.does}</div>
               </div>
-              {id === persona && <Check className="size-4 text-brand" />}
+              {active && <Check className="mt-1 size-4 text-brand" />}
             </DropdownMenuItem>
           );
         })}

@@ -1,8 +1,6 @@
 import { CheckCircle2, CircleDashed, FlaskConical, Info, XCircle } from "lucide-react";
-import { ActorBadge } from "@/components/docket";
+import { ActorBadge, Hint } from "@/components/docket";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
 import { loadCache } from "@/lib/data";
 import { EvalResultsSchema, type Score, type SuiteResult } from "@/lib/evals";
 import { cn } from "@/lib/utils";
@@ -24,40 +22,27 @@ async function getEvalResults() {
 const pct = (a: number, b: number) => (b ? Math.round((a / b) * 100) : 0);
 const show = (v: unknown) => (v === null || v === undefined ? "null" : typeof v === "string" ? v : JSON.stringify(v));
 
-function Headline({ title, sub, s, before }: { title: string; sub: string; s: Score | null; before?: { label: string; s: Score | null; why: string } }) {
-  if (!s) return <Card className="rounded-xl shadow-soft"><CardContent className="py-6 text-sm text-muted-foreground">{title}: not run</CardContent></Card>;
-  const ok = s.correct + s.correct_abstention;
+function Big({ label, sub, s, tone }: { label: string; sub: string; s: Score | null; tone: "muted" | "brand" | "hero" }) {
+  const ok = s ? s.correct + s.correct_abstention : 0;
+  const hero = tone === "hero";
   return (
-    <Card className="rounded-xl shadow-soft">
-      <CardHeader>
-        <CardTitle className="text-navy">{title}</CardTitle>
-        <p className="text-xs text-muted-foreground">{sub}</p>
-      </CardHeader>
-      <CardContent className="space-y-3">
-        <div className="flex items-baseline gap-2">
-          <span className="text-4xl font-semibold text-navy tabular-nums">{ok}<span className="text-lg text-muted-foreground">/{s.fields}</span></span>
-          <span className="text-lg font-medium text-brand">{pct(ok, s.fields)}%</span>
-          <span className="text-xs text-muted-foreground">fields</span>
-        </div>
-        <Progress value={pct(ok, s.fields)} className="h-1.5" />
-        <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-xs sm:grid-cols-3">
-          <span><b className="text-navy">{s.correct}</b> correct</span>
-          <span><b className="text-navy">{s.correct_abstention}</b> correct “unclear”</span>
-          <span><b className={cn(s.wrong ? "text-lane-red" : "text-navy")}>{s.wrong}</b> wrong</span>
-          <span><b className="text-navy">{s.wrong_abstention}</b> over-abstained</span>
-          <span><b className={cn(s.missed_abstention ? "text-lane-amber" : "text-navy")}>{s.missed_abstention}</b> missed abstention</span>
-        </div>
-        {before?.s && (
-          <div className="rounded-lg bg-surface p-2.5 text-xs text-navy">
-            <div className="flex flex-wrap gap-x-4 gap-y-1 font-medium">
-              <span>{before.label}: {before.s.correct + before.s.correct_abstention}/{before.s.fields}</span>
-              <span>v2 after design fixes: {ok}/{s.fields}</span>
-            </div>
-            <p className="mt-1 text-muted-foreground">{before.why}</p>
+    <div className={cn("rounded-xl p-5", hero ? "bg-hero-gradient text-white shadow-lift" : "border bg-card shadow-soft")}>
+      <div className={cn("text-base font-semibold", hero ? "text-white" : "text-navy")}>{label}</div>
+      <div className={cn("text-xs", hero ? "text-white/80" : "text-slate-500")}>{sub}</div>
+      {s ? (
+        <>
+          <div className="mt-2 flex items-baseline gap-2">
+            <span className="text-[2.5rem] leading-none font-semibold tabular-nums">{ok}<span className={cn("text-xl", hero ? "text-white/70" : "text-slate-400")}>/{s.fields}</span></span>
+            <span className={cn("text-xl font-semibold", hero ? "text-white" : tone === "brand" ? "text-brand" : "text-slate-500")}>{pct(ok, s.fields)}%</span>
           </div>
-        )}
-      </CardContent>
-    </Card>
+          <Hint content={`${s.correct} correct · ${s.correct_abstention} correct “unclear” · ${s.wrong} wrong · ${s.wrong_abstention} over-abstained · ${s.missed_abstention} missed abstention`}>
+            <span className={cn("mt-1 inline-block text-xs underline decoration-dotted", hero ? "text-white/85" : "text-slate-500")}>{s.wrong} wrong · {s.missed_abstention} missed abstention</span>
+          </Hint>
+        </>
+      ) : (
+        <div className="mt-2 text-sm">not run</div>
+      )}
+    </div>
   );
 }
 
@@ -67,47 +52,47 @@ function SuiteCard({ s }: { s: SuiteResult }) {
   const rec = s.metrics.find((m) => m.label === "Recommendation");
   const metrics = s.metrics.filter((m) => m !== rec);
   return (
-    <Card className="rounded-xl shadow-soft">
-      <CardHeader>
-        <CardTitle className="flex items-center justify-between gap-2 text-navy">{s.title}{icon}</CardTitle>
-        <p className="text-xs text-muted-foreground">Protects against: {s.protects}</p>
-      </CardHeader>
-      <CardContent className="space-y-3">
-        {s.status === "skipped" ? (
-          <p className="flex items-center gap-2 text-sm text-muted-foreground"><CircleDashed className="size-4" /> {s.note}</p>
-        ) : (
-          <div className="flex items-baseline gap-2">
-            <span className="text-3xl font-semibold text-navy tabular-nums">{s.passed}<span className="text-base text-muted-foreground">/{s.total}</span></span>
-            <span className="text-sm text-muted-foreground">{pct(s.passed, s.total)}%</span>
-          </div>
-        )}
-        {metrics.length > 0 && (
-          <dl className="space-y-1 text-xs">
-            {metrics.map((m) => (
-              <div key={m.label} className="flex justify-between gap-3">
-                <dt className="text-muted-foreground">{m.label}</dt>
-                <dd className="text-right font-medium text-navy tabular-nums">{m.value}</dd>
-              </div>
-            ))}
-          </dl>
-        )}
-        {rec && <p className="rounded-lg bg-surface p-2 text-xs text-navy">{rec.value}</p>}
-        {s.note && s.status !== "skipped" && <p className="text-[11px] text-muted-foreground">{s.note}</p>}
-        {s.misses.length > 0 && (
-          <details className="group rounded-lg border p-2 text-xs">
-            <summary className="cursor-pointer font-medium text-navy">Misses ({s.misses.length})</summary>
-            <ul className="mt-2 max-h-64 space-y-1.5 overflow-y-auto">
+    <div className="flex flex-col rounded-xl border bg-card p-5 shadow-soft">
+      <div className="flex items-center justify-between gap-2">
+        <h3 className="text-lg font-semibold">{s.title}</h3>
+        {icon}
+      </div>
+      {s.status === "skipped" ? (
+        <p className="mt-2 flex items-center gap-2 text-sm text-slate-500"><CircleDashed className="size-4" /> {s.note}</p>
+      ) : (
+        <div className="mt-1 flex items-baseline gap-2">
+          <span className="text-3xl font-semibold text-navy tabular-nums">{s.passed}<span className="text-base text-slate-400">/{s.total}</span></span>
+          <span className="text-base text-slate-500">{pct(s.passed, s.total)}%</span>
+        </div>
+      )}
+      <p className="mt-1 text-sm text-slate-600">{s.protects}</p>
+      {rec && <p className="mt-3 rounded-lg bg-surface p-3 text-sm text-navy">{rec.value}</p>}
+      {(metrics.length > 0 || s.misses.length > 0) && (
+        <details className="group mt-3 rounded-lg border p-3 text-sm">
+          <summary className="cursor-pointer font-medium text-navy">Details{s.misses.length ? ` · ${s.misses.length} miss${s.misses.length > 1 ? "es" : ""}` : ""}</summary>
+          {metrics.length > 0 && (
+            <dl className="mt-2 space-y-1">
+              {metrics.map((m) => (
+                <div key={m.label} className="flex justify-between gap-3">
+                  <dt className="text-slate-500">{m.label}</dt>
+                  <dd className="text-right font-medium text-navy tabular-nums">{m.value}</dd>
+                </div>
+              ))}
+            </dl>
+          )}
+          {s.misses.length > 0 && (
+            <ul className="mt-3 max-h-64 space-y-2 overflow-y-auto border-t pt-2">
               {s.misses.map((m, i) => (
-                <li key={i} className="border-t pt-1.5 first:border-0 first:pt-0">
+                <li key={i}>
                   <div className="font-medium text-navy">{m.item}</div>
-                  <div className="text-muted-foreground">expected <span className="text-navy">{show(m.expected)}</span> · got <span className="text-lane-red">{show(m.got)}</span>{m.note ? ` · ${m.note}` : ""}</div>
+                  <div className="text-xs text-slate-500">expected <span className="text-navy">{show(m.expected)}</span> · got <span className="text-lane-red">{show(m.got)}</span>{m.note ? ` · ${m.note}` : ""}</div>
                 </li>
               ))}
             </ul>
-          </details>
-        )}
-      </CardContent>
-    </Card>
+          )}
+        </details>
+      )}
+    </div>
   );
 }
 
@@ -119,44 +104,35 @@ export default async function Page() {
   const ORDER = ["heldout", "grouping", "citations", "abstention", "injection", "drafts", "stability", "calibration", "rules", "ops"];
   const suites = [...r.suites].sort((a, b) => ORDER.indexOf(a.id) - ORDER.indexOf(b.id));
   return (
-    <div className="space-y-6">
-      <div className="flex flex-wrap items-center justify-between gap-2 rounded-xl bg-surface-2 px-4 py-3 text-sm text-navy">
-        <span className="flex items-center gap-2"><FlaskConical className="size-4 text-brand" /> Dev scores reflect prompt tuning; held-out is the true estimate (v1 was the blind run). Small sets; counts shown.</span>
-        <span className="text-xs text-muted-foreground">
-          {r.models.extract} · drafts {r.models.draft} · run cost ${r.budget.spent_usd.toFixed(2)} of ${r.budget.limit_usd.toFixed(2)}
-          {r.budget.skipped.length ? ` · skipped: ${r.budget.skipped.join("; ")}` : ""} · {r.generated_at.slice(0, 10)}
-        </span>
-      </div>
-      <div className="grid gap-4 md:grid-cols-2">
-        <Headline title="Dev (prompts tuned on this)" sub="10 suppliers × 17 fields, AI cache vs dev gold" s={r.headline.dev} />
-        {r.previous ? (
-          <Headline
-            title="Held-out"
-            sub="HO-01…HO-18 · v1 was blind; v2 re-measured after design fixes (no longer blind)"
-            s={r.headline.heldout}
-            before={{ label: r.previous.label, s: r.previous.headline.heldout, why: "What changed: drafts' terms are now extracted as non-binding proposed terms (HO-17 scored on them), review routing is evidence-based, and citations name the operative clause + “via”. No other tuning." }}
-          />
-        ) : (
-          <Headline title="Held-out (untouched)" sub="HO-01…HO-18, run once with the current prompts" s={r.headline.heldout} />
-        )}
-      </div>
+    <div className="space-y-8">
+      <section data-tour="evals-headline">
+        <div className="grid gap-4 md:grid-cols-3">
+          {r.previous && <Big label={`Held-out · ${r.previous.label}`} sub="the true estimate: run once, untouched" s={r.previous.headline.heldout} tone="brand" />}
+          <Big label={r.previous ? "Held-out · v2 after design fixes" : "Held-out (untouched)"} sub={r.previous ? "draft scoping + evidence-based routing; no longer blind" : "run once with the current prompts"} s={r.headline.heldout} tone="hero" />
+          <Big label="Dev set" sub="prompts tuned on this, so optimistic" s={r.headline.dev} tone="muted" />
+        </div>
+        <p className="mt-3 flex flex-wrap items-center gap-2 text-sm text-slate-600">
+          <FlaskConical className="size-4 text-brand" /> Dev scores reflect prompt tuning; held-out is the true estimate. Small sets; counts shown.
+          <Hint content={`${r.models.extract} · drafts ${r.models.draft} · run cost $${r.budget.spent_usd.toFixed(2)} of $${r.budget.limit_usd.toFixed(2)}${r.budget.skipped.length ? ` · skipped: ${r.budget.skipped.join("; ")}` : ""} · ${r.generated_at.slice(0, 10)}`}>
+            <span className="underline decoration-dotted">run details</span>
+          </Hint>
+        </p>
+      </section>
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
         {suites.map((s) => <SuiteCard key={s.id} s={s} />)}
       </div>
-      <Card className="rounded-xl shadow-soft">
-        <CardHeader><CardTitle className="text-navy">Guardrails</CardTitle></CardHeader>
-        <CardContent className="divide-y">
+      <section>
+        <h2 className="mb-3 text-lg font-semibold">Guardrails</h2>
+        <div className="flex flex-wrap gap-2">
           {GUARDRAILS.map(([g, protects, a]) => (
-            <div key={g} className="flex items-start gap-3 py-3">
-              <ActorBadge actor={a} />
-              <div>
-                <div className="text-sm font-semibold text-navy">{g}</div>
-                <div className="text-xs text-muted-foreground">Protects against: {protects}</div>
-              </div>
-            </div>
+            <Hint key={g} content={`Protects against: ${protects}`}>
+              <span className="inline-flex items-center gap-2 rounded-full border bg-card px-3 py-1.5 text-sm font-medium text-navy shadow-soft">
+                <ActorBadge actor={a} /> {g}
+              </span>
+            </Hint>
           ))}
-        </CardContent>
-      </Card>
+        </div>
+      </section>
     </div>
   );
 }

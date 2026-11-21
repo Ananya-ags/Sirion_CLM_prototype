@@ -46,7 +46,7 @@ export function FlagChip({
         )}
       >
         <span className={cn("size-1.5 rounded-full", DOT[sev])} />
-        <span className="font-mono text-[11px] text-muted-foreground">{m.code}</span>
+        <span className="font-mono text-xs text-muted-foreground">{m.code}</span>
         {m.label}
       </span>
     </Hint>

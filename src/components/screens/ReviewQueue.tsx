@@ -3,10 +3,9 @@
 import { CheckCircle2, ExternalLink, FileQuestion, PencilLine, ScanLine, ScanSearch } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
-import { ActorBadge, ConfidencePill, FlagChip, Hint, SourceChip } from "@/components/docket";
+import { ConfidencePill, Hint, SourceChip } from "@/components/docket";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Textarea } from "@/components/ui/textarea";
 import { FIELD_LABEL } from "@/lib/labels";
@@ -21,48 +20,48 @@ const show = (v: unknown) => (v === null || v === undefined ? "Not stated" : v =
 export function ReviewQueue({ views, unmatched }: { views: SupplierView[]; unmatched: UnmatchedDoc[] }) {
   const reviews = useDocketStore((s) => s.reviews);
   const [open, setOpen] = useState<{ kind: "supplier"; v: SupplierView } | { kind: "doc"; u: UnmatchedDoc } | null>(null);
-  const withFields = views.filter((v) => v.reviewFields.length || v.lane === "needs_review");
+  const withFields = views.filter((v) => v.reviewFields.length);
   const pending = (v: SupplierView) => v.reviewFields.filter((f) => !reviews[`field:${v.supplierId}:${f.key}`]).length;
 
+  const reasonsOf = (v: SupplierView) => [...new Set(v.reviewFields.flatMap((f) => f.reasons))];
   return (
-    <Card className="rounded-xl shadow-soft">
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2 text-sm text-navy">
-          <ScanSearch className="size-4 text-brand" /> Human review <ActorBadge actor="Human" />
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-2">
-        {withFields.map((v) => {
-          const n = pending(v);
-          const x1 = v.flags.find((f) => f.code === "X1");
-          return (
-            <button key={v.supplierId} onClick={() => setOpen({ kind: "supplier", v })} className="block w-full rounded-lg border p-2.5 text-left transition-colors hover:bg-surface">
-              <div className="flex items-center justify-between gap-2 text-sm font-medium text-navy">
-                <span className="truncate">{v.name}</span>
-                <span className={cn("text-xs tabular-nums", n ? "text-lane-review" : "text-lane-green")}>{n ? `${n} to check` : "done"}</span>
-              </div>
-              <div className="mt-1 flex flex-wrap items-center gap-1.5">
-                {x1 && <FlagChip code="X1" detail={x1.detail} />}
-                {v.pipeline?.ocrDocs.length ? <Badge variant="secondary" className="gap-1 text-[10px]"><ScanLine className="size-3" /> OCR</Badge> : null}
-              </div>
+    <div data-tour="review" className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+      {withFields.map((v) => {
+        const n = pending(v);
+        const rs = reasonsOf(v);
+        return (
+          <button key={v.supplierId} onClick={() => setOpen({ kind: "supplier", v })} className="flex w-full items-center gap-3 rounded-xl border bg-card p-3 text-left shadow-soft transition-colors hover:bg-surface">
+            <span className={cn("grid size-9 shrink-0 place-items-center rounded-lg", n ? "bg-lane-review-bg text-lane-review" : "bg-lane-green-bg text-lane-green")}>
+              {n ? <ScanSearch className="size-4.5" /> : <CheckCircle2 className="size-4.5" />}
+            </span>
+            <span className="min-w-0 flex-1">
+              <span className="block truncate text-sm font-semibold text-navy">{v.name}</span>
+              <span className="block truncate text-xs text-slate-600">
+                {n ? `${n} field${n === 1 ? "" : "s"} · ${rs.join(", ")}` : "All checked"}
+              </span>
+            </span>
+            {rs.includes("OCR") && <ScanLine className="size-4 text-lane-review" />}
+          </button>
+        );
+      })}
+      {unmatched.map((u) => {
+        const d = reviews[`doc:${u.doc.doc_id}`];
+        return (
+          <Hint key={u.doc.doc_id} content={u.reason}>
+            <button onClick={() => setOpen({ kind: "doc", u })} className="flex w-full items-center gap-3 rounded-xl border border-dashed bg-card p-3 text-left transition-colors hover:bg-surface">
+              <span className="grid size-9 shrink-0 place-items-center rounded-lg bg-lane-review-bg text-lane-review"><FileQuestion className="size-4.5" /></span>
+              <span className="min-w-0 flex-1">
+                <span className="block text-sm font-semibold text-navy">{u.doc.doc_id} · not matched</span>
+                <span className="block truncate text-xs text-slate-600">{d ? "Decided" : "Grouping unsure: which supplier?"}</span>
+              </span>
+              {d && <CheckCircle2 className="size-4 text-lane-green" />}
             </button>
-          );
-        })}
-        {unmatched.map((u) => {
-          const d = reviews[`doc:${u.doc.doc_id}`];
-          return (
-            <button key={u.doc.doc_id} onClick={() => setOpen({ kind: "doc", u })} className="block w-full rounded-lg border border-dashed p-2.5 text-left transition-colors hover:bg-surface">
-              <div className="flex items-center justify-between gap-1.5 text-sm font-medium text-navy">
-                <span className="flex items-center gap-1.5"><FileQuestion className="size-4 text-lane-review" /> {u.doc.doc_id} · unmatched</span>
-                {d && <CheckCircle2 className="size-3.5 text-lane-green" />}
-              </div>
-              <div className="mt-0.5 truncate text-xs text-muted-foreground">{u.reason}</div>
-              <div className="mt-1.5 flex gap-1.5"><SourceChip source={u.doc.source} /><ActorBadge actor="AI" /></div>
-            </button>
-          );
-        })}
-        {!withFields.length && !unmatched.length && <p className="text-xs text-muted-foreground">Nothing to review.</p>}
-      </CardContent>
+          </Hint>
+        );
+      })}
+      {!withFields.length && !unmatched.length && (
+        <div className="col-span-full rounded-xl border border-dashed bg-surface/60 p-6 text-center text-sm text-slate-500">Nothing waiting on you</div>
+      )}
 
       <Sheet open={!!open} onOpenChange={(o) => !o && setOpen(null)}>
         <SheetContent className="w-[520px] overflow-y-auto sm:max-w-[520px]">
@@ -70,7 +69,7 @@ export function ReviewQueue({ views, unmatched }: { views: SupplierView[]; unmat
           {open?.kind === "doc" && <DocReview u={open.u} views={views} />}
         </SheetContent>
       </Sheet>
-    </Card>
+    </div>
   );
 }
 
@@ -101,9 +100,9 @@ function FieldItem({ supplierId, f }: { supplierId: string; f: ReviewField }) {
   return (
     <div className="rounded-lg border p-3">
       <div className="flex items-center justify-between gap-2">
-        <span className="text-[11px] font-medium text-muted-foreground uppercase">{label}</span>
+        <span className="text-xs font-medium text-muted-foreground uppercase">{label}</span>
         <span className="flex items-center gap-1.5">
-          {f.ocr && <Badge variant="secondary" className="gap-1 text-[10px]"><ScanLine className="size-3" /> OCR</Badge>}
+          {f.ocr && <Badge variant="secondary" className="gap-1 text-xs"><ScanLine className="size-3" /> OCR</Badge>}
           <ConfidencePill value={f.confidence} unclear={f.value === "unclear"} />
         </span>
       </div>
@@ -112,7 +111,7 @@ function FieldItem({ supplierId, f }: { supplierId: string; f: ReviewField }) {
       {f.citation && (
         <>
           <blockquote className="mt-2 rounded-md border-l-4 border-brand bg-surface p-2 text-xs text-navy italic">“{f.citation.quote}”</blockquote>
-          <a href={`/api/docs/${f.citation.doc_id}`} target="_blank" rel="noreferrer" className="mt-1 inline-flex items-center gap-1 text-[11px] text-muted-foreground hover:text-brand">
+          <a href={`/api/docs/${f.citation.doc_id}`} target="_blank" rel="noreferrer" className="mt-1 inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-brand">
             {f.citation.doc_id} §{f.citation.section} <ExternalLink className="size-3" />
           </a>
         </>

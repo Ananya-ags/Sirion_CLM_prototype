@@ -8,3 +8,5 @@ export { FlagChip } from "./FlagChip";
 export { EmptyState } from "./EmptyState";
 export { StateChip } from "./StateChip";
 export { MiniBars } from "./MiniBars";
+export { FlagChips } from "./FlagChips";
+export { SectionHeader } from "./SectionHeader";

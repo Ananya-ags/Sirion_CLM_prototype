@@ -54,6 +54,18 @@
   --color-actor-human: #0f1e3d;
   --color-actor-human-bg: #e8ebf2;
 
+  /* Type scale (raised for readability): captions 13px, body/table 15px, headings 19–28px. */
+  --text-xs: 0.8125rem;
+  --text-xs--line-height: 1.25rem;
+  --text-sm: 0.9375rem;
+  --text-sm--line-height: 1.45rem;
+  --text-base: 1rem;
+  --text-base--line-height: 1.55rem;
+  --text-lg: 1.1875rem;
+  --text-lg--line-height: 1.6rem;
+  --text-xl: 1.3125rem;
+  --text-2xl: 1.625rem;
+
   --shadow-soft: 0 1px 2px rgb(15 30 61 / 0.04), 0 4px 16px rgb(15 30 61 / 0.06);
   --shadow-lift: 0 2px 4px rgb(15 30 61 / 0.05), 0 12px 32px rgb(15 30 61 / 0.1);
 
@@ -128,6 +140,24 @@
   --sidebar-accent-foreground: #ffffff;
   --sidebar-border: rgb(255 255 255 / 0.1);
   --sidebar-ring: #2563eb;
+}
+
+/* "For evaluators" label: soft yellow glow so evaluators spot it. */
+@keyframes evaluator-glow {
+  0%, 100% { box-shadow: 0 0 0 1px rgb(250 204 21 / 0.35), 0 0 12px 1px rgb(250 204 21 / 0.18); }
+  50% { box-shadow: 0 0 0 1px rgb(250 204 21 / 0.55), 0 0 20px 3px rgb(250 204 21 / 0.3); }
+}
+@utility evaluator-glow {
+  background: rgb(250 204 21 / 0.14);
+  animation: evaluator-glow 3.2s ease-in-out infinite;
+  @media (prefers-reduced-motion: reduce) { animation: none; }
+}
+
+/* Guided tour spotlight */
+@utility tour-spotlight {
+  box-shadow: 0 0 0 4px rgb(37 99 235 / 0.9), 0 0 0 9999px rgb(15 30 61 / 0.38);
+  border-radius: 14px;
+  transition: all 220ms ease;
 }
 
 @utility bg-hero-gradient {

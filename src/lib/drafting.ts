@@ -24,7 +24,11 @@ export type DraftResult = { status: 200; draft: Draft } | { status: 404 | 422; e
  * Live drafting (server-only): Rules lock every value; Claude writes wording only; boundary + numeric checks;
  * one feedback retry; otherwise the template ("cached"). Used by /api/draft and by the evals.
  */
-export async function generateDraft(requestId: string, kind: DraftKind, opts: { onMeta?: (m: CallMeta) => void } = {}): Promise<DraftResult> {
+export async function generateDraft(
+  requestId: string,
+  kind: DraftKind,
+  opts: { onMeta?: (m: CallMeta) => void; /** Skip Claude (e.g. rate limit) and use the template, with this note. */ templateOnly?: string } = {},
+): Promise<DraftResult> {
   const view = await getSupplierView(requestId.replace("REQ-", ""));
   if (!view) return { status: 404, error: "Unknown supplier" };
   const blocked = canDraft(view, kind);
@@ -41,7 +45,9 @@ export async function generateDraft(requestId: string, kind: DraftKind, opts: { 
 
   let attempts = 0;
   let note = "";
-  if (hasClaudeKey()) {
+  if (opts.templateOnly) {
+    note = opts.templateOnly;
+  } else if (hasClaudeKey()) {
     const excerpts = [view.terms.renewal_type, view.terms.notice_days, view.terms.notice_method, view.terms.uplift.cap_pct]
       .map((f) => f.citation)
       .filter(Boolean)

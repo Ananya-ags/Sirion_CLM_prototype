@@ -15,7 +15,7 @@ DEMO_TODAY = 2026-11-25. FX USD_INR = 84. India CPI YoY = 5.2%. Internal buffer 
 - owner: Rahul, Budget Owner. Auto-raised renewal requests: pre-filled, 2 questions, plain-language flags. Options: Renew / Exit / Send to Procurement.
 - legal: Meera, Legal Counsel. Notices and letters awaiting approval (deadline, method and address locked). Approve and mark as sent.
 - finance: Akshat, Finance / AP. Billing-vs-contract alerts. Confirming one attaches it as evidence to Priya's card.
-Tabs for evaluators only (outside the personas): Case Brief, Evals & Guardrails.
+Tabs for evaluators only (outside the personas): Prototype Guide & Case Brief, Evals & Guardrails.
 
 ## Request states
 raised → owner_pending → owner_decided → procurement_review → (legal_pending → sent) | renewed_logged | handoff_renegotiation → closed.
@@ -81,6 +81,7 @@ Step 2 (branch v2): AI pipeline, `npm run precompute [-- --only SUP-01,SUP-03] [
   App: getSupplierView reads cache/extraction_* first (badge "AI-extracted · quote-verified"), seed fallback ("Seed · fallback"); fields < 0.85 / unclear / OCR and grouping nulls appear in Priya's Human review queue (Confirm / Correct, audited).
 Step 3 (branch v2): supplier names/IDs from vendor_master.csv + src/lib/suppliers.ts (gold only for the "seed" fallback). Human overrides: Confirm / Correct in the review queue stores source:"human", confidence 1.0 (audited) → /api/evaluate re-runs the Rules → lane, flags and request state update live (useLiveViews). Evals: `npm run evals` (scripts/evals.ts, $3 budget guard; --offline, --smoke) → cache/eval_results.json → /evals. Only scripts/evals.ts and scripts/sanity-diff.ts may read dev_gold.json / heldout_gold.json. The held-out set is run once per prompt version; never tune prompts on it.
 Step 3b: drafts/redlines → proposed_terms (non-binding; never fed to Rules; "Draft / redline" panel on the contract page). Review routing is evidence-based (src/lib/ai/routing.ts: OCR, quote not verified, unclear, key field not stated); X1 uses the same evidence, not confidence. Citations: operative clause + optional "via" (definition / schedule row). eval_results.json keeps "v1 (blind)" as previous; current run "v2 (after review; no longer blind)".
+Step 4: UI redesign (type scale 13/15/19–28px; inbox dashboard with card + alert filters computed from rules output; contract tabs; plain-language owner/finance views with no flag codes; policy cards + table toggle); guided tour (src/components/tour, 13 steps, starts from a reset demo); "Prototype Guide & Case Brief"; in-memory rate limits (/api/draft 10/IP/hour → labelled template; /api/evaluate 60/hour, Rules only).
 Not built yet: /add-contract (placeholder).
 
 ## Design system

@@ -22,7 +22,7 @@ export function ActorBadge({ actor, className }: { actor: Actor | "Human"; class
   const label = kind === "Human" && actor !== "Human" ? PERSONAS[actor as keyof typeof PERSONAS].name : kind;
   return (
     <Hint content={m.hint}>
-      <span className={cn("inline-flex h-5 items-center gap-1 rounded-full px-2 text-[11px] font-semibold", m.className, className)}>
+      <span className={cn("inline-flex h-5 items-center gap-1 rounded-full px-2 text-xs font-semibold", m.className, className)}>
         <Icon className="size-3" />
         {label}
       </span>

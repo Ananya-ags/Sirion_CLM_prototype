@@ -9,7 +9,7 @@ export function Hint({ content, children }: { content?: ReactNode; children: Rea
       <TooltipTrigger asChild>
         <span className="inline-flex">{children}</span>
       </TooltipTrigger>
-      <TooltipContent className="max-w-64 text-xs leading-snug">{content}</TooltipContent>
+      <TooltipContent className="max-w-72 text-xs leading-snug whitespace-pre-line">{content}</TooltipContent>
     </Tooltip>
   );
 }

@@ -54,7 +54,8 @@ export async function draftNotice(requestId: string, kind: DraftKind): Promise<D
   const draft = (await res.json()) as Draft;
   S().saveDraft(draft);
   const r = S().transitionPath(requestId, [["legal_pending", "procurement", `${kind === "exit_notice" ? "Exit notice" : "Cap-enforcement letter"} sent to Legal for approval`]]);
-  report(r, draft.source === "live" ? "Draft ready · sent to Legal" : "Template draft (cached) · sent to Legal");
+  if (r.ok && draft.source !== "live" && draft.guardrails.note) toast.info("Template draft (cached) · sent to Legal", { description: draft.guardrails.note });
+  else report(r, draft.source === "live" ? "Draft ready · sent to Legal" : "Template draft (cached) · sent to Legal");
   return draft;
 }
 
