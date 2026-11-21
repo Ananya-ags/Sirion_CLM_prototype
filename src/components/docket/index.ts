@@ -1,4 +1,5 @@
 export { Hint } from "./Hint";
+export { Expandable } from "./Expandable";
 export { MetricCard } from "./MetricCard";
 export { LaneBadge, LANE_META } from "./LaneBadge";
 export { SourceChip } from "./SourceChip";

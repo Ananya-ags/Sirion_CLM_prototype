@@ -1,6 +1,6 @@
 import { Activity, BookOpen, Compass, Cpu, DoorOpen, Gauge, Info, Lightbulb, Puzzle, ScrollText, ShieldAlert, ShieldCheck, Users } from "lucide-react";
 import type { ReactNode } from "react";
-import { ActorBadge, Hint, SourceChip } from "@/components/docket";
+import { ActorBadge, Expandable, Hint, SourceChip } from "@/components/docket";
 import { ProblemSection, type EvidenceRow } from "@/components/brief/ProblemSection";
 import { SuccessMetrics } from "@/components/brief/SuccessMetrics";
 import { ValueChain } from "@/components/brief/ValueChain";
@@ -11,6 +11,7 @@ import { CPI_INDIA_YOY_PCT, DEMO_TODAY_LABEL, FX, PERSONA_ORDER, PERSONAS } from
 import { fullRunCost } from "@/lib/costs";
 import { loadCache } from "@/lib/data";
 import { EvalResultsSchema, type Score } from "@/lib/evals";
+import { evalUnits, type Unit } from "@/lib/evalUnits";
 
 const NAV = [
   ["howto", "How to use this"],
@@ -94,11 +95,18 @@ function Flow() {
   return <ValueChain />;
 }
 
-function Num({ n, label, sub, tip }: { n: string; label: string; sub?: string; tip?: string }) {
+function Num({ n, label, sub, tip, unit }: { n: string; label: string; sub?: string; tip?: string; unit?: Unit }) {
   return (
     <div className="rounded-xl border bg-surface p-4">
       <div className="flex items-start justify-between gap-2">
-        <div className="text-2xl font-semibold text-navy tabular-nums">{n}</div>
+        <div className="flex min-w-0 flex-wrap items-baseline gap-x-1.5">
+          <span className="text-2xl font-semibold text-navy tabular-nums">{n}</span>
+          {unit && n !== "—" && (
+            <Hint content={unit.tip ? `${unit.caption}\n${unit.tip}` : unit.caption}>
+              <span className="text-[0.8125rem] font-medium text-slate-500 underline decoration-slate-300 decoration-dotted underline-offset-2">{unit.short}</span>
+            </Hint>
+          )}
+        </div>
         {tip && <Hint content={tip}><Info className="size-4 text-slate-400" /></Hint>}
       </div>
       <div className="text-sm font-medium text-slate-700">{label}</div>
@@ -121,6 +129,7 @@ export default async function Page() {
   const suite = (id: string) => evals?.suites.find((s) => s.id === id);
   const metric = (id: string, label: string) => suite(id)?.metrics.find((m) => m.label === label)?.value ?? "—";
   const cit = suite("citations");
+  const u = evals ? evalUnits(evals) : null;
   return (
     <div className="grid gap-8 lg:grid-cols-[200px_1fr]">
       <nav className="sticky top-28 hidden h-fit space-y-1 lg:block">
@@ -217,14 +226,14 @@ export default async function Page() {
         <Block id="evals" icon={Cpu} title="AI design & evals">
           <p className="-mt-2 text-sm text-slate-500">Tested on two sets: a dev set (the 10 demo suppliers, used to tune prompts) and a held-out test set (18 unseen clauses and contracts, kept untouched).</p>
           <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-            <Num n={score(evals?.previous?.headline.heldout ?? evals?.headline.heldout)} label="Held-out, v1 blind" sub="First run on unseen data; the honest score" tip="Run once before any changes. 13 of 14 misses came from one draft contract the pipeline skipped by design." />
-            <Num n={evals?.previous ? score(evals.headline.heldout) : "—"} label="Held-out, v2" sub="Re-run after 2 design fixes" tip="Fixes: read drafts as non-binding context; route reviews on evidence, not confidence. No longer blind, so shown separately." />
-            <Num n={suite("grouping") ? `${suite("grouping")!.passed}/${suite("grouping")!.total}` : "—"} label="Grouping (dev)" sub="Docs matched to the right supplier; look-alike decoy sent to review" />
+            <Num n={score(evals?.previous?.headline.heldout ?? evals?.headline.heldout)} unit={u?.heldout} label="Held-out, v1 blind" sub="First run on unseen data; the honest score" tip="Run once before any changes. 13 of 14 misses came from one draft contract the pipeline skipped by design." />
+            <Num n={evals?.previous ? score(evals.headline.heldout) : "—"} unit={u?.heldout} label="Held-out, v2" sub="Re-run after 2 design fixes" tip="Fixes: read drafts as non-binding context; route reviews on evidence, not confidence. No longer blind, so shown separately." />
+            <Num n={suite("grouping") ? `${suite("grouping")!.passed}/${suite("grouping")!.total}` : "—"} unit={u?.grouping} label="Grouping (dev)" sub="Docs matched to the right supplier; look-alike decoy sent to review" />
             <Num n={cit ? String(cit.total - cit.passed) : "—"} label="Unverified citations" sub="Every quoted clause checked against the PDF text in code" tip={cit ? `${cit.passed} quotes checked` : undefined} />
-            <Num n={suite("injection") ? `${suite("injection")!.passed}/${suite("injection")!.total}` : "—"} label="Injection checks" sub="Hidden instructions in contracts were ignored" />
-            <Num n={metric("drafts", "Live drafts")} label="Draft safety" sub="Live notices: no negotiation language, numbers match" />
+            <Num n={suite("injection") ? `${suite("injection")!.passed}/${suite("injection")!.total}` : "—"} unit={u?.injection} label="Injection checks" sub="Hidden instructions in contracts were ignored" />
+            <Num n={metric("drafts", "Live drafts")} unit={u?.drafts} label="Draft safety" sub="Live notices: no negotiation language, numbers match" />
             <Num n={`$${fullRun.toFixed(2)}`} label="Per full pipeline run" sub="Cost to read all 29 contracts once" tip={`${calls} calls: OCR, grouping, 10 extractions`} />
-            <Num n={score(evals?.headline.dev)} label="Dev set" sub="Prompts tuned on this, so optimistic" />
+            <Num n={score(evals?.headline.dev)} unit={u?.dev} label="Dev set" sub="Prompts tuned on this, so optimistic" />
           </div>
           <div className="flex flex-wrap items-center gap-1.5">
             {PIPELINE.map(([c, t], i) => (
@@ -253,9 +262,14 @@ export default async function Page() {
           </div>
         </Block>
 
-        <details id="assumptions" className="scroll-mt-24 rounded-xl border bg-card p-6 shadow-soft">
-          <summary className="flex cursor-pointer items-center gap-2 text-xl font-semibold text-navy"><ScrollText className="size-5 text-brand" /> Assumptions</summary>
-          <ul className="list-disc space-y-1 pl-5 text-sm">
+        <Expandable
+          id="assumptions"
+          className="scroll-mt-24 rounded-xl border bg-card px-6 py-4 shadow-soft"
+          triggerClassName="py-2"
+          contentClassName="pt-3 pb-2"
+          title={<span className="flex items-center gap-2 text-xl font-semibold text-navy"><ScrollText className="size-5 text-brand" /> Assumptions</span>}
+        >
+          <ul className="list-disc space-y-1 pl-5 text-sm text-slate-700">
             <li>Velora Consumer Pvt Ltd is fictional; all suppliers and documents are synthetic.</li>
             <li>Demo clock {DEMO_TODAY_LABEL}; USD→INR {FX.USD_INR}; India CPI {CPI_INDIA_YOY_PCT}% YoY.</li>
             <li>Internal decision target = act-by − 15 days; red at ≤ 14 days to act-by.</li>
@@ -263,7 +277,7 @@ export default async function Page() {
             <li>Extraction is pre-computed by the AI pipeline; live AI runs for drafting.</li>
             <li>Sizing (₹320 Cr renewing unreviewed; ₹25–40 Cr avoidable) is an estimate.</li>
           </ul>
-        </details>
+        </Expandable>
       </div>
     </div>
   );

@@ -1,13 +1,19 @@
 import { Activity, Gauge, GitFork, RefreshCcw, Search, ShieldCheck, Timer, type LucideIcon } from "lucide-react";
 import type { ReactNode } from "react";
+import { Expandable } from "@/components/docket";
 import { cn } from "@/lib/utils";
 
+/** Collapsed-by-default sub-section; header is 16px semibold (smaller than the block title). */
 function Sub({ icon: Icon, title, children }: { icon: LucideIcon; title: string; children: ReactNode }) {
   return (
-    <div className="border-t border-surface-2 pt-6">
-      <h3 className="mb-4 flex items-center gap-2 text-lg font-semibold text-navy"><Icon className="size-5 text-brand" /> {title}</h3>
+    <Expandable
+      className="border-t border-surface-2 pt-3"
+      triggerClassName="px-1 py-2 hover:bg-surface/60"
+      contentClassName="pt-3 pb-1"
+      title={<span className="flex items-center gap-2 text-base font-semibold text-navy"><Icon className="size-5 text-brand" /> {title}</span>}
+    >
       {children}
-    </div>
+    </Expandable>
   );
 }
 
@@ -50,7 +56,7 @@ const TH = "px-3 py-2.5 text-left text-xs font-semibold tracking-wide text-slate
 /** "5 · Success metrics": north star, metric tree, targets table, rethink table. */
 export function SuccessMetrics() {
   return (
-    <div className="space-y-6">
+    <div className="space-y-3">
       {/* A · North star */}
       <div className="rounded-xl bg-hero-gradient p-6 text-white shadow-lift">
         <div className="flex items-center gap-2 text-sm font-semibold tracking-wide text-white/80 uppercase"><Gauge className="size-4" /> North star</div>
