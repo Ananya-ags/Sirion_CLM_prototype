@@ -5,7 +5,7 @@
     "total": 0,
     "skipped": true,
     "details": [
-      "skipped: GEMINI_API_KEY not set (add it to .env.local)"
+      "skipped: held-out live evals are skipped in this build (Phase 3 scope)"
     ]
   },
   {
@@ -14,7 +14,7 @@
     "total": 0,
     "skipped": true,
     "details": [
-      "skipped: GEMINI_API_KEY not set (add it to .env.local)"
+      "skipped: held-out live evals are skipped in this build (Phase 3 scope)"
     ]
   },
   {
@@ -64,7 +64,7 @@
       },
       {
         "case": "injection snippet (live)",
-        "skipped": "GEMINI_API_KEY not set"
+        "skipped": "ANTHROPIC_API_KEY not set"
       }
     ]
   },
@@ -73,12 +73,12 @@
     "passed": 127,
     "total": 127,
     "details": [
-      "useDocketStore.test.ts: 3/3",
       "data.test.ts: 4/4",
       "format.test.ts: 3/3",
-      "guardrails.test.ts: 18/18",
+      "useDocketStore.test.ts: 3/3",
       "rules.gold.test.ts: 63/63",
-      "rules.unit.test.ts: 36/36"
+      "rules.unit.test.ts: 36/36",
+      "guardrails.test.ts: 18/18"
     ]
   }
 ]
