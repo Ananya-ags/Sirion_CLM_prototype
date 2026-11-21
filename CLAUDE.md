@@ -61,6 +61,9 @@ Pre-computed (scripts/precompute.ts writes docket_data/data/cache): classificati
 Live: (A) "Add a contract" upload with live extraction; (B) live drafting of briefs, notices and cap letters. Both fall back to the cache.
 Models: Claude via @anthropic-ai/sdk (src/lib/ai/claude.ts). Live drafting (/api/draft) uses claude-haiku-5-5, overridable with ANTHROPIC_MODEL_DRAFT; names live in lib/config.ts. ANTHROPIC_API_KEY comes from env, server routes only. Missing key or failed call → template draft with a "cached" badge; never block the UI.
 
+## Current build status (Phase 3)
+Live: /api/draft (Claude, guardrails, template fallback "cached"), /api/docs/[docId] (PDFs). Pre-computed: extraction (gold seed, badge "Pre-computed · human-verified"), families from dev_gold doc_supplier_map. Not built yet: AI grouping, OCR, PDF text parsing, held-out live evals, /add-contract (placeholder).
+
 ## Design system
 White base. Light-blue surfaces #F5F9FF and #EAF2FF. Primary #2563EB. Navy #0F1E3D for headings and the sidebar. A subtle blue-to-indigo gradient on hero metric cards. Rounded-xl cards, soft shadows, pill chips, lucide icons. Green, amber and red are used ONLY for lane and status. Minimal text: details go in tooltips and drawers. A polished B2B SaaS feel, catchy but tidy.
 Source chips: Email, SharePoint, DocuSign, Tracker, Ledger (each with its own icon and tint).
