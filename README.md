@@ -1,5 +1,4 @@
-<!-- LIVE URL: replace YOUR-APP.vercel.app below (the link definition + the bold label on the hero line) -->
-[live]: https://YOUR-APP.vercel.app
+[live]: https://docketclmprototype.vercel.app
 
 # Docket
 
@@ -7,7 +6,7 @@
 
 [![▶ Open the live prototype](https://img.shields.io/badge/%E2%96%B6%20Open%20the%20live%20prototype-2563EB?style=for-the-badge&logoColor=white)][live]
 
-**[YOUR-APP.vercel.app][live]**
+### 🔗 Live prototype: **[docketclmprototype.vercel.app](https://docketclmprototype.vercel.app)**
 
 Deployed on Vercel · no login · start with the 3-minute guided tour
 
